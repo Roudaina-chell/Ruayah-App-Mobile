@@ -23,17 +23,33 @@ class RuqyahsScreen extends StatelessWidget {
 
           if (ruqyahs.isEmpty) {
             return Center(
-              child: Text(
-                'لا توجد رقيات متاحة حاليًا.',
-                style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 14),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: AppColors.veryLightBlue,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.headphones_rounded,
+                        color: AppColors.primary, size: 30),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'لا توجد رقيات متاحة حاليًا.',
+                    style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 14),
+                  ),
+                ],
               ),
             );
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             itemCount: ruqyahs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) => const SizedBox(height: 14),
             itemBuilder: (context, index) {
               final ruqyah = ruqyahs[index];
               return _RuqyahTile(
@@ -65,27 +81,38 @@ class _RuqyahTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: const Color(0xFFF7F9FB),
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.navy.withValues(alpha: 0.06),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEDE7F6),
-                  borderRadius: BorderRadius.circular(14),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF9575CD), Color(0xFF5E35B1)],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
-                  isYoutube ? Icons.smart_display_outlined : Icons.music_note_outlined,
-                  color: const Color(0xFF7E57C2),
-                  size: 22,
+                  isYoutube ? Icons.smart_display_rounded : Icons.music_note_rounded,
+                  color: Colors.white,
+                  size: 24,
                 ),
               ),
               const SizedBox(width: 14),
@@ -97,7 +124,7 @@ class _RuqyahTile extends StatelessWidget {
                       ruqyah.title,
                       style: TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.navy,
                       ),
                     ),
@@ -113,13 +140,24 @@ class _RuqyahTile extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.primary, AppColors.navy],
+                  ),
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.35),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                child: const Icon(Icons.play_arrow, color: Colors.white, size: 20),
+                child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 22),
               ),
             ],
           ),

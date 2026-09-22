@@ -22,32 +22,25 @@ class ProgramsScreen extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'حدث خطأ أثناء تحميل البرامج',
-                style: TextStyle(color: AppColors.navy.withValues(alpha: 0.5)),
-              ),
+            return _EmptyState(
+              icon: Icons.error_outline_rounded,
+              message: 'حدث خطأ أثناء تحميل البرامج',
             );
           }
 
           final programs = snapshot.data ?? [];
 
           if (programs.isEmpty) {
-            return Center(
-              child: Text(
-                'لا توجد برامج متاحة حاليًا.',
-                style: TextStyle(
-                  color: AppColors.navy.withValues(alpha: 0.4),
-                  fontSize: 14,
-                ),
-              ),
+            return _EmptyState(
+              icon: Icons.menu_book_outlined,
+              message: 'لا توجد برامج متاحة حاليًا.',
             );
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             itemCount: programs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) => const SizedBox(height: 14),
             itemBuilder: (context, index) {
               final program = programs[index];
               return _ProgramTile(
@@ -79,25 +72,36 @@ class _ProgramTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF7F9FB),
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.navy.withValues(alpha: 0.06),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 50,
+                height: 50,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE0F2F1),
-                  borderRadius: BorderRadius.circular(14),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF26C6DA), Color(0xFF00897B)],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.menu_book_outlined,
-                    color: Color(0xFF00897B), size: 22),
+                child: const Icon(Icons.menu_book_rounded,
+                    color: Colors.white, size: 24),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -108,7 +112,7 @@ class _ProgramTile extends StatelessWidget {
                       program.title,
                       style: TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.navy,
                       ),
                     ),
@@ -125,10 +129,56 @@ class _ProgramTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(Icons.arrow_back_ios_new,
-                  size: 15, color: AppColors.navy.withValues(alpha: 0.25)),
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: AppColors.veryLightBlue,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.arrow_back_ios_new_rounded,
+                    size: 12, color: AppColors.primary),
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  final IconData icon;
+  final String message;
+
+  const _EmptyState({required this.icon, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.veryLightBlue,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 30),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.navy.withValues(alpha: 0.45),
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
       ),
     );

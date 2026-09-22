@@ -41,6 +41,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           content: Text('تم إرسال طلب الموعد بنجاح ✅',
               textAlign: TextAlign.right),
         ),
@@ -49,6 +51,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
         ),
       );
@@ -61,12 +65,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildBookButton(),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             Expanded(
               child: StreamBuilder<List<Appointment>>(
@@ -102,12 +106,28 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                   if (appointments.isEmpty) {
                     return Center(
-                      child: Text(
-                        'لا توجد مواعيد بعد.',
-                        style: TextStyle(
-                          color: AppColors.navy.withValues(alpha: 0.4),
-                          fontSize: 14,
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 72,
+                            height: 72,
+                            decoration: BoxDecoration(
+                              color: AppColors.veryLightBlue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.calendar_month_rounded,
+                                color: AppColors.primary, size: 30),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'لا توجد مواعيد بعد.',
+                            style: TextStyle(
+                              color: AppColors.navy.withValues(alpha: 0.4),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
@@ -115,7 +135,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   return ListView(
                     padding: const EdgeInsets.only(bottom: 20),
                     children: [
-                      // البانرات الدائمة — تبقى بانة حتى يضغط العميل "تم الاطلاع"
                       ...unseenUpdates.map(
                         (appointment) => Padding(
                           padding: const EdgeInsets.only(bottom: 12),
@@ -130,15 +149,28 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                       if (unseenUpdates.isNotEmpty) const SizedBox(height: 4),
 
-                      Text(
-                        'مواعيدي',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.navy,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'مواعيدي',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.navy,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 14),
 
                       ...appointments.map(
                         (appointment) => Padding(
@@ -159,15 +191,26 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
   Widget _buildBookButton() {
     return Container(
-      height: 52,
+      height: 56,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(18),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primary, AppColors.navy],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.35),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           onTap: _isSubmitting ? null : _confirmAndBook,
           child: Center(
             child: _isSubmitting
@@ -182,15 +225,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 : const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.calendar_month_outlined,
+                      Icon(Icons.calendar_month_rounded,
                           color: Colors.white, size: 20),
                       SizedBox(width: 8),
                       Text(
                         'حجز موعد',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
@@ -226,16 +269,20 @@ class _PersistentNotificationBanner extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            isConfirmed ? Icons.check_circle : Icons.cancel,
-            color: color,
-            size: 22,
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.15), shape: BoxShape.circle),
+            child: Icon(
+              isConfirmed ? Icons.check_rounded : Icons.close_rounded,
+              color: color,
+              size: 18,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -245,7 +292,7 @@ class _PersistentNotificationBanner extends StatelessWidget {
               style: TextStyle(
                 color: color,
                 fontSize: 13.5,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 height: 1.4,
               ),
             ),
@@ -269,8 +316,8 @@ class _BookingConfirmSheet extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(28),
+          topRight: Radius.circular(28),
         ),
       ),
       child: Column(
@@ -287,28 +334,39 @@ class _BookingConfirmSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 22),
 
           Center(
             child: Container(
-              width: 60,
-              height: 60,
+              width: 66,
+              height: 66,
               decoration: BoxDecoration(
-                color: AppColors.veryLightBlue,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [AppColors.primary, AppColors.navy],
+                ),
                 shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.35),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
-              child: Icon(Icons.calendar_month_outlined,
-                  color: AppColors.primary, size: 28),
+              child: const Icon(Icons.calendar_month_rounded,
+                  color: Colors.white, size: 30),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
 
           Text(
             'تأكيد طلب حجز موعد',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 17,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
               color: AppColors.navy,
             ),
           ),
@@ -326,7 +384,7 @@ class _BookingConfirmSheet extends StatelessWidget {
           const SizedBox(height: 26),
 
           SizedBox(
-            height: 52,
+            height: 54,
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
@@ -334,12 +392,12 @@ class _BookingConfirmSheet extends StatelessWidget {
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
               child: const Text(
                 'تأكيد الطلب',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -399,8 +457,15 @@ class _AppointmentCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F9FB),
-        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.navy.withValues(alpha: 0.05),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -408,23 +473,23 @@ class _AppointmentCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
                 decoration: BoxDecoration(
                   color: status['bg'],
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   status['label'],
                   style: TextStyle(
                     color: status['color'],
                     fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
               const Spacer(),
-              Icon(Icons.calendar_today_outlined,
-                  size: 16, color: AppColors.navy.withValues(alpha: 0.35)),
+              Icon(Icons.calendar_today_rounded,
+                  size: 16, color: AppColors.navy.withValues(alpha: 0.3)),
             ],
           ),
           const SizedBox(height: 12),
@@ -435,7 +500,7 @@ class _AppointmentCard extends StatelessWidget {
               'موعدك المؤكد',
               style: TextStyle(
                 fontSize: 13,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 color: AppColors.navy,
               ),
             ),

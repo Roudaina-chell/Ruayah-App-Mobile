@@ -15,7 +15,7 @@ class RuqyahPlayerScreen extends StatefulWidget {
 
 class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen> {
   YoutubePlayerController? _youtubeController;
-   final ap.AudioPlayer _audioPlayer = ap.AudioPlayer();
+  final ap.AudioPlayer _audioPlayer = ap.AudioPlayer();
 
   bool _isPlaying = false;
   Duration _duration = Duration.zero;
@@ -68,6 +68,14 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen> {
     }
   }
 
+  Future<void> _seekBy(int seconds) async {
+    final target = _position + Duration(seconds: seconds);
+    final clamped = target < Duration.zero
+        ? Duration.zero
+        : (target > _duration ? _duration : target);
+    await _audioPlayer.seek(clamped);
+  }
+
   String _formatDuration(Duration d) {
     final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
@@ -77,14 +85,14 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F9FB),
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: AppColors.navy),
         title: Text(
           'تشغيل الرقية',
-          style: TextStyle(color: AppColors.navy, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: AppColors.navy, fontWeight: FontWeight.w800, fontSize: 16),
         ),
         centerTitle: true,
       ),
@@ -95,82 +103,159 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen> {
             children: [
               if (_isYoutube) ...[
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(22),
                   child: YoutubePlayer(controller: _youtubeController!),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 22),
                 Text(
                   widget.ruqyah.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 17,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     color: AppColors.navy,
                   ),
                 ),
               ] else ...[
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 Container(
-                  width: 140,
-                  height: 140,
+                  width: 180,
+                  height: 180,
                   decoration: BoxDecoration(
-                    color: AppColors.veryLightBlue,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [AppColors.primary, AppColors.navy],
+                    ),
                     shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.35),
+                        blurRadius: 36,
+                        offset: const Offset(0, 16),
+                      ),
+                    ],
                   ),
-                  child: Icon(Icons.headphones, color: AppColors.primary, size: 60),
+                  child: Center(
+                    child: Container(
+                      width: 130,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.headphones_rounded,
+                          color: Colors.white, size: 56),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
                 Text(
                   widget.ruqyah.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w800,
                     color: AppColors.navy,
                   ),
                 ),
-                const SizedBox(height: 30),
 
-                Slider(
-                  activeColor: AppColors.primary,
-                  inactiveColor: AppColors.navy.withValues(alpha: 0.1),
-                  min: 0,
-                  max: _duration.inSeconds.toDouble() > 0
-                      ? _duration.inSeconds.toDouble()
-                      : 1,
-                  value: _position.inSeconds
-                      .toDouble()
-                      .clamp(0, _duration.inSeconds.toDouble() > 0 ? _duration.inSeconds.toDouble() : 1),
-                  onChanged: (value) async {
-                    await _audioPlayer.seek(Duration(seconds: value.toInt()));
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_formatDuration(_position),
-                          style: TextStyle(fontSize: 12, color: AppColors.navy.withValues(alpha: 0.5))),
-                      Text(_formatDuration(_duration),
-                          style: TextStyle(fontSize: 12, color: AppColors.navy.withValues(alpha: 0.5))),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
+                const Spacer(),
 
                 Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                  child: IconButton(
-                    icon: Icon(
-                      _isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: Colors.white,
-                      size: 34,
-                    ),
-                    onPressed: _togglePlayPause,
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(26),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.navy.withValues(alpha: 0.06),
+                        blurRadius: 24,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 4,
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                        ),
+                        child: Slider(
+                          activeColor: AppColors.primary,
+                          inactiveColor: AppColors.navy.withValues(alpha: 0.08),
+                          min: 0,
+                          max: _duration.inSeconds.toDouble() > 0
+                              ? _duration.inSeconds.toDouble()
+                              : 1,
+                          value: _position.inSeconds
+                              .toDouble()
+                              .clamp(0, _duration.inSeconds.toDouble() > 0 ? _duration.inSeconds.toDouble() : 1),
+                          onChanged: (value) async {
+                            await _audioPlayer.seek(Duration(seconds: value.toInt()));
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_formatDuration(_position),
+                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.navy.withValues(alpha: 0.5))),
+                            Text(_formatDuration(_duration),
+                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.navy.withValues(alpha: 0.5))),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.replay_10_rounded, color: AppColors.navy.withValues(alpha: 0.6), size: 28),
+                            onPressed: () => _seekBy(-10),
+                          ),
+                          const SizedBox(width: 18),
+                          Container(
+                            width: 68,
+                            height: 68,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [AppColors.primary, AppColors.navy],
+                              ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withValues(alpha: 0.4),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Icon(
+                                _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                                color: Colors.white,
+                                size: 34,
+                              ),
+                              onPressed: _togglePlayPause,
+                            ),
+                          ),
+                          const SizedBox(width: 18),
+                          IconButton(
+                            icon: Icon(Icons.forward_10_rounded, color: AppColors.navy.withValues(alpha: 0.6), size: 28),
+                            onPressed: () => _seekBy(10),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ),
                 ),
               ],
