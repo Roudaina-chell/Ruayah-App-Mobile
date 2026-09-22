@@ -1,32 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Conversation {
-  final String id; // نفس userId ديال العميل
+class PatientCase {
+  final String id; // = userId
   final String userName;
   final String userPhone;
-  final String lastMessage;
-  final DateTime lastMessageAt;
+  final String diagnosis;
+  final DateTime lastUpdatedAt;
   final bool hasUnreadForAdmin;
   final bool hasUnreadForClient;
 
-  Conversation({
+  PatientCase({
     required this.id,
     required this.userName,
     required this.userPhone,
-    required this.lastMessage,
-    required this.lastMessageAt,
+    required this.diagnosis,
+    required this.lastUpdatedAt,
     required this.hasUnreadForAdmin,
     required this.hasUnreadForClient,
   });
 
-  factory Conversation.fromMap(String id, Map<String, dynamic> map) {
-    return Conversation(
+  factory PatientCase.fromMap(String id, Map<String, dynamic> map) {
+    return PatientCase(
       id: id,
       userName: map['userName'] ?? '',
       userPhone: map['userPhone'] ?? '',
-      lastMessage: map['lastMessage'] ?? '',
-      lastMessageAt:
-          (map['lastMessageAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      diagnosis: map['diagnosis'] ?? '',
+      lastUpdatedAt:
+          (map['lastUpdatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       hasUnreadForAdmin: map['hasUnreadForAdmin'] ?? false,
       hasUnreadForClient: map['hasUnreadForClient'] ?? false,
     );

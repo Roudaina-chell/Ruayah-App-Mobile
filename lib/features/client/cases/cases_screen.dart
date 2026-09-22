@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../models/chat_message.dart';
+import '../../../models/patient_case.dart';
+import '../../../models/case_entry.dart';
 import '../../../services/auth_service.dart';
-import '../../../services/chat_service.dart';
+import '../../../services/case_service.dart';
 
 class CasesScreen extends StatefulWidget {
   const CasesScreen({super.key});
@@ -12,21 +13,25 @@ class CasesScreen extends StatefulWidget {
 }
 
 class _CasesScreenState extends State<CasesScreen> {
-  final _chatService = ChatService();
+  final _caseService = CaseService();
   final _authService = AuthService();
-  final _textController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _symptomController = TextEditingController();
   final _scrollController = ScrollController();
-  bool _isSending = false;
+
+  bool _nameInitialized = false;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    _chatService.markSeenByClient();
+    _caseService.markSeenByClient();
   }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _nameController.dispose();
+    _symptomController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -43,22 +48,27 @@ class _CasesScreenState extends State<CasesScreen> {
     });
   }
 
-  Future<void> _handleSend() async {
-    final text = _textController.text.trim();
-    if (text.isEmpty || _isSending) return;
+  Future<void> _saveName(String phone) async {
+    final name = _nameController.text.trim();
+    if (name.isEmpty) return;
 
-    setState(() => _isSending = true);
-    _textController.clear();
+    await _caseService.updateClientName(userName: name, userPhone: phone);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('تم حفظ الاسم', textAlign: TextAlign.right)),
+      );
+    }
+  }
+
+  Future<void> _handleSendSymptom() async {
+    final text = _symptomController.text.trim();
+    if (text.isEmpty || _isSaving) return;
+
+    setState(() => _isSaving = true);
+    _symptomController.clear();
 
     try {
-      final profile = await _authService.getCurrentUserProfile();
-      await _chatService.sendClientMessage(
-        userName: profile != null
-            ? '${profile.firstName} ${profile.lastName}'
-            : 'مستخدم',
-        userPhone: profile?.phone ?? '',
-        text: text,
-      );
+      await _caseService.addSymptomEntry(text);
       _scrollToBottom();
     } catch (e) {
       if (!mounted) return;
@@ -66,156 +76,284 @@ class _CasesScreenState extends State<CasesScreen> {
         SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
       );
     } finally {
-      if (mounted) setState(() => _isSending = false);
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final uid = _authService.currentUser?.uid ?? '';
-
     return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<List<ChatMessage>>(
-              stream: _chatService.messages(uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
-                  );
-                }
+      child: StreamBuilder<PatientCase?>(
+        stream: _caseService.myCase(),
+        builder: (context, caseSnapshot) {
+          final patientCase = caseSnapshot.data;
 
-                final messages = snapshot.data ?? [];
+          if (!_nameInitialized) {
+            _nameInitialized = true;
+            _nameController.text = patientCase?.userName ?? '';
+          }
 
-                if (messages.isEmpty) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
+          return FutureBuilder(
+            future: _authService.getCurrentUserProfile(),
+            builder: (context, profileSnapshot) {
+              final phone = profileSnapshot.data?.phone ?? '';
+
+              return Column(
+                children: [
+                  // اسم العميل + التشخيص
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildFieldBox(
+                          label: 'الاسم',
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _nameController,
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(color: AppColors.navy, fontSize: 14),
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    border: InputBorder.none,
+                                    hintText: 'اكتب اسمك',
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.check_circle_outline,
+                                    color: AppColors.primary, size: 20),
+                                onPressed: () => _saveName(phone),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _buildFieldBox(
+                          label: 'تشخيصك عند الرقية',
+                          child: Text(
+                            (patientCase?.diagnosis.isNotEmpty ?? false)
+                                ? patientCase!.diagnosis
+                                : 'لم يتم تحديد التشخيص بعد',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              color: (patientCase?.diagnosis.isNotEmpty ?? false)
+                                  ? AppColors.navy
+                                  : AppColors.navy.withValues(alpha: 0.4),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Align(
+                      alignment: Alignment.centerRight,
                       child: Text(
-                        'لا توجد رسائل بعد.\nابدأ بمراسلة الراقي.',
-                        textAlign: TextAlign.center,
+                        'الأعراض الحالية',
                         style: TextStyle(
-                          color: AppColors.navy.withValues(alpha: 0.4),
-                          fontSize: 14,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.navy,
                         ),
                       ),
                     ),
-                  );
-                }
+                  ),
 
-                _scrollToBottom();
+                  Expanded(
+                    child: StreamBuilder<List<CaseEntry>>(
+                      stream: _caseService.entries(
+                          _authService.currentUser?.uid ?? ''),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                                color: AppColors.primary),
+                          );
+                        }
 
-                return ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message = messages[index];
-                    final isMe = message.senderRole == 'client';
-                    return _MessageBubble(message: message, isMe: isMe);
-                  },
-                );
-              },
-            ),
-          ),
+                        final entries = snapshot.data ?? [];
 
-          // TextField أسفل الشاشة
-          Container(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              border: Border(
-                top: BorderSide(color: AppColors.navy.withValues(alpha: 0.06)),
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F8FC),
-                      borderRadius: BorderRadius.circular(24),
+                        if (entries.isEmpty) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: Text(
+                                'لم تسجل أي أعراض بعد.\nاكتب أعراضك الحالية بالأسفل.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: AppColors.navy.withValues(alpha: 0.4),
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+
+                        _scrollToBottom();
+
+                        return ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.all(16),
+                          itemCount: entries.length,
+                          itemBuilder: (context, index) {
+                            return _EntryCard(entry: entries[index]);
+                          },
+                        );
+                      },
                     ),
-                    child: TextField(
-                      controller: _textController,
-                      textAlign: TextAlign.right,
-                      textInputAction: TextInputAction.send,
-                      onSubmitted: (_) => _handleSend(),
-                      style: TextStyle(color: AppColors.navy, fontSize: 14),
-                      decoration: InputDecoration(
-                        hintText: 'اكتب رسالتك...',
-                        hintStyle:
-                            TextStyle(color: AppColors.navy.withValues(alpha: 0.35)),
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border(
+                        top: BorderSide(
+                            color: AppColors.navy.withValues(alpha: 0.06)),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                  child: IconButton(
-                    icon: _isSending
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F8FC),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          )
-                        : const Icon(Icons.send, color: Colors.white, size: 18),
-                    onPressed: _isSending ? null : _handleSend,
+                            child: TextField(
+                              controller: _symptomController,
+                              textAlign: TextAlign.right,
+                              maxLines: 3,
+                              minLines: 1,
+                              style:
+                                  TextStyle(color: AppColors.navy, fontSize: 14),
+                              decoration: InputDecoration(
+                                hintText: 'اكتب أعراضك...',
+                                hintStyle: TextStyle(
+                                    color: AppColors.navy.withValues(alpha: 0.35)),
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                              color: AppColors.primary, shape: BoxShape.circle),
+                          child: IconButton(
+                            icon: _isSaving
+                                ? const SizedBox(
+                                    width: 18,
+                                    height: 18,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  )
+                                : const Icon(Icons.send, color: Colors.white, size: 18),
+                            onPressed: _isSaving ? null : _handleSendSymptom,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildFieldBox({required String label, required Widget child}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.navy.withValues(alpha: 0.45),
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF5F8FC),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: child,
+        ),
+      ],
     );
   }
 }
 
-class _MessageBubble extends StatelessWidget {
-  final ChatMessage message;
-  final bool isMe;
+class _EntryCard extends StatelessWidget {
+  final CaseEntry entry;
 
-  const _MessageBubble({required this.message, required this.isMe});
+  const _EntryCard({required this.entry});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: isMe ? Alignment.centerLeft : Alignment.centerRight,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.72,
-        ),
-        decoration: BoxDecoration(
-          color: isMe ? AppColors.primary : const Color(0xFFF0F2F5),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(isMe ? 4 : 16),
-            bottomRight: Radius.circular(isMe ? 16 : 4),
+    final isAdmin = entry.authorRole == 'admin';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isAdmin ? AppColors.veryLightBlue : const Color(0xFFF0F2F5),
+        borderRadius: BorderRadius.circular(14),
+        border: isAdmin
+            ? Border.all(color: AppColors.primary.withValues(alpha: 0.2))
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              if (isAdmin) ...[
+                Icon(Icons.medical_services_outlined,
+                    size: 14, color: AppColors.primary),
+                const SizedBox(width: 4),
+              ],
+              Text(
+                isAdmin ? 'توجيه الراقي' : 'أعراضك',
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.bold,
+                  color: isAdmin
+                      ? AppColors.primary
+                      : AppColors.navy.withValues(alpha: 0.5),
+                ),
+              ),
+            ],
           ),
-        ),
-        child: Text(
-          message.text,
-          textAlign: TextAlign.right,
-          style: TextStyle(
-            color: isMe ? Colors.white : AppColors.navy,
-            fontSize: 14,
+          const SizedBox(height: 6),
+          Text(
+            entry.text,
+            textAlign: TextAlign.right,
+            style: TextStyle(color: AppColors.navy, fontSize: 14, height: 1.5),
           ),
-        ),
+        ],
       ),
     );
   }

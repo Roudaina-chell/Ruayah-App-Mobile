@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../models/conversation.dart';
-import '../../../services/chat_service.dart';
-import 'admin_chat_screen.dart';
+import '../../../models/patient_case.dart';
+import '../../../services/case_service.dart';
+import 'admin_case_detail_screen.dart';
 
 class AdminCasesScreen extends StatelessWidget {
   const AdminCasesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final chatService = ChatService();
+    final caseService = CaseService();
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -23,16 +23,16 @@ class AdminCasesScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: StreamBuilder<List<Conversation>>(
-          stream: chatService.allConversations(),
+        child: StreamBuilder<List<PatientCase>>(
+          stream: caseService.allCases(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator(color: AppColors.primary));
             }
 
-            final conversations = snapshot.data ?? [];
+            final cases = snapshot.data ?? [];
 
-            if (conversations.isEmpty) {
+            if (cases.isEmpty) {
               return Center(
                 child: Text(
                   'لا توجد حالات أو رسائل جديدة.',
@@ -43,16 +43,16 @@ class AdminCasesScreen extends StatelessWidget {
 
             return ListView.separated(
               padding: const EdgeInsets.all(20),
-              itemCount: conversations.length,
+              itemCount: cases.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
-                final conversation = conversations[index];
-                return _ConversationTile(
-                  conversation: conversation,
+                final patientCase = cases[index];
+                return _CaseTile(
+                  patientCase: patientCase,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => AdminChatScreen(conversation: conversation),
+                        builder: (_) => AdminCaseDetailScreen(patientCase: patientCase),
                       ),
                     );
                   },
@@ -66,14 +66,14 @@ class AdminCasesScreen extends StatelessWidget {
   }
 }
 
-class _ConversationTile extends StatelessWidget {
-  final Conversation conversation;
+class _CaseTile extends StatelessWidget {
+  final PatientCase patientCase;
   final VoidCallback onTap;
 
-  const _ConversationTile({required this.conversation, required this.onTap});
+  const _CaseTile({required this.patientCase, required this.onTap});
 
   String get _initial =>
-      conversation.userName.isNotEmpty ? conversation.userName[0] : '؟';
+      patientCase.userName.isNotEmpty ? patientCase.userName[0] : '؟';
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +107,14 @@ class _ConversationTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      conversation.userName,
+                      patientCase.userName.isNotEmpty ? patientCase.userName : 'بدون اسم',
                       style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.navy),
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      conversation.lastMessage,
+                      patientCase.diagnosis.isNotEmpty
+                          ? patientCase.diagnosis
+                          : 'لم يتم تحديد التشخيص',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 12.5, color: AppColors.navy.withValues(alpha: 0.5)),
@@ -120,7 +122,7 @@ class _ConversationTile extends StatelessWidget {
                   ],
                 ),
               ),
-              if (conversation.hasUnreadForAdmin)
+              if (patientCase.hasUnreadForAdmin)
                 Container(
                   width: 10,
                   height: 10,
