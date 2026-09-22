@@ -40,7 +40,7 @@ class ProgramsScreen extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             itemCount: programs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 14),
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final program = programs[index];
               return _ProgramTile(
@@ -72,18 +72,19 @@ class _ProgramTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
             boxShadow: [
               BoxShadow(
-                color: AppColors.navy.withValues(alpha: 0.06),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+                color: AppColors.navy.withValues(alpha: 0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -92,16 +93,13 @@ class _ProgramTile extends StatelessWidget {
               Container(
                 width: 50,
                 height: 50,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF26C6DA), Color(0xFF00897B)],
-                  ),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.menu_book_rounded,
-                    color: Colors.white, size: 24),
+                child: Icon(Icons.menu_book_rounded,
+                    color: AppColors.primary, size: 23),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -114,6 +112,7 @@ class _ProgramTile extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
                         color: AppColors.navy,
+                        letterSpacing: -0.2,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -129,15 +128,8 @@ class _ProgramTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: AppColors.veryLightBlue,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.arrow_back_ios_new_rounded,
-                    size: 12, color: AppColors.primary),
-              ),
+              Icon(Icons.arrow_back_ios_new_rounded,
+                  size: 13, color: AppColors.navy.withValues(alpha: 0.22)),
             ],
           ),
         ),
@@ -161,15 +153,16 @@ class _EmptyState extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 72,
-              height: 72,
+              width: 76,
+              height: 76,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: AppColors.veryLightBlue,
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppColors.primary, size: 30),
+              child: Icon(icon, color: AppColors.primary, size: 32),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
             Text(
               message,
               textAlign: TextAlign.center,

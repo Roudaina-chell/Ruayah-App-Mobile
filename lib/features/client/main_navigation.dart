@@ -73,6 +73,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   color: AppColors.navy,
                   fontWeight: FontWeight.w800,
                   fontSize: 17,
+                  letterSpacing: -0.2,
                 ),
               ),
               actions: [
@@ -102,18 +103,19 @@ class _MainNavigationState extends State<MainNavigation> {
 
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Container(
-                height: 68,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                height: 66,
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.navy.withValues(alpha: 0.12),
-                      blurRadius: 24,
-                      offset: const Offset(0, 10),
+                      color: AppColors.navy.withValues(alpha: 0.08),
+                      blurRadius: 28,
+                      offset: const Offset(0, 12),
                     ),
                   ],
                 ),
@@ -126,68 +128,58 @@ class _MainNavigationState extends State<MainNavigation> {
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () => setState(() => _currentIndex = index),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 220),
-                          curve: Curves.easeOut,
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: isSelected ? 12 : 0, vertical: 8),
-                          decoration: BoxDecoration(
-                            gradient: isSelected
-                                ? LinearGradient(
-                                    colors: [AppColors.primary, AppColors.navy],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Icon(
-                                    _navItems[index].icon,
-                                    color: isSelected
-                                        ? Colors.white
-                                        : AppColors.navy.withValues(alpha: 0.35),
-                                    size: 22,
-                                  ),
-                                  if (showBadge)
-                                    Positioned(
-                                      top: -3,
-                                      right: -5,
-                                      child: Container(
-                                        width: 9,
-                                        height: 9,
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFE53935),
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: isSelected
-                                                  ? AppColors.primary
-                                                  : Colors.white,
-                                              width: 1.5),
-                                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
+                              height: 3,
+                              width: isSelected ? 20 : 0,
+                              margin: const EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Icon(
+                                  _navItems[index].icon,
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.navy.withValues(alpha: 0.3),
+                                  size: 23,
+                                ),
+                                if (showBadge)
+                                  Positioned(
+                                    top: -3,
+                                    right: -5,
+                                    child: Container(
+                                      width: 8,
+                                      height: 8,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFE53935),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(color: Colors.white, width: 1.5),
                                       ),
                                     ),
-                                ],
-                              ),
-                              if (isSelected) ...[
-                                const SizedBox(height: 4),
-                                Text(
-                                  _navItems[index].label,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10.5,
-                                    fontWeight: FontWeight.w700,
                                   ),
-                                ),
                               ],
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              _navItems[index].label,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.navy.withValues(alpha: 0.35),
+                                fontSize: 10.5,
+                                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );

@@ -72,6 +72,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
             color: AppColors.navy,
             fontWeight: FontWeight.w800,
             fontSize: 17,
+            letterSpacing: -0.2,
           ),
         ),
         centerTitle: true,
@@ -83,9 +84,9 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                padding: const EdgeInsets.all(18),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.veryLightBlue.withValues(alpha: 0.6),
+                  color: AppColors.veryLightBlue.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Row(
@@ -104,15 +105,16 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.navy.withValues(alpha: 0.06)),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.navy.withValues(alpha: 0.05),
+                      color: AppColors.navy.withValues(alpha: 0.04),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
@@ -133,12 +135,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 30),
 
               Container(
-                height: 56,
+                height: 58,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(20),
                   gradient: LinearGradient(
                     colors: [AppColors.primary, AppColors.navy],
                     begin: Alignment.topLeft,
@@ -146,16 +148,16 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.35),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
+                      color: AppColors.primary.withValues(alpha: 0.22),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
                     ),
                   ],
                 ),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
                     onTap: _isLoading ? null : _handleSubmit,
                     child: Center(
                       child: _isLoading

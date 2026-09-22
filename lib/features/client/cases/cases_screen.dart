@@ -107,64 +107,158 @@ class _CasesScreenState extends State<CasesScreen> {
               future: _authService.getCurrentUserProfile(),
               builder: (context, profileSnapshot) {
                 final phone = profileSnapshot.data?.phone ?? '';
+                final hasDiagnosis = patientCase?.diagnosis.isNotEmpty ?? false;
+                final trimmedName = _nameController.text.trim();
+                final initial = trimmedName.isNotEmpty
+                    ? trimmedName.substring(0, 1)
+                    : '؟';
 
                 return Column(
                   children: [
+                    // ===== Patient snapshot card =====
                     Container(
-                      margin: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                      padding: const EdgeInsets.all(16),
+                      margin: const EdgeInsets.fromLTRB(16, 12, 16, 10),
+                      padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(26),
+                        border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.navy.withValues(alpha: 0.05),
-                            blurRadius: 14,
-                            offset: const Offset(0, 6),
+                            color: AppColors.navy.withValues(alpha: 0.06),
+                            blurRadius: 22,
+                            offset: const Offset(0, 10),
                           ),
                         ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          _buildFieldBox(
-                            label: 'الاسم',
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _nameController,
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(color: AppColors.navy, fontSize: 14),
-                                    decoration: const InputDecoration(
-                                      isDense: true,
-                                      border: InputBorder.none,
-                                      hintText: 'اكتب اسمك',
+                          Row(
+                            children: [
+                              Container(
+                                width: 52,
+                                height: 52,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [AppColors.primary, AppColors.navy],
+                                  ),
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.primary.withValues(alpha: 0.25),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 6),
                                     ),
+                                  ],
+                                ),
+                                child: Text(
+                                  initial,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.check_circle_rounded,
-                                      color: AppColors.primary, size: 20),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'المريض',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.navy.withValues(alpha: 0.4),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    TextField(
+                                      controller: _nameController,
+                                      textAlign: TextAlign.right,
+                                      onChanged: (_) => setState(() {}),
+                                      style: TextStyle(
+                                        color: AppColors.navy,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      decoration: const InputDecoration(
+                                        isDense: true,
+                                        border: InputBorder.none,
+                                        hintText: 'اكتب اسمك',
+                                        contentPadding: EdgeInsets.zero,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.veryLightBlue.withValues(alpha: 0.6),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.check_rounded,
+                                      color: AppColors.primary, size: 19),
                                   onPressed: () => _saveName(phone),
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          _buildFieldBox(
-                            label: 'تشخيصك عند الرقية',
-                            child: Text(
-                              (patientCase?.diagnosis.isNotEmpty ?? false)
-                                  ? patientCase!.diagnosis
-                                  : 'لم يتم تحديد التشخيص بعد',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: (patientCase?.diagnosis.isNotEmpty ?? false)
-                                    ? AppColors.navy
-                                    : AppColors.navy.withValues(alpha: 0.4),
-                                fontSize: 14,
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: hasDiagnosis
+                                  ? AppColors.veryLightBlue.withValues(alpha: 0.55)
+                                  : const Color(0xFFF5F8FC),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.medical_services_rounded,
+                                    size: 18,
+                                    color: hasDiagnosis
+                                        ? AppColors.primary
+                                        : AppColors.navy.withValues(alpha: 0.3)),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'التشخيص',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.navy.withValues(alpha: 0.45),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        hasDiagnosis
+                                            ? patientCase!.diagnosis
+                                            : 'لم يتم تحديد التشخيص بعد',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          color: hasDiagnosis
+                                              ? AppColors.navy
+                                              : AppColors.navy.withValues(alpha: 0.4),
+                                          fontSize: 13.5,
+                                          fontWeight: hasDiagnosis ? FontWeight.w700 : FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -172,18 +266,18 @@ class _CasesScreenState extends State<CasesScreen> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 22),
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              width: 6,
-                              height: 15,
+                              width: 4,
+                              height: 16,
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(3),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -193,12 +287,14 @@ class _CasesScreenState extends State<CasesScreen> {
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.navy,
+                                letterSpacing: -0.2,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
+                    const SizedBox(height: 6),
 
                     Expanded(
                       child: StreamBuilder<List<CaseEntry>>(
@@ -223,16 +319,17 @@ class _CasesScreenState extends State<CasesScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
-                                      width: 64,
-                                      height: 64,
+                                      width: 68,
+                                      height: 68,
+                                      alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: AppColors.veryLightBlue,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(Icons.chat_bubble_outline_rounded,
-                                          color: AppColors.primary, size: 26),
+                                          color: AppColors.primary, size: 28),
                                     ),
-                                    const SizedBox(height: 14),
+                                    const SizedBox(height: 16),
                                     Text(
                                       'لم تسجل أي أعراض بعد.\nاكتب أعراضك الحالية بالأسفل.',
                                       textAlign: TextAlign.center,
@@ -251,7 +348,7 @@ class _CasesScreenState extends State<CasesScreen> {
 
                           return ListView.builder(
                             controller: _scrollController,
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             itemCount: entries.length,
                             itemBuilder: (context, index) {
                               return _EntryCard(entry: entries[index]);
@@ -261,76 +358,81 @@ class _CasesScreenState extends State<CasesScreen> {
                       ),
                     ),
 
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          top: BorderSide(
-                              color: AppColors.navy.withValues(alpha: 0.06)),
+                    // ===== Floating input pill =====
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(color: AppColors.navy.withValues(alpha: 0.06)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.navy.withValues(alpha: 0.1),
+                              blurRadius: 24,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8, top: 6, bottom: 6),
+                                child: TextField(
+                                  controller: _symptomController,
+                                  textAlign: TextAlign.right,
+                                  maxLines: 4,
+                                  minLines: 1,
+                                  style: TextStyle(color: AppColors.navy, fontSize: 14),
+                                  decoration: InputDecoration(
+                                    hintText: 'اكتب أعراضك...',
+                                    hintStyle: TextStyle(
+                                        color: AppColors.navy.withValues(alpha: 0.35)),
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.zero,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 44,
+                              height: 44,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF5F8FC),
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                              child: TextField(
-                                controller: _symptomController,
-                                textAlign: TextAlign.right,
-                                maxLines: 3,
-                                minLines: 1,
-                                style:
-                                    TextStyle(color: AppColors.navy, fontSize: 14),
-                                decoration: InputDecoration(
-                                  hintText: 'اكتب أعراضك...',
-                                  hintStyle: TextStyle(
-                                      color: AppColors.navy.withValues(alpha: 0.35)),
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 12),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [AppColors.primary, AppColors.navy],
                                 ),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withValues(alpha: 0.3),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: IconButton(
+                                icon: _isSaving
+                                    ? const SizedBox(
+                                        width: 17,
+                                        height: 17,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(Colors.white),
+                                        ),
+                                      )
+                                    : const Icon(Icons.send_rounded, color: Colors.white, size: 18),
+                                onPressed: _isSaving ? null : _handleSendSymptom,
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Container(
-                            width: 46,
-                            height: 46,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [AppColors.primary, AppColors.navy],
-                              ),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withValues(alpha: 0.35),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: IconButton(
-                              icon: _isSaving
-                                  ? const SizedBox(
-                                      width: 18,
-                                      height: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(Colors.white),
-                                      ),
-                                    )
-                                  : const Icon(Icons.send_rounded, color: Colors.white, size: 19),
-                              onPressed: _isSaving ? null : _handleSendSymptom,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -340,34 +442,6 @@ class _CasesScreenState extends State<CasesScreen> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildFieldBox({required String label, required Widget child}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: AppColors.navy.withValues(alpha: 0.45),
-            ),
-          ),
-        ),
-        const SizedBox(height: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF5F8FC),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: child,
-        ),
-      ],
     );
   }
 }
@@ -381,69 +455,86 @@ class _EntryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAdmin = entry.authorRole == 'admin';
 
-    return Align(
-      alignment: isAdmin ? Alignment.centerLeft : Alignment.centerRight,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        constraints: const BoxConstraints(maxWidth: 320),
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: isAdmin
-              ? null
-              : LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [AppColors.primary, AppColors.navy],
-                ),
-          color: isAdmin ? Colors.white : null,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(16),
-            topRight: const Radius.circular(16),
-            bottomLeft: Radius.circular(isAdmin ? 4 : 16),
-            bottomRight: Radius.circular(isAdmin ? 16 : 4),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.navy.withValues(alpha: 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Row(
+        mainAxisAlignment:
+            isAdmin ? MainAxisAlignment.start : MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (isAdmin) ...[
+            Container(
+              width: 30,
+              height: 30,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(left: 8),
+              decoration: BoxDecoration(
+                color: AppColors.veryLightBlue,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.medical_services_rounded,
+                  size: 15, color: AppColors.primary),
             ),
           ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              children: [
-                if (isAdmin) ...[
-                  Icon(Icons.medical_services_rounded,
-                      size: 14, color: AppColors.primary),
-                  const SizedBox(width: 4),
-                ],
-                Text(
-                  isAdmin ? 'توجيه الراقي' : 'أعراضك',
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w800,
-                    color: isAdmin
-                        ? AppColors.primary
-                        : Colors.white.withValues(alpha: 0.85),
-                  ),
+          Flexible(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 280),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                gradient: isAdmin
+                    ? null
+                    : LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [AppColors.primary, AppColors.navy],
+                      ),
+                color: isAdmin ? Colors.white : null,
+                border: isAdmin
+                    ? Border.all(color: AppColors.navy.withValues(alpha: 0.05))
+                    : null,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(18),
+                  topRight: const Radius.circular(18),
+                  bottomLeft: Radius.circular(isAdmin ? 4 : 18),
+                  bottomRight: Radius.circular(isAdmin ? 18 : 4),
                 ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(
-              entry.text,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: isAdmin ? AppColors.navy : Colors.white,
-                fontSize: 14,
-                height: 1.5,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.navy.withValues(alpha: 0.05),
+                    blurRadius: 12,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    isAdmin ? 'توجيه الراقي' : 'أعراضك',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: isAdmin
+                          ? AppColors.primary
+                          : Colors.white.withValues(alpha: 0.85),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    entry.text,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: isAdmin ? AppColors.navy : Colors.white,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

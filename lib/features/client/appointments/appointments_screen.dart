@@ -70,7 +70,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildBookButton(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 22),
 
             Expanded(
               child: StreamBuilder<List<Appointment>>(
@@ -110,16 +110,16 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 72,
-                            height: 72,
+                            width: 76,
+                            height: 76,
                             decoration: BoxDecoration(
                               color: AppColors.veryLightBlue,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(Icons.calendar_month_rounded,
-                                color: AppColors.primary, size: 30),
+                                color: AppColors.primary, size: 32),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 18),
                           Text(
                             'لا توجد مواعيد بعد.',
                             style: TextStyle(
@@ -152,11 +152,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       Row(
                         children: [
                           Container(
-                            width: 6,
-                            height: 16,
+                            width: 4,
+                            height: 18,
                             decoration: BoxDecoration(
                               color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -166,6 +166,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
                               color: AppColors.navy,
+                              letterSpacing: -0.2,
                             ),
                           ),
                         ],
@@ -191,9 +192,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
   Widget _buildBookButton() {
     return Container(
-      height: 56,
+      height: 58,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -201,16 +202,16 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.35),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: AppColors.primary.withValues(alpha: 0.22),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
           onTap: _isSubmitting ? null : _confirmAndBook,
           child: Center(
             child: _isSubmitting
@@ -270,7 +271,7 @@ class _PersistentNotificationBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: color.withValues(alpha: 0.25)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,8 +317,8 @@ class _BookingConfirmSheet extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(28),
-          topRight: Radius.circular(28),
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
         ),
       ),
       child: Column(
@@ -334,32 +335,22 @@ class _BookingConfirmSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 22),
+          const SizedBox(height: 24),
 
           Center(
             child: Container(
-              width: 66,
-              height: 66,
+              width: 64,
+              height: 64,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [AppColors.primary, AppColors.navy],
-                ),
+                color: AppColors.veryLightBlue,
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.35),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
               ),
-              child: const Icon(Icons.calendar_month_rounded,
-                  color: Colors.white, size: 30),
+              child: Icon(Icons.calendar_month_rounded,
+                  color: AppColors.primary, size: 28),
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
 
           Text(
             'تأكيد طلب حجز موعد',
@@ -368,6 +359,7 @@ class _BookingConfirmSheet extends StatelessWidget {
               fontSize: 17,
               fontWeight: FontWeight.w800,
               color: AppColors.navy,
+              letterSpacing: -0.2,
             ),
           ),
           const SizedBox(height: 8),
@@ -381,10 +373,10 @@ class _BookingConfirmSheet extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 26),
+          const SizedBox(height: 28),
 
           SizedBox(
-            height: 54,
+            height: 56,
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
@@ -392,7 +384,7 @@ class _BookingConfirmSheet extends StatelessWidget {
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(18),
                 ),
               ),
               child: const Text(
@@ -401,7 +393,7 @@ class _BookingConfirmSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
 
           SizedBox(
             height: 48,
@@ -458,10 +450,11 @@ class _AppointmentCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.navy.withValues(alpha: 0.05),
+            color: AppColors.navy.withValues(alpha: 0.04),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),

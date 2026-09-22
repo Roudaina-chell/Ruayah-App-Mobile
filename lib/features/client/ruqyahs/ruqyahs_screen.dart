@@ -27,16 +27,17 @@ class RuqyahsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    width: 72,
-                    height: 72,
+                    width: 76,
+                    height: 76,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.veryLightBlue,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.headphones_rounded,
-                        color: AppColors.primary, size: 30),
+                        color: AppColors.primary, size: 32),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   Text(
                     'لا توجد رقيات متاحة حاليًا.',
                     style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 14),
@@ -49,7 +50,7 @@ class RuqyahsScreen extends StatelessWidget {
           return ListView.separated(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             itemCount: ruqyahs.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 14),
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final ruqyah = ruqyahs[index];
               return _RuqyahTile(
@@ -81,18 +82,19 @@ class _RuqyahTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
             boxShadow: [
               BoxShadow(
-                color: AppColors.navy.withValues(alpha: 0.06),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+                color: AppColors.navy.withValues(alpha: 0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -101,18 +103,15 @@ class _RuqyahTile extends StatelessWidget {
               Container(
                 width: 48,
                 height: 48,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF9575CD), Color(0xFF5E35B1)],
-                  ),
+                  color: const Color(0xFF5E35B1).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   isYoutube ? Icons.smart_display_rounded : Icons.music_note_rounded,
-                  color: Colors.white,
-                  size: 24,
+                  color: const Color(0xFF5E35B1),
+                  size: 22,
                 ),
               ),
               const SizedBox(width: 14),
@@ -126,6 +125,7 @@ class _RuqyahTile extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
                         color: AppColors.navy,
+                        letterSpacing: -0.2,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -140,8 +140,9 @@ class _RuqyahTile extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 38,
-                height: 38,
+                width: 40,
+                height: 40,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -151,9 +152,9 @@ class _RuqyahTile extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.35),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
+                      color: AppColors.primary.withValues(alpha: 0.25),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
