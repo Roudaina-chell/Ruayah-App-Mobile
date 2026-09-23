@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/geometric_pattern.dart';
 import '../../../models/program.dart';
 
 class ProgramDetailScreen extends StatelessWidget {
@@ -10,14 +12,14 @@ class ProgramDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FB),
+      backgroundColor: AppColors.parchment,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
             stretch: true,
             expandedHeight: 260,
-            backgroundColor: AppColors.navy,
+            backgroundColor: AppColors.tealDeep,
             elevation: 0,
             automaticallyImplyLeading: false,
             leading: Padding(
@@ -36,39 +38,13 @@ class ProgramDetailScreen extends StatelessWidget {
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AppColors.primary, AppColors.navy],
-                  ),
-                ),
+                decoration: const BoxDecoration(gradient: AppColors.heroGradient),
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Positioned(
-                      top: -60,
-                      right: -50,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.05),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -40,
-                      left: -30,
-                      child: Container(
-                        width: 140,
-                        height: 140,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withValues(alpha: 0.06),
-                        ),
-                      ),
+                    const GeometricPatternBackground(
+                      color: Colors.white,
+                      opacity: 0.07,
                     ),
                     SafeArea(
                       child: Center(
@@ -94,11 +70,18 @@ class ProgramDetailScreen extends StatelessWidget {
                                     height: 82,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withValues(alpha: 0.14),
+                                      gradient: AppColors.goldGradient,
                                       border: Border.all(
                                         color: Colors.white.withValues(alpha: 0.3),
                                         width: 1.2,
                                       ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.gold.withValues(alpha: 0.4),
+                                          blurRadius: 20,
+                                          offset: const Offset(0, 8),
+                                        ),
+                                      ],
                                     ),
                                     child: const Icon(Icons.menu_book_rounded,
                                         color: Colors.white, size: 36),
@@ -120,7 +103,7 @@ class ProgramDetailScreen extends StatelessWidget {
               offset: const Offset(0, -30),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 ),
                 padding: const EdgeInsets.fromLTRB(24, 28, 24, 28),
@@ -132,66 +115,47 @@ class ProgramDetailScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: AppColors.veryLightBlue.withValues(alpha: 0.7),
+                          color: AppColors.goldSoft,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.auto_awesome_rounded,
-                                size: 13, color: AppColors.primary),
+                            const Icon(Icons.auto_awesome_rounded,
+                                size: 13, color: AppColors.goldDeep),
                             const SizedBox(width: 5),
                             Text(
                               'برنامج علاجي',
-                              style: TextStyle(
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
+                              style: AppTextStyles.label(
+                                color: AppColors.goldDeep,
+                                size: 11.5,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 16),
                     Text(
                       program.title,
                       textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.navy,
-                        letterSpacing: -0.4,
-                        height: 1.25,
-                      ),
+                      style: AppTextStyles.displaySmall(size: 25),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Text(
                       program.shortDescription,
                       textAlign: TextAlign.right,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.5,
-                        color: AppColors.navy.withValues(alpha: 0.5),
-                      ),
+                      style: AppTextStyles.body(color: AppColors.inkMuted),
                     ),
 
                     const SizedBox(height: 30),
 
                     Row(
                       children: [
-                        Icon(Icons.format_quote_rounded,
-                            color: AppColors.primary.withValues(alpha: 0.5), size: 22),
+                        const Icon(Icons.format_quote_rounded,
+                            color: AppColors.gold, size: 22),
                         const SizedBox(width: 8),
-                        Text(
-                          'محتوى البرنامج',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.navy,
-                            letterSpacing: -0.2,
-                          ),
-                        ),
+                        Text('محتوى البرنامج', style: AppTextStyles.heading()),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -203,11 +167,10 @@ class ProgramDetailScreen extends StatelessWidget {
                           child: Text(
                             program.content,
                             textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 14.5,
-                              height: 2.0,
-                              color: AppColors.navy.withValues(alpha: 0.72),
-                            ),
+                            style: AppTextStyles.body(
+                              color: AppColors.ink.withValues(alpha: 0.82),
+                              size: 14.5,
+                            ).copyWith(height: 2.0),
                           ),
                         ),
                         const SizedBox(width: 14),
@@ -215,7 +178,7 @@ class ProgramDetailScreen extends StatelessWidget {
                           width: 3,
                           margin: const EdgeInsets.only(top: 4),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.35),
+                            gradient: AppColors.goldGradient,
                             borderRadius: BorderRadius.circular(3),
                           ),
                           constraints: const BoxConstraints(minHeight: 60),
@@ -229,14 +192,10 @@ class ProgramDetailScreen extends StatelessWidget {
                       height: 56,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
-                        gradient: LinearGradient(
-                          colors: [AppColors.primary, AppColors.navy],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        gradient: AppColors.heroGradient,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.22),
+                            color: AppColors.teal.withValues(alpha: 0.22),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -246,22 +205,16 @@ class ProgramDetailScreen extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(18),
+                          splashColor: Colors.white.withValues(alpha: 0.15),
                           onTap: () => Navigator.of(context).pop(),
-                          child: const Center(
+                          child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.arrow_forward_ios_rounded,
+                                const Icon(Icons.arrow_forward_ios_rounded,
                                     color: Colors.white, size: 14),
-                                SizedBox(width: 8),
-                                Text(
-                                  'رجوع',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                const SizedBox(width: 8),
+                                Text('رجوع', style: AppTextStyles.button()),
                               ],
                             ),
                           ),

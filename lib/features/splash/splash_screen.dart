@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.primary,
+                          AppColors.teal,
                         ),
                       ),
                     ),
@@ -63,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       'جاري التحميل...',
                       style: TextStyle(
-                        color: AppColors.navy,
+                        color: AppColors.ink,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),

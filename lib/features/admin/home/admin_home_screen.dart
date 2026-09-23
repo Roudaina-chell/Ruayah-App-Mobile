@@ -44,7 +44,7 @@ class AdminHomeScreen extends StatelessWidget {
                           color: const Color(0xFFF5F8FC),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(Icons.menu, color: AppColors.navy, size: 20),
+                        child: Icon(Icons.menu, color: AppColors.ink, size: 20),
                       ),
                     ),
                   ),
@@ -54,7 +54,7 @@ class AdminHomeScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.navy,
+                      color: AppColors.ink,
                     ),
                   ),
                   const Spacer(),
@@ -79,12 +79,12 @@ class AdminHomeScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [AppColors.primary, const Color(0xFF1565C0)],
+                    colors: [AppColors.teal, const Color(0xFF1565C0)],
                   ),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
+                      color: AppColors.teal.withValues(alpha: 0.3),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -157,7 +157,7 @@ class AdminHomeScreen extends StatelessWidget {
                                   ),
                                   _StatCard(
                                     icon: Icons.menu_book_rounded,
-                                    color: AppColors.primary,
+                                    color: AppColors.teal,
                                     count: programsCount,
                                     label: 'البرامج العلاجية',
                                     onTap: onOpenPrograms,
@@ -196,7 +196,7 @@ class AdminHomeScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.navy,
+                      color: AppColors.ink,
                     ),
                   ),
                   const Spacer(),
@@ -205,7 +205,7 @@ class AdminHomeScreen extends StatelessWidget {
                     child: Text(
                       'عرض الكل',
                       style: TextStyle(
-                        color: AppColors.primary,
+                        color: AppColors.teal,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -223,7 +223,7 @@ class AdminHomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Center(
                         child:
-                            CircularProgressIndicator(color: AppColors.primary),
+                            CircularProgressIndicator(color: AppColors.teal),
                       ),
                     );
                   }
@@ -237,7 +237,7 @@ class AdminHomeScreen extends StatelessWidget {
                         child: Text(
                           'لا توجد طلبات حتى الآن.',
                           style: TextStyle(
-                            color: AppColors.navy.withValues(alpha: 0.4),
+                            color: AppColors.ink.withValues(alpha: 0.4),
                             fontSize: 13,
                           ),
                         ),
@@ -295,12 +295,12 @@ class _StatCard extends StatelessWidget {
             border: Border.all(
               color: highlight
                   ? color.withValues(alpha: 0.4)
-                  : AppColors.navy.withValues(alpha: 0.06),
+                  : AppColors.ink.withValues(alpha: 0.06),
               width: highlight ? 1.4 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.navy.withValues(alpha: 0.04),
+                color: AppColors.ink.withValues(alpha: 0.04),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -324,7 +324,7 @@ class _StatCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.navy,
+                  color: AppColors.ink,
                 ),
               ),
               const SizedBox(height: 2),
@@ -334,7 +334,7 @@ class _StatCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 11.5,
-                  color: AppColors.navy.withValues(alpha: 0.5),
+                  color: AppColors.ink.withValues(alpha: 0.5),
                 ),
               ),
             ],
@@ -389,7 +389,7 @@ class _RecentRequestTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.navy.withValues(alpha: 0.06)),
+        border: Border.all(color: AppColors.ink.withValues(alpha: 0.06)),
       ),
       child: Row(
         children: [
@@ -397,14 +397,14 @@ class _RecentRequestTile extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.veryLightBlue,
+              color: AppColors.tealSoft,
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Text(
                 _initial,
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: AppColors.teal,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
@@ -421,7 +421,7 @@ class _RecentRequestTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.navy,
+                    color: AppColors.ink,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -429,7 +429,7 @@ class _RecentRequestTile extends StatelessWidget {
                   appointment.userPhone,
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.navy.withValues(alpha: 0.45),
+                    color: AppColors.ink.withValues(alpha: 0.45),
                   ),
                 ),
               ],
@@ -459,7 +459,7 @@ class _RecentRequestTile extends StatelessWidget {
                 _formatDate(appointment.createdAt),
                 style: TextStyle(
                   fontSize: 10.5,
-                  color: AppColors.navy.withValues(alpha: 0.4),
+                  color: AppColors.ink.withValues(alpha: 0.4),
                 ),
               ),
             ],
@@ -492,8 +492,8 @@ class _AdminDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person_outline, color: AppColors.navy),
-              title: Text('الملف الشخصي', style: TextStyle(color: AppColors.navy)),
+              leading: Icon(Icons.person_outline, color: AppColors.ink),
+              title: Text('الملف الشخصي', style: TextStyle(color: AppColors.ink)),
               onTap: () {},
             ),
             const Spacer(),

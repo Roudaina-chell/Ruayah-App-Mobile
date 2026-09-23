@@ -16,11 +16,11 @@ class AdminAppointmentsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           'إدارة المواعيد',
           style: TextStyle(
-            color: AppColors.navy,
+            color: AppColors.ink,
             fontWeight: FontWeight.bold,
             fontSize: 17,
           ),
@@ -33,7 +33,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: CircularProgressIndicator(color: AppColors.teal),
               );
             }
 
@@ -41,7 +41,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
               return Center(
                 child: Text(
                   'حدث خطأ أثناء تحميل المواعيد',
-                  style: TextStyle(color: AppColors.navy.withValues(alpha: 0.5)),
+                  style: TextStyle(color: AppColors.ink.withValues(alpha: 0.5)),
                 ),
               );
             }
@@ -53,7 +53,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
                 child: Text(
                   'لا توجد طلبات مواعيد حاليًا.',
                   style: TextStyle(
-                    color: AppColors.navy.withValues(alpha: 0.4),
+                    color: AppColors.ink.withValues(alpha: 0.4),
                     fontSize: 14,
                   ),
                 ),
@@ -144,7 +144,7 @@ class _AdminAppointmentTile extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.navy,
+                        color: AppColors.ink,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -152,7 +152,7 @@ class _AdminAppointmentTile extends StatelessWidget {
                       appointment.userPhone,
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.navy.withValues(alpha: 0.5),
+                        color: AppColors.ink.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -176,7 +176,7 @@ class _AdminAppointmentTile extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Icon(Icons.arrow_back_ios_new,
-                  size: 14, color: AppColors.navy.withValues(alpha: 0.3)),
+                  size: 14, color: AppColors.ink.withValues(alpha: 0.3)),
             ],
           ),
         ),

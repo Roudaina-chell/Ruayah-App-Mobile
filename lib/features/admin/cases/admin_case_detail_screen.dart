@@ -84,18 +84,18 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Column(
           children: [
             Text(
               widget.patientCase.userName.isNotEmpty
                   ? widget.patientCase.userName
                   : 'بدون اسم',
-              style: TextStyle(color: AppColors.navy, fontWeight: FontWeight.bold, fontSize: 15),
+              style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 15),
             ),
             Text(
               widget.patientCase.userPhone,
-              style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 11),
+              style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 11),
             ),
           ],
         ),
@@ -113,7 +113,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                     alignment: Alignment.centerRight,
                     child: Text(
                       'تشخيصك عند الرقية',
-                      style: TextStyle(fontSize: 12, color: AppColors.navy.withValues(alpha: 0.45)),
+                      style: TextStyle(fontSize: 12, color: AppColors.ink.withValues(alpha: 0.45)),
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -129,7 +129,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                           child: TextField(
                             controller: _diagnosisController,
                             textAlign: TextAlign.right,
-                            style: TextStyle(color: AppColors.navy, fontSize: 14),
+                            style: TextStyle(color: AppColors.ink, fontSize: 14),
                             decoration: const InputDecoration(
                               isDense: true,
                               border: InputBorder.none,
@@ -142,7 +142,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                       Container(
                         width: 42,
                         height: 42,
-                        decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
                         child: IconButton(
                           icon: const Icon(Icons.check, color: Colors.white, size: 18),
                           onPressed: _saveDiagnosis,
@@ -160,7 +160,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                 alignment: Alignment.centerRight,
                 child: Text(
                   'الأعراض والتوجيهات',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.navy),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.ink),
                 ),
               ),
             ),
@@ -170,7 +170,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                 stream: _caseService.entries(widget.patientCase.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: AppColors.primary));
+                    return Center(child: CircularProgressIndicator(color: AppColors.teal));
                   }
 
                   final entries = snapshot.data ?? [];
@@ -179,7 +179,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                     return Center(
                       child: Text(
                         'لا توجد أعراض مسجلة بعد.',
-                        style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 13),
+                        style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 13),
                       ),
                     );
                   }
@@ -202,7 +202,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
                 color: AppColors.white,
-                border: Border(top: BorderSide(color: AppColors.navy.withValues(alpha: 0.06))),
+                border: Border(top: BorderSide(color: AppColors.ink.withValues(alpha: 0.06))),
               ),
               child: Row(
                 children: [
@@ -217,10 +217,10 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                         textAlign: TextAlign.right,
                         maxLines: 3,
                         minLines: 1,
-                        style: TextStyle(color: AppColors.navy, fontSize: 14),
+                        style: TextStyle(color: AppColors.ink, fontSize: 14),
                         decoration: InputDecoration(
                           hintText: 'اكتب التوجيه...',
-                          hintStyle: TextStyle(color: AppColors.navy.withValues(alpha: 0.35)),
+                          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
                           border: InputBorder.none,
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -232,7 +232,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                   Container(
                     width: 44,
                     height: 44,
-                    decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
                     child: IconButton(
                       icon: _isSaving
                           ? const SizedBox(
@@ -270,9 +270,9 @@ class _EntryCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isAdmin ? AppColors.veryLightBlue : const Color(0xFFF0F2F5),
+        color: isAdmin ? AppColors.tealSoft : const Color(0xFFF0F2F5),
         borderRadius: BorderRadius.circular(14),
-        border: isAdmin ? Border.all(color: AppColors.primary.withValues(alpha: 0.2)) : null,
+        border: isAdmin ? Border.all(color: AppColors.teal.withValues(alpha: 0.2)) : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -280,7 +280,7 @@ class _EntryCard extends StatelessWidget {
           Row(
             children: [
               if (isAdmin) ...[
-                Icon(Icons.medical_services_outlined, size: 14, color: AppColors.primary),
+                Icon(Icons.medical_services_outlined, size: 14, color: AppColors.teal),
                 const SizedBox(width: 4),
               ],
               Text(
@@ -288,7 +288,7 @@ class _EntryCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.bold,
-                  color: isAdmin ? AppColors.primary : AppColors.navy.withValues(alpha: 0.5),
+                  color: isAdmin ? AppColors.teal : AppColors.ink.withValues(alpha: 0.5),
                 ),
               ),
             ],
@@ -297,7 +297,7 @@ class _EntryCard extends StatelessWidget {
           Text(
             entry.text,
             textAlign: TextAlign.right,
-            style: TextStyle(color: AppColors.navy, fontSize: 14, height: 1.5),
+            style: TextStyle(color: AppColors.ink, fontSize: 14, height: 1.5),
           ),
         ],
       ),

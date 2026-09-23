@@ -87,11 +87,11 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           _isEditing ? 'تعديل البرنامج' : 'إضافة برنامج',
           style: TextStyle(
-            color: AppColors.navy,
+            color: AppColors.ink,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -125,10 +125,10 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _handleSave,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.teal,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor:
-                        AppColors.primary.withValues(alpha: 0.5),
+                        AppColors.teal.withValues(alpha: 0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -165,7 +165,7 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
         style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
-          color: AppColors.navy,
+          color: AppColors.ink,
         ),
       ),
     );
@@ -185,10 +185,10 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
         controller: controller,
         maxLines: maxLines,
         textAlign: TextAlign.right,
-        style: TextStyle(color: AppColors.navy, fontSize: 14.5),
+        style: TextStyle(color: AppColors.ink, fontSize: 14.5),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: AppColors.navy.withValues(alpha: 0.35)),
+          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(16),
         ),

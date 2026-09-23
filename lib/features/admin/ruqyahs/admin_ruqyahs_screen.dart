@@ -16,15 +16,15 @@ class AdminRuqyahsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           'إدارة الرقيات المسموعة',
-          style: TextStyle(color: AppColors.navy, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: AppColors.primary),
+            icon: Icon(Icons.add, color: AppColors.teal),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const RuqyahFormScreen()),
@@ -44,7 +44,7 @@ class AdminRuqyahsScreen extends StatelessWidget {
                 child: Text(
                   'لا توجد رقيات بعد. اضغط + لإضافة رقية.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 14),
+                  style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 14),
                 ),
               );
             }
@@ -112,7 +112,7 @@ class _AdminRuqyahTile extends StatelessWidget {
           Expanded(
             child: Text(
               ruqyah.title,
-              style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.navy),
+              style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.ink),
             ),
           ),
           IconButton(

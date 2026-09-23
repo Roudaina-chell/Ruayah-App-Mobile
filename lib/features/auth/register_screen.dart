@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.arrow_forward,
-                              color: AppColors.navy, size: 20),
+                              color: AppColors.ink, size: 20),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -156,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.navy,
+                        color: AppColors.ink,
                       ),
                     ),
 
@@ -202,10 +202,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _handleRegister,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: AppColors.teal,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
-                              AppColors.primary.withValues(alpha: 0.5),
+                              AppColors.teal.withValues(alpha: 0.5),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(27),
@@ -239,7 +239,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(
                         fontSize: 11.5,
                         height: 1.5,
-                        color: AppColors.navy.withValues(alpha: 0.4),
+                        color: AppColors.ink.withValues(alpha: 0.4),
                       ),
                     ),
 
@@ -252,7 +252,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Text(
                             'لديك حساب؟ ',
                             style: TextStyle(
-                              color: AppColors.navy.withValues(alpha: 0.55),
+                              color: AppColors.ink.withValues(alpha: 0.55),
                               fontSize: 13.5,
                             ),
                           ),
@@ -263,7 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             child: Text(
                               'تسجيل الدخول',
                               style: TextStyle(
-                                color: AppColors.primary,
+                                color: AppColors.teal,
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -300,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           label,
           style: TextStyle(
             fontSize: 12.5,
-            color: AppColors.navy.withValues(alpha: 0.45),
+            color: AppColors.ink.withValues(alpha: 0.45),
           ),
         ),
         const SizedBox(height: 6),
@@ -312,7 +312,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Icon(
                   suffixIcon,
                   size: 19,
-                  color: AppColors.navy.withValues(alpha: 0.35),
+                  color: AppColors.ink.withValues(alpha: 0.35),
                 ),
               ),
             Expanded(
@@ -322,7 +322,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 obscureText: obscureText,
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: AppColors.navy,
+                  color: AppColors.ink,
                   fontSize: 15.5,
                   fontWeight: FontWeight.w500,
                 ),
@@ -334,11 +334,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             const SizedBox(width: 10),
-            Icon(icon, size: 19, color: AppColors.primary),
+            Icon(icon, size: 19, color: AppColors.teal),
           ],
         ),
         const SizedBox(height: 8),
-        Container(height: 1, color: AppColors.navy.withValues(alpha: 0.15)),
+        Container(height: 1, color: AppColors.ink.withValues(alpha: 0.15)),
       ],
     );
   }

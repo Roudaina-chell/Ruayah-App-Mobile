@@ -37,8 +37,8 @@ class _AdminMainNavigationState extends State<AdminMainNavigation> {
         onTap: _goToTab,
         type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.white,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.navy.withValues(alpha: 0.4),
+        selectedItemColor: AppColors.teal,
+        unselectedItemColor: AppColors.ink.withValues(alpha: 0.4),
         selectedFontSize: 12,
         unselectedFontSize: 12,
         items: const [
@@ -88,7 +88,7 @@ class _PlaceholderTab extends StatelessWidget {
             message,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.navy.withValues(alpha: 0.5),
+              color: AppColors.ink.withValues(alpha: 0.5),
               fontSize: 14,
             ),
           ),

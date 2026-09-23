@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/page_transitions.dart';
+import '../../../core/widgets/empty_state.dart';
 import '../../../models/ruqyah.dart';
 import '../../../services/ruqyah_service.dart';
 import 'ruqyah_player_screen.dart';
@@ -16,34 +20,16 @@ class RuqyahsScreen extends StatelessWidget {
         stream: service.allRuqyahs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: AppColors.primary));
+            return const Center(
+                child: CircularProgressIndicator(color: AppColors.teal));
           }
 
           final ruqyahs = snapshot.data ?? [];
 
           if (ruqyahs.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 76,
-                    height: 76,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.veryLightBlue,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.headphones_rounded,
-                        color: AppColors.primary, size: 32),
-                  ),
-                  const SizedBox(height: 18),
-                  Text(
-                    'لا توجد رقيات متاحة حاليًا.',
-                    style: TextStyle(color: AppColors.navy.withValues(alpha: 0.4), fontSize: 14),
-                  ),
-                ],
-              ),
+            return const EmptyState(
+              icon: Icons.headphones_rounded,
+              message: 'لا توجد رقيات متاحة حاليًا.',
             );
           }
 
@@ -57,7 +43,9 @@ class RuqyahsScreen extends StatelessWidget {
                 ruqyah: ruqyah,
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => RuqyahPlayerScreen(ruqyah: ruqyah)),
+                    AppPageRoute(
+                      builder: (_) => RuqyahPlayerScreen(ruqyah: ruqyah),
+                    ),
                   );
                 },
               );
@@ -83,34 +71,25 @@ class _RuqyahTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(22),
+        splashColor: AppColors.gold.withValues(alpha: 0.1),
+        highlightColor: AppColors.gold.withValues(alpha: 0.05),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.navy.withValues(alpha: 0.05),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+          decoration: AppDecorations.card(radius: 22),
           child: Row(
             children: [
               Container(
                 width: 48,
                 height: 48,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF5E35B1).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(16),
+                decoration: const BoxDecoration(
+                  color: AppColors.tealSoft,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
                 child: Icon(
                   isYoutube ? Icons.smart_display_rounded : Icons.music_note_rounded,
-                  color: const Color(0xFF5E35B1),
+                  color: AppColors.teal,
                   size: 22,
                 ),
               ),
@@ -119,22 +98,11 @@ class _RuqyahTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      ruqyah.title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.navy,
-                        letterSpacing: -0.2,
-                      ),
-                    ),
+                    Text(ruqyah.title, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 3),
                     Text(
                       isYoutube ? 'يوتيوب' : 'ملف صوتي',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.navy.withValues(alpha: 0.45),
-                      ),
+                      style: AppTextStyles.cardSubtitle,
                     ),
                   ],
                 ),
@@ -144,21 +112,18 @@ class _RuqyahTile extends StatelessWidget {
                 height: 40,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AppColors.primary, AppColors.navy],
-                  ),
+                  gradient: AppColors.goldGradient,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.25),
+                      color: AppColors.gold.withValues(alpha: 0.3),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 22),
+                child: const Icon(Icons.play_arrow_rounded,
+                    color: Colors.white, size: 22),
               ),
             ],
           ),

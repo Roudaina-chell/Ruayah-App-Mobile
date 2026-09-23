@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/empty_state.dart';
 import '../../../models/appointment.dart';
 import '../../../services/appointment_service.dart';
 import '../../../services/auth_service.dart';
@@ -77,21 +80,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 stream: _appointmentService.myAppointments(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                      ),
+                    return const Center(
+                      child: CircularProgressIndicator(color: AppColors.teal),
                     );
                   }
 
                   if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        'حدث خطأ أثناء تحميل المواعيد',
-                        style: TextStyle(
-                          color: AppColors.navy.withValues(alpha: 0.5),
-                        ),
-                      ),
+                    return const EmptyState(
+                      icon: Icons.error_outline_rounded,
+                      message: 'حدث خطأ أثناء تحميل المواعيد',
                     );
                   }
 
@@ -105,30 +102,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       .toList();
 
                   if (appointments.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 76,
-                            height: 76,
-                            decoration: BoxDecoration(
-                              color: AppColors.veryLightBlue,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.calendar_month_rounded,
-                                color: AppColors.primary, size: 32),
-                          ),
-                          const SizedBox(height: 18),
-                          Text(
-                            'لا توجد مواعيد بعد.',
-                            style: TextStyle(
-                              color: AppColors.navy.withValues(alpha: 0.4),
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                    return const EmptyState(
+                      icon: Icons.calendar_month_rounded,
+                      message: 'لا توجد مواعيد بعد.',
                     );
                   }
 
@@ -155,20 +131,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                             width: 4,
                             height: 18,
                             decoration: BoxDecoration(
-                              color: AppColors.primary,
+                              gradient: AppColors.goldGradient,
                               borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Text(
-                            'مواعيدي',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.navy,
-                              letterSpacing: -0.2,
-                            ),
-                          ),
+                          Text('مواعيدي', style: AppTextStyles.heading()),
                         ],
                       ),
                       const SizedBox(height: 14),
@@ -193,25 +161,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   Widget _buildBookButton() {
     return Container(
       height: 58,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.navy],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.22),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
+      decoration: AppDecorations.tealButton(),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
+          splashColor: Colors.white.withValues(alpha: 0.15),
           onTap: _isSubmitting ? null : _confirmAndBook,
           child: Center(
             child: _isSubmitting
@@ -223,20 +178,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   )
-                : const Row(
+                : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.calendar_month_rounded,
+                      const Icon(Icons.calendar_month_rounded,
                           color: Colors.white, size: 20),
-                      SizedBox(width: 8),
-                      Text(
-                        'حجز موعد',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.5,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      const SizedBox(width: 8),
+                      Text('حجز موعد', style: AppTextStyles.button(size: 15.5)),
                     ],
                   ),
           ),
@@ -259,8 +207,8 @@ class _PersistentNotificationBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isConfirmed = appointment.status == 'confirmed';
-    final color = isConfirmed ? const Color(0xFF43A047) : const Color(0xFFE53935);
-    final bg = isConfirmed ? const Color(0xFFE8F5E9) : const Color(0xFFFFEBEE);
+    final color = isConfirmed ? AppColors.success : AppColors.danger;
+    final bg = isConfirmed ? AppColors.successSoft : AppColors.dangerSoft;
 
     final message = isConfirmed
         ? 'تم تأكيد موعدك بتاريخ ${appointment.appointmentDate} الساعة ${appointment.appointmentTime}'
@@ -290,12 +238,7 @@ class _PersistentNotificationBanner extends StatelessWidget {
             child: Text(
               message,
               textAlign: TextAlign.right,
-              style: TextStyle(
-                color: color,
-                fontSize: 13.5,
-                fontWeight: FontWeight.w700,
-                height: 1.4,
-              ),
+              style: AppTextStyles.label(color: color, size: 13.5).copyWith(height: 1.4),
             ),
           ),
           const SizedBox(width: 6),
@@ -314,13 +257,7 @@ class _BookingConfirmSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
-        ),
-      ),
+      decoration: AppDecorations.sheet(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -330,7 +267,7 @@ class _BookingConfirmSheet extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.navy.withValues(alpha: 0.15),
+                color: AppColors.hairline,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -342,12 +279,12 @@ class _BookingConfirmSheet extends StatelessWidget {
               width: 64,
               height: 64,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.veryLightBlue,
+              decoration: const BoxDecoration(
+                color: AppColors.tealSoft,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.calendar_month_rounded,
-                  color: AppColors.primary, size: 28),
+              child: const Icon(Icons.calendar_month_rounded,
+                  color: AppColors.teal, size: 28),
             ),
           ),
           const SizedBox(height: 20),
@@ -355,22 +292,13 @@ class _BookingConfirmSheet extends StatelessWidget {
           Text(
             'تأكيد طلب حجز موعد',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w800,
-              color: AppColors.navy,
-              letterSpacing: -0.2,
-            ),
+            style: AppTextStyles.heading(size: 17),
           ),
           const SizedBox(height: 8),
           Text(
             'سيتم إرسال طلبك إلى الراقي، وسيقوم بتحديد التاريخ والساعة المناسبة لك.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              height: 1.5,
-              color: AppColors.navy.withValues(alpha: 0.55),
-            ),
+            style: AppTextStyles.body(color: AppColors.inkMuted, size: 13),
           ),
 
           const SizedBox(height: 28),
@@ -380,17 +308,14 @@ class _BookingConfirmSheet extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: AppColors.teal,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
-              child: const Text(
-                'تأكيد الطلب',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-              ),
+              child: Text('تأكيد الطلب', style: AppTextStyles.button(size: 15)),
             ),
           ),
           const SizedBox(height: 8),
@@ -401,10 +326,7 @@ class _BookingConfirmSheet extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(false),
               child: Text(
                 'إلغاء',
-                style: TextStyle(
-                  color: AppColors.navy.withValues(alpha: 0.5),
-                  fontSize: 14,
-                ),
+                style: AppTextStyles.body(color: AppColors.inkMuted, size: 14),
               ),
             ),
           ),
@@ -424,20 +346,20 @@ class _AppointmentCard extends StatelessWidget {
       case 'confirmed':
         return {
           'label': 'مؤكد',
-          'color': const Color(0xFF43A047),
-          'bg': const Color(0xFFE8F5E9),
+          'color': AppColors.success,
+          'bg': AppColors.successSoft,
         };
       case 'cancelled':
         return {
           'label': 'ملغى',
-          'color': const Color(0xFFE53935),
-          'bg': const Color(0xFFFFEBEE),
+          'color': AppColors.danger,
+          'bg': AppColors.dangerSoft,
         };
       default:
         return {
           'label': 'قيد الانتظار',
-          'color': const Color(0xFFFB8C00),
-          'bg': const Color(0xFFFFF3E0),
+          'color': AppColors.pending,
+          'bg': AppColors.pendingSoft,
         };
     }
   }
@@ -448,18 +370,7 @@ class _AppointmentCard extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.navy.withValues(alpha: 0.04),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
+      decoration: AppDecorations.card(radius: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -473,45 +384,29 @@ class _AppointmentCard extends StatelessWidget {
                 ),
                 child: Text(
                   status['label'],
-                  style: TextStyle(
-                    color: status['color'],
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
-                  ),
+                  style: AppTextStyles.label(color: status['color'], size: 12)
+                      .copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const Spacer(),
-              Icon(Icons.calendar_today_rounded,
-                  size: 16, color: AppColors.navy.withValues(alpha: 0.3)),
+              const Icon(Icons.calendar_today_rounded,
+                  size: 16, color: AppColors.inkFaint),
             ],
           ),
           const SizedBox(height: 12),
 
           if (appointment.status == 'confirmed' &&
               appointment.appointmentDate != null) ...[
-            Text(
-              'موعدك المؤكد',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                color: AppColors.navy,
-              ),
-            ),
+            Text('موعدك المؤكد', style: AppTextStyles.label(color: AppColors.ink, size: 13)),
             const SizedBox(height: 4),
             Text(
               '${appointment.appointmentDate}   الساعة ${appointment.appointmentTime}',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.navy.withValues(alpha: 0.6),
-              ),
+              style: AppTextStyles.body(color: AppColors.inkMuted, size: 13),
             ),
           ] else ...[
             Text(
               'بانتظار تحديد الراقي للموعد',
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.navy.withValues(alpha: 0.45),
-              ),
+              style: AppTextStyles.body(color: AppColors.inkFaint, size: 13),
             ),
           ],
         ],

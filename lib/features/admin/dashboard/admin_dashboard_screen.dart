@@ -18,7 +18,7 @@ class AdminDashboardScreen extends StatelessWidget {
         title: Text(
           'لوحة إدارة محمد الراقي',
           style: TextStyle(
-            color: AppColors.navy,
+            color: AppColors.ink,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -26,7 +26,7 @@ class AdminDashboardScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: AppColors.navy),
+            icon: Icon(Icons.logout, color: AppColors.ink),
             onPressed: () async {
               await AuthService().logout();
               if (context.mounted) {
@@ -50,7 +50,7 @@ class AdminDashboardScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.navy,
+                  color: AppColors.ink,
                 ),
               ),
                            const SizedBox(height: 12),
@@ -125,7 +125,7 @@ class _ActionTile extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.navy,
+                        color: AppColors.ink,
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -133,14 +133,14 @@ class _ActionTile extends StatelessWidget {
                       subtitle,
                       style: TextStyle(
                         fontSize: 12.5,
-                        color: AppColors.navy.withValues(alpha: 0.45),
+                        color: AppColors.ink.withValues(alpha: 0.45),
                       ),
                     ),
                   ],
                 ),
               ),
               Icon(Icons.arrow_back_ios_new,
-                  size: 15, color: AppColors.navy.withValues(alpha: 0.25)),
+                  size: 15, color: AppColors.ink.withValues(alpha: 0.25)),
             ],
           ),
         ),

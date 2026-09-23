@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../../../models/patient_case.dart';
 import '../../../models/case_entry.dart';
 import '../../../services/auth_service.dart';
@@ -92,7 +94,7 @@ class _CasesScreenState extends State<CasesScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: const Color(0xFFF7F9FB),
+        color: AppColors.parchment,
         child: StreamBuilder<PatientCase?>(
           stream: _caseService.myCase(),
           builder: (context, caseSnapshot) {
@@ -119,18 +121,7 @@ class _CasesScreenState extends State<CasesScreen> {
                     Container(
                       margin: const EdgeInsets.fromLTRB(16, 12, 16, 10),
                       padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(26),
-                        border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.navy.withValues(alpha: 0.06),
-                            blurRadius: 22,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
+                      decoration: AppDecorations.card(radius: 26),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -141,15 +132,11 @@ class _CasesScreenState extends State<CasesScreen> {
                                 height: 52,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [AppColors.primary, AppColors.navy],
-                                  ),
+                                  gradient: AppColors.heroGradient,
                                   shape: BoxShape.circle,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.primary.withValues(alpha: 0.25),
+                                      color: AppColors.teal.withValues(alpha: 0.25),
                                       blurRadius: 12,
                                       offset: const Offset(0, 6),
                                     ),
@@ -157,10 +144,9 @@ class _CasesScreenState extends State<CasesScreen> {
                                 ),
                                 child: Text(
                                   initial,
-                                  style: const TextStyle(
+                                  style: AppTextStyles.heading(
                                     color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
+                                    size: 20,
                                   ),
                                 ),
                               ),
@@ -169,24 +155,13 @@ class _CasesScreenState extends State<CasesScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'المريض',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.navy.withValues(alpha: 0.4),
-                                      ),
-                                    ),
+                                    Text('المريض', style: AppTextStyles.label(size: 11)),
                                     const SizedBox(height: 2),
                                     TextField(
                                       controller: _nameController,
                                       textAlign: TextAlign.right,
                                       onChanged: (_) => setState(() {}),
-                                      style: TextStyle(
-                                        color: AppColors.navy,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                      style: AppTextStyles.heading(size: 16),
                                       decoration: const InputDecoration(
                                         isDense: true,
                                         border: InputBorder.none,
@@ -199,12 +174,12 @@ class _CasesScreenState extends State<CasesScreen> {
                               ),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.veryLightBlue.withValues(alpha: 0.6),
+                                  color: AppColors.tealSoft,
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
-                                  icon: Icon(Icons.check_rounded,
-                                      color: AppColors.primary, size: 19),
+                                  icon: const Icon(Icons.check_rounded,
+                                      color: AppColors.teal, size: 19),
                                   onPressed: () => _saveName(phone),
                                 ),
                               ),
@@ -216,8 +191,8 @@ class _CasesScreenState extends State<CasesScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                             decoration: BoxDecoration(
                               color: hasDiagnosis
-                                  ? AppColors.veryLightBlue.withValues(alpha: 0.55)
-                                  : const Color(0xFFF5F8FC),
+                                  ? AppColors.goldSoft
+                                  : AppColors.parchment,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Row(
@@ -226,34 +201,25 @@ class _CasesScreenState extends State<CasesScreen> {
                                 Icon(Icons.medical_services_rounded,
                                     size: 18,
                                     color: hasDiagnosis
-                                        ? AppColors.primary
-                                        : AppColors.navy.withValues(alpha: 0.3)),
+                                        ? AppColors.goldDeep
+                                        : AppColors.inkFaint),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'التشخيص',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.navy.withValues(alpha: 0.45),
-                                        ),
-                                      ),
+                                      Text('التشخيص', style: AppTextStyles.label(size: 11)),
                                       const SizedBox(height: 3),
                                       Text(
                                         hasDiagnosis
                                             ? patientCase!.diagnosis
                                             : 'لم يتم تحديد التشخيص بعد',
                                         textAlign: TextAlign.right,
-                                        style: TextStyle(
-                                          color: hasDiagnosis
-                                              ? AppColors.navy
-                                              : AppColors.navy.withValues(alpha: 0.4),
-                                          fontSize: 13.5,
-                                          fontWeight: hasDiagnosis ? FontWeight.w700 : FontWeight.w500,
-                                        ),
+                                        style: hasDiagnosis
+                                            ? AppTextStyles.heading(
+                                                color: AppColors.goldDeep, size: 13.5)
+                                            : AppTextStyles.body(
+                                                color: AppColors.inkFaint, size: 13.5),
                                       ),
                                     ],
                                   ),
@@ -276,20 +242,12 @@ class _CasesScreenState extends State<CasesScreen> {
                               width: 4,
                               height: 16,
                               decoration: BoxDecoration(
-                                color: AppColors.primary,
+                                gradient: AppColors.goldGradient,
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              'الأعراض الحالية',
-                              style: TextStyle(
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.navy,
-                                letterSpacing: -0.2,
-                              ),
-                            ),
+                            Text('الأعراض الحالية', style: AppTextStyles.heading(size: 13.5)),
                           ],
                         ),
                       ),
@@ -303,9 +261,8 @@ class _CasesScreenState extends State<CasesScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColors.primary),
+                            return const Center(
+                              child: CircularProgressIndicator(color: AppColors.teal),
                             );
                           }
 
@@ -322,21 +279,19 @@ class _CasesScreenState extends State<CasesScreen> {
                                       width: 68,
                                       height: 68,
                                       alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.veryLightBlue,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.tealSoft,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(Icons.chat_bubble_outline_rounded,
-                                          color: AppColors.primary, size: 28),
+                                      child: const Icon(Icons.chat_bubble_outline_rounded,
+                                          color: AppColors.teal, size: 28),
                                     ),
                                     const SizedBox(height: 16),
                                     Text(
                                       'لم تسجل أي أعراض بعد.\nاكتب أعراضك الحالية بالأسفل.',
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppColors.navy.withValues(alpha: 0.4),
-                                        fontSize: 13,
-                                      ),
+                                      style: AppTextStyles.body(
+                                          color: AppColors.inkFaint, size: 13),
                                     ),
                                   ],
                                 ),
@@ -364,12 +319,12 @@ class _CasesScreenState extends State<CasesScreen> {
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.surface,
                           borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: AppColors.navy.withValues(alpha: 0.06)),
+                          border: Border.all(color: AppColors.teal.withValues(alpha: 0.08)),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.navy.withValues(alpha: 0.1),
+                              color: AppColors.tealDeep.withValues(alpha: 0.1),
                               blurRadius: 24,
                               offset: const Offset(0, 10),
                             ),
@@ -386,11 +341,10 @@ class _CasesScreenState extends State<CasesScreen> {
                                   textAlign: TextAlign.right,
                                   maxLines: 4,
                                   minLines: 1,
-                                  style: TextStyle(color: AppColors.navy, fontSize: 14),
+                                  style: AppTextStyles.body(size: 14),
                                   decoration: InputDecoration(
                                     hintText: 'اكتب أعراضك...',
-                                    hintStyle: TextStyle(
-                                        color: AppColors.navy.withValues(alpha: 0.35)),
+                                    hintStyle: TextStyle(color: AppColors.inkFaint),
                                     border: InputBorder.none,
                                     isDense: true,
                                     contentPadding: EdgeInsets.zero,
@@ -402,15 +356,11 @@ class _CasesScreenState extends State<CasesScreen> {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [AppColors.primary, AppColors.navy],
-                                ),
+                                gradient: AppColors.goldGradient,
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primary.withValues(alpha: 0.3),
+                                    color: AppColors.gold.withValues(alpha: 0.35),
                                     blurRadius: 12,
                                     offset: const Offset(0, 5),
                                   ),
@@ -468,12 +418,12 @@ class _EntryCard extends StatelessWidget {
               height: 30,
               alignment: Alignment.center,
               margin: const EdgeInsets.only(left: 8),
-              decoration: BoxDecoration(
-                color: AppColors.veryLightBlue,
+              decoration: const BoxDecoration(
+                color: AppColors.tealSoft,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.medical_services_rounded,
-                  size: 15, color: AppColors.primary),
+              child: const Icon(Icons.medical_services_rounded,
+                  size: 15, color: AppColors.teal),
             ),
           ],
           Flexible(
@@ -481,16 +431,10 @@ class _EntryCard extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 280),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                gradient: isAdmin
-                    ? null
-                    : LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [AppColors.primary, AppColors.navy],
-                      ),
-                color: isAdmin ? Colors.white : null,
+                gradient: isAdmin ? null : AppColors.heroGradient,
+                color: isAdmin ? AppColors.surface : null,
                 border: isAdmin
-                    ? Border.all(color: AppColors.navy.withValues(alpha: 0.05))
+                    ? Border.all(color: AppColors.teal.withValues(alpha: 0.07))
                     : null,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(18),
@@ -500,7 +444,7 @@ class _EntryCard extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.navy.withValues(alpha: 0.05),
+                    color: AppColors.tealDeep.withValues(alpha: 0.05),
                     blurRadius: 12,
                     offset: const Offset(0, 5),
                   ),
@@ -512,22 +456,20 @@ class _EntryCard extends StatelessWidget {
                 children: [
                   Text(
                     isAdmin ? 'توجيه الراقي' : 'أعراضك',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
+                    style: AppTextStyles.label(
                       color: isAdmin
-                          ? AppColors.primary
+                          ? AppColors.goldDeep
                           : Colors.white.withValues(alpha: 0.85),
+                      size: 11,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     entry.text,
                     textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: isAdmin ? AppColors.navy : Colors.white,
-                      fontSize: 14,
-                      height: 1.5,
+                    style: AppTextStyles.body(
+                      color: isAdmin ? AppColors.ink : Colors.white,
+                      size: 14,
                     ),
                   ),
                 ],

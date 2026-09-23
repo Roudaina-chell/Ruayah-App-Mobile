@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../models/appointment.dart';
 import '../../services/appointment_service.dart';
 import '../../services/auth_service.dart';
@@ -59,32 +60,27 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       extendBody: true,
       appBar: _currentIndex == 0
           ? null
           : AppBar(
-              backgroundColor: AppColors.white,
+              backgroundColor: AppColors.parchment,
               elevation: 0,
               centerTitle: true,
               title: Text(
                 _titles[_currentIndex],
-                style: TextStyle(
-                  color: AppColors.navy,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 17,
-                  letterSpacing: -0.2,
-                ),
+                style: AppTextStyles.heading(size: 17),
               ),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.person_outline_rounded, color: AppColors.navy),
+                  icon: const Icon(Icons.person_outline_rounded, color: AppColors.ink),
                   onPressed: () {
                     // سنربطها بصفحة Profile لاحقًا
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.logout_rounded, color: AppColors.navy),
+                  icon: const Icon(Icons.logout_rounded, color: AppColors.ink),
                   onPressed: _logout,
                 ),
               ],
@@ -105,17 +101,17 @@ class _MainNavigationState extends State<MainNavigation> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Container(
-                height: 66,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                height: 68,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(26),
+                  border: Border.all(color: AppColors.teal.withValues(alpha: 0.06)),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.navy.withValues(alpha: 0.08),
+                      color: AppColors.tealDeep.withValues(alpha: 0.1),
                       blurRadius: 28,
-                      offset: const Offset(0, 12),
+                      offset: const Offset(0, 14),
                     ),
                   ],
                 ),
@@ -128,58 +124,59 @@ class _MainNavigationState extends State<MainNavigation> {
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () => setState(() => _currentIndex = index),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeOut,
-                              height: 3,
-                              width: isSelected ? 20 : 0,
-                              margin: const EdgeInsets.only(bottom: 8),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                            ),
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Icon(
-                                  _navItems[index].icon,
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : AppColors.navy.withValues(alpha: 0.3),
-                                  size: 23,
-                                ),
-                                if (showBadge)
-                                  Positioned(
-                                    top: -3,
-                                    right: -5,
-                                    child: Container(
-                                      width: 8,
-                                      height: 8,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFE53935),
-                                        shape: BoxShape.circle,
-                                        border: Border.all(color: Colors.white, width: 1.5),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 240),
+                          curve: Curves.easeOut,
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.tealSoft
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Icon(
+                                    _navItems[index].icon,
+                                    color: isSelected
+                                        ? AppColors.teal
+                                        : AppColors.inkFaint,
+                                    size: 22,
+                                  ),
+                                  if (showBadge)
+                                    Positioned(
+                                      top: -3,
+                                      right: -6,
+                                      child: Container(
+                                        width: 8,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.gold,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: AppColors.surface, width: 1.5),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              _navItems[index].label,
-                              style: TextStyle(
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : AppColors.navy.withValues(alpha: 0.35),
-                                fontSize: 10.5,
-                                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                                ],
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 4),
+                              AnimatedDefaultTextStyle(
+                                duration: const Duration(milliseconds: 240),
+                                style: AppTextStyles.label(
+                                  color: isSelected
+                                      ? AppColors.teal
+                                      : AppColors.inkFaint,
+                                  size: 10.5,
+                                ),
+                                child: Text(_navItems[index].label),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../../../services/appointment_service.dart';
 import '../../../services/auth_service.dart';
 
@@ -61,20 +63,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FB),
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
-        title: Text(
-          'طلب حجز موعد',
-          style: TextStyle(
-            color: AppColors.navy,
-            fontWeight: FontWeight.w800,
-            fontSize: 17,
-            letterSpacing: -0.2,
-          ),
-        ),
+        iconTheme: const IconThemeData(color: AppColors.ink),
+        title: Text('طلب حجز موعد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -86,19 +80,20 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.veryLightBlue.withValues(alpha: 0.5),
+                  color: AppColors.tealSoft,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20),
+                    const Icon(Icons.info_outline_rounded,
+                        color: AppColors.teal, size: 20),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         'يمكنك كتابة ملاحظة أو سبب طلب الموعد (اختياري)',
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          color: AppColors.navy.withValues(alpha: 0.65),
+                        style: AppTextStyles.body(
+                          color: AppColors.ink.withValues(alpha: 0.7),
+                          size: 12.5,
                         ),
                       ),
                     ),
@@ -108,27 +103,15 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
               const SizedBox(height: 18),
 
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.navy.withValues(alpha: 0.06)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.navy.withValues(alpha: 0.04),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
+                decoration: AppDecorations.card(radius: 20),
                 child: TextField(
                   controller: _noteController,
                   maxLines: 6,
                   textAlign: TextAlign.right,
-                  style: TextStyle(color: AppColors.navy, fontSize: 14.5),
+                  style: AppTextStyles.body(size: 14.5),
                   decoration: InputDecoration(
                     hintText: 'اكتب ملاحظتك هنا...',
-                    hintStyle:
-                        TextStyle(color: AppColors.navy.withValues(alpha: 0.35)),
+                    hintStyle: TextStyle(color: AppColors.inkFaint.withValues(alpha: 0.8)),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(18),
                   ),
@@ -139,25 +122,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
 
               Container(
                 height: 58,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.navy],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.22),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
+                decoration: AppDecorations.tealButton(),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
+                    splashColor: Colors.white.withValues(alpha: 0.15),
                     onTap: _isLoading ? null : _handleSubmit,
                     child: Center(
                       child: _isLoading
@@ -170,14 +140,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                                     AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : const Text(
-                              'إرسال الطلب',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                          : Text('إرسال الطلب', style: AppTextStyles.button(size: 16)),
                     ),
                   ),
                 ),

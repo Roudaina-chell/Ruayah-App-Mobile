@@ -106,11 +106,11 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           'تفاصيل الموعد',
           style: TextStyle(
-            color: AppColors.navy,
+            color: AppColors.ink,
             fontWeight: FontWeight.bold,
             fontSize: 17,
           ),
@@ -150,7 +150,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.navy,
+                  color: AppColors.ink,
                 ),
               ),
               const SizedBox(height: 14),
@@ -178,10 +178,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _confirm,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.teal,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor:
-                        AppColors.primary.withValues(alpha: 0.5),
+                        AppColors.teal.withValues(alpha: 0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -238,7 +238,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           label,
           style: TextStyle(
             fontSize: 13,
-            color: AppColors.navy.withValues(alpha: 0.5),
+            color: AppColors.ink.withValues(alpha: 0.5),
           ),
         ),
         const Spacer(),
@@ -247,7 +247,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: AppColors.navy,
+            color: AppColors.ink,
           ),
         ),
       ],
@@ -272,11 +272,11 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           ),
           child: Row(
             children: [
-              Icon(icon, color: AppColors.primary, size: 20),
+              Icon(icon, color: AppColors.teal, size: 20),
               const SizedBox(width: 12),
               Text(
                 label,
-                style: TextStyle(color: AppColors.navy, fontSize: 14.5),
+                style: TextStyle(color: AppColors.ink, fontSize: 14.5),
               ),
             ],
           ),

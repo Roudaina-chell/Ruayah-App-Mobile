@@ -4,6 +4,8 @@ import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/geometric_pattern.dart';
 import '../../../models/ruqyah.dart';
 
 class RuqyahPlayerScreen extends StatefulWidget {
@@ -103,39 +105,16 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.navy, AppColors.primary, AppColors.navy],
+            colors: [AppColors.tealDeep, AppColors.teal, AppColors.tealDeep],
           ),
         ),
         child: Stack(
           children: [
-            Positioned(
-              top: -70,
-              right: -60,
-              child: Container(
-                width: 220,
-                height: 220,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: -90,
-              left: -70,
-              child: Container(
-                width: 260,
-                height: 260,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black.withValues(alpha: 0.08),
-                ),
-              ),
-            ),
+            const GeometricPatternBackground(color: Colors.white, opacity: 0.06),
             SafeArea(
               child: Column(
                 children: [
@@ -158,11 +137,9 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                           child: Text(
                             'الآن يُشغَّل',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.65),
-                              fontSize: 12.5,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.2,
+                            style: AppTextStyles.label(
+                              color: Colors.white.withValues(alpha: 0.7),
+                              size: 12.5,
                             ),
                           ),
                         ),
@@ -191,7 +168,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(26),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+              border: Border.all(color: AppColors.gold.withValues(alpha: 0.3)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.25),
@@ -205,16 +182,11 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
               child: YoutubePlayer(controller: _youtubeController!),
             ),
           ),
-          const SizedBox(height: 26),
+          const SizedBox(height: 28),
           Text(
             widget.ruqyah.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-              letterSpacing: -0.2,
-            ),
+            style: AppTextStyles.displaySmall(color: Colors.white, size: 21),
           ),
         ],
       ),
@@ -241,7 +213,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       height: 220,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.05),
+                        color: AppColors.gold.withValues(alpha: 0.06),
                       ),
                     ),
                   ),
@@ -252,7 +224,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       height: 176,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.07),
+                        color: AppColors.gold.withValues(alpha: 0.09),
                       ),
                     ),
                   ),
@@ -266,8 +238,15 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
             height: 148,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.14),
+              gradient: AppColors.goldGradient,
               border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.2),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.gold.withValues(alpha: 0.35),
+                  blurRadius: 30,
+                  offset: const Offset(0, 12),
+                ),
+              ],
             ),
             child: const Icon(Icons.headphones_rounded, color: Colors.white, size: 58),
           ),
@@ -278,12 +257,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
           child: Text(
             widget.ruqyah.title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-              letterSpacing: -0.3,
-            ),
+            style: AppTextStyles.display(size: 24),
           ),
         ),
         const Spacer(),
@@ -308,10 +282,10 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       trackHeight: 3.5,
                       thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
                       overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
-                      thumbColor: Colors.white,
-                      activeTrackColor: Colors.white,
+                      thumbColor: AppColors.gold,
+                      activeTrackColor: AppColors.gold,
                       inactiveTrackColor: Colors.white.withValues(alpha: 0.22),
-                      overlayColor: Colors.white.withValues(alpha: 0.15),
+                      overlayColor: AppColors.gold.withValues(alpha: 0.18),
                     ),
                     child: Slider(
                       min: 0,
@@ -332,15 +306,11 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(_formatDuration(_position),
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white.withValues(alpha: 0.65))),
+                            style: AppTextStyles.label(
+                                color: Colors.white.withValues(alpha: 0.7), size: 12)),
                         Text(_formatDuration(_duration),
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white.withValues(alpha: 0.65))),
+                            style: AppTextStyles.label(
+                                color: Colors.white.withValues(alpha: 0.7), size: 12)),
                       ],
                     ),
                   ),
@@ -371,7 +341,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                         child: IconButton(
                           icon: Icon(
                             _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                            color: AppColors.navy,
+                            color: AppColors.tealDeep,
                             size: 36,
                           ),
                           onPressed: _togglePlayPause,

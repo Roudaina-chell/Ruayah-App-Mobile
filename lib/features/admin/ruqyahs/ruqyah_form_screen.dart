@@ -93,10 +93,10 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           'إضافة رقية',
-          style: TextStyle(color: AppColors.navy, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         centerTitle: true,
       ),
@@ -158,15 +158,15 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.upload_file_outlined, color: AppColors.primary),
+                          Icon(Icons.upload_file_outlined, color: AppColors.teal),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               _pickedFileName ?? 'اختيار ملف صوتي من الهاتف',
                               style: TextStyle(
                                 color: _pickedFileName != null
-                                    ? AppColors.navy
-                                    : AppColors.navy.withValues(alpha: 0.4),
+                                    ? AppColors.ink
+                                    : AppColors.ink.withValues(alpha: 0.4),
                                 fontSize: 13.5,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -186,9 +186,9 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _handleSave,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.teal,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.5),
+                    disabledBackgroundColor: AppColors.teal.withValues(alpha: 0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
@@ -216,7 +216,7 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
     return Align(
       alignment: Alignment.centerRight,
       child: Text(text,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.navy)),
+          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.ink)),
     );
   }
 
@@ -226,10 +226,10 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
       child: TextField(
         controller: controller,
         textAlign: TextAlign.right,
-        style: TextStyle(color: AppColors.navy, fontSize: 14.5),
+        style: TextStyle(color: AppColors.ink, fontSize: 14.5),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: AppColors.navy.withValues(alpha: 0.35)),
+          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.all(16),
         ),
@@ -261,23 +261,23 @@ class _TypeChip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primary.withValues(alpha: 0.1) : const Color(0xFFF5F8FC),
+            color: selected ? AppColors.teal.withValues(alpha: 0.1) : const Color(0xFFF5F8FC),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: selected ? AppColors.primary : Colors.transparent,
+              color: selected ? AppColors.teal : Colors.transparent,
               width: 1.4,
             ),
           ),
           child: Column(
             children: [
-              Icon(icon, color: selected ? AppColors.primary : AppColors.navy.withValues(alpha: 0.4)),
+              Icon(icon, color: selected ? AppColors.teal : AppColors.ink.withValues(alpha: 0.4)),
               const SizedBox(height: 6),
               Text(
                 label,
                 style: TextStyle(
                   fontSize: 12.5,
                   fontWeight: FontWeight.w600,
-                  color: selected ? AppColors.primary : AppColors.navy.withValues(alpha: 0.5),
+                  color: selected ? AppColors.teal : AppColors.ink.withValues(alpha: 0.5),
                 ),
               ),
             ],

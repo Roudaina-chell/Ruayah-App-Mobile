@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/page_transitions.dart';
+import '../../../core/widgets/empty_state.dart';
 import '../../../models/program.dart';
 import '../../../services/program_service.dart';
 import 'program_detail_screen.dart';
@@ -16,13 +20,13 @@ class ProgramsScreen extends StatelessWidget {
         stream: service.allPrograms(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.teal),
             );
           }
 
           if (snapshot.hasError) {
-            return _EmptyState(
+            return const EmptyState(
               icon: Icons.error_outline_rounded,
               message: 'حدث خطأ أثناء تحميل البرامج',
             );
@@ -31,7 +35,7 @@ class ProgramsScreen extends StatelessWidget {
           final programs = snapshot.data ?? [];
 
           if (programs.isEmpty) {
-            return _EmptyState(
+            return const EmptyState(
               icon: Icons.menu_book_outlined,
               message: 'لا توجد برامج متاحة حاليًا.',
             );
@@ -47,7 +51,7 @@ class ProgramsScreen extends StatelessWidget {
                 program: program,
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
+                    AppPageRoute(
                       builder: (_) => ProgramDetailScreen(program: program),
                     ),
                   );
@@ -73,105 +77,45 @@ class _ProgramTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(22),
+        splashColor: AppColors.gold.withValues(alpha: 0.1),
+        highlightColor: AppColors.gold.withValues(alpha: 0.05),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: AppColors.navy.withValues(alpha: 0.05)),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.navy.withValues(alpha: 0.05),
-                blurRadius: 18,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+          decoration: AppDecorations.card(radius: 22),
           child: Row(
             children: [
               Container(
                 width: 50,
                 height: 50,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(16),
+                decoration: const BoxDecoration(
+                  color: AppColors.tealSoft,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: Icon(Icons.menu_book_rounded,
-                    color: AppColors.primary, size: 23),
+                child: const Icon(Icons.menu_book_rounded,
+                    color: AppColors.teal, size: 23),
               ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      program.title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.navy,
-                        letterSpacing: -0.2,
-                      ),
-                    ),
+                    Text(program.title, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 3),
                     Text(
                       program.shortDescription,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        color: AppColors.navy.withValues(alpha: 0.45),
-                      ),
+                      style: AppTextStyles.cardSubtitle,
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_back_ios_new_rounded,
-                  size: 13, color: AppColors.navy.withValues(alpha: 0.22)),
+              const Icon(Icons.arrow_back_ios_new_rounded,
+                  size: 13, color: AppColors.inkFaint),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  final IconData icon;
-  final String message;
-
-  const _EmptyState({required this.icon, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 76,
-              height: 76,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.veryLightBlue,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: AppColors.primary, size: 32),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.navy.withValues(alpha: 0.45),
-                fontSize: 14,
-              ),
-            ),
-          ],
         ),
       ),
     );

@@ -16,11 +16,11 @@ class AdminProgramsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.navy),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(
           'إدارة البرامج العلاجية',
           style: TextStyle(
-            color: AppColors.navy,
+            color: AppColors.ink,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -28,7 +28,7 @@ class AdminProgramsScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: AppColors.primary),
+            icon: Icon(Icons.add, color: AppColors.teal),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const ProgramFormScreen()),
@@ -43,7 +43,7 @@ class AdminProgramsScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: CircularProgressIndicator(color: AppColors.teal),
               );
             }
 
@@ -55,7 +55,7 @@ class AdminProgramsScreen extends StatelessWidget {
                   'لا توجد برامج بعد. اضغط + لإضافة برنامج.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: AppColors.navy.withValues(alpha: 0.4),
+                    color: AppColors.ink.withValues(alpha: 0.4),
                     fontSize: 14,
                   ),
                 ),
@@ -127,7 +127,7 @@ class _AdminProgramTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.navy,
+                    color: AppColors.ink,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -137,7 +137,7 @@ class _AdminProgramTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 12.5,
-                    color: AppColors.navy.withValues(alpha: 0.45),
+                    color: AppColors.ink.withValues(alpha: 0.45),
                   ),
                 ),
               ],
@@ -145,7 +145,7 @@ class _AdminProgramTile extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.edit_outlined,
-                color: AppColors.navy.withValues(alpha: 0.6), size: 20),
+                color: AppColors.ink.withValues(alpha: 0.6), size: 20),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

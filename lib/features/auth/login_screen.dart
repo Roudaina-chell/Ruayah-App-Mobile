@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.navy,
+                        color: AppColors.ink,
                       ),
                     ),
 
@@ -164,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: _isLoading ? null : _handleLogin,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: AppColors.teal,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor:
-                              AppColors.primary.withValues(alpha: 0.5),
+                              AppColors.teal.withValues(alpha: 0.5),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(27),
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             'ليس لديك حساب؟ ',
                             style: TextStyle(
-                              color: AppColors.navy.withValues(alpha: 0.55),
+                              color: AppColors.ink.withValues(alpha: 0.55),
                               fontSize: 13.5,
                             ),
                           ),
@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               'سجل الآن',
                               style: TextStyle(
-                                color: AppColors.primary,
+                                color: AppColors.teal,
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
           label,
           style: TextStyle(
             fontSize: 12.5,
-            color: AppColors.navy.withValues(alpha: 0.45),
+            color: AppColors.ink.withValues(alpha: 0.45),
           ),
         ),
         const SizedBox(height: 6),
@@ -268,7 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Icon(
                   suffixIcon,
                   size: 19,
-                  color: AppColors.navy.withValues(alpha: 0.35),
+                  color: AppColors.ink.withValues(alpha: 0.35),
                 ),
               ),
             Expanded(
@@ -278,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: obscureText,
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: AppColors.navy,
+                  color: AppColors.ink,
                   fontSize: 15.5,
                   fontWeight: FontWeight.w500,
                 ),
@@ -290,11 +290,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(width: 10),
-            Icon(icon, size: 19, color: AppColors.primary),
+            Icon(icon, size: 19, color: AppColors.teal),
           ],
         ),
         const SizedBox(height: 8),
-        Container(height: 1, color: AppColors.navy.withValues(alpha: 0.15)),
+        Container(height: 1, color: AppColors.ink.withValues(alpha: 0.15)),
       ],
     );
   }
