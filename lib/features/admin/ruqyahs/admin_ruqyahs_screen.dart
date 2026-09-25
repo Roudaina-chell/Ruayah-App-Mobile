@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/confirm_dialog.dart';
+import '../../../core/widgets/empty_state.dart';
+import '../../../core/utils/page_transitions.dart';
 import '../../../models/ruqyah.dart';
 import '../../../services/ruqyah_service.dart';
 import 'ruqyah_form_screen.dart';
@@ -12,23 +17,23 @@ class AdminRuqyahsScreen extends StatelessWidget {
     final service = RuqyahService();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
+        iconTheme: const IconThemeData(color: AppColors.ink),
         title: Text(
           'إدارة الرقيات المسموعة',
-          style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 16),
+          style: AppTextStyles.heading(size: 16),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: AppColors.teal),
+            icon: const Icon(Icons.add_rounded, color: AppColors.teal),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const RuqyahFormScreen()),
-              );
+              Navigator.of(
+                context,
+              ).push(AppPageRoute(builder: (_) => const RuqyahFormScreen()));
             },
           ),
         ],
@@ -40,12 +45,9 @@ class AdminRuqyahsScreen extends StatelessWidget {
             final ruqyahs = snapshot.data ?? [];
 
             if (ruqyahs.isEmpty) {
-              return Center(
-                child: Text(
-                  'لا توجد رقيات بعد. اضغط + لإضافة رقية.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 14),
-                ),
+              return const EmptyState(
+                icon: Icons.headphones_rounded,
+                message: 'لا توجد رقيات بعد. اضغط + لإضافة رقية.',
               );
             }
 
@@ -72,22 +74,14 @@ class _AdminRuqyahTile extends StatelessWidget {
   const _AdminRuqyahTile({required this.ruqyah, required this.service});
 
   Future<void> _confirmDelete(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('حذف الرقية'),
-        content: Text('هل أنت متأكد من حذف "${ruqyah.title}"؟'),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('إلغاء')),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+    final confirmed = await showConfirmDialog(
+      context,
+      title: 'حذف الرقية',
+      message: 'هل أنت متأكد من حذف "${ruqyah.title}"؟',
+      confirmLabel: 'حذف',
     );
 
-    if (confirmed == true) {
+    if (confirmed) {
       await service.deleteRuqyah(ruqyah.id);
     }
   }
@@ -98,25 +92,33 @@ class _AdminRuqyahTile extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F9FB),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: AppDecorations.card(radius: 18),
       child: Row(
         children: [
-          Icon(
-            isYoutube ? Icons.smart_display_outlined : Icons.music_note_outlined,
-            color: const Color(0xFF7E57C2),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              ruqyah.title,
-              style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.ink),
+          Container(
+            width: 42,
+            height: 42,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: AppColors.plumSoft,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              isYoutube
+                  ? Icons.smart_display_rounded
+                  : Icons.music_note_rounded,
+              color: AppColors.plum,
+              size: 20,
             ),
           ),
+          const SizedBox(width: 12),
+          Expanded(child: Text(ruqyah.title, style: AppTextStyles.cardTitle)),
           IconButton(
-            icon: const Icon(Icons.delete_outline, color: Color(0xFFE53935), size: 20),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              color: AppColors.danger,
+              size: 20,
+            ),
             onPressed: () => _confirmDelete(context),
           ),
         ],

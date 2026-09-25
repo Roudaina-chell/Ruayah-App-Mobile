@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
 import '../../../models/appointment.dart';
 import '../../../services/appointment_service.dart';
 
@@ -55,8 +57,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     if (_selectedDate == null || _selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('الرجاء اختيار التاريخ والساعة',
-              textAlign: TextAlign.right),
+          content: Text(
+            'الرجاء اختيار التاريخ والساعة',
+            textAlign: TextAlign.right,
+          ),
         ),
       );
       return;
@@ -74,7 +78,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
+        SnackBar(
+          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
+        ),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -90,7 +96,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
+        SnackBar(
+          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
+        ),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -102,19 +110,12 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     final appointment = widget.appointment;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(
-          'تفاصيل الموعد',
-          style: TextStyle(
-            color: AppColors.ink,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
+        iconTheme: const IconThemeData(color: AppColors.ink),
+        title: Text('تفاصيل الموعد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -123,36 +124,43 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _infoRow('الاسم', appointment.userName),
-              const SizedBox(height: 14),
-              _infoRow('رقم الهاتف', appointment.userPhone),
-              const SizedBox(height: 14),
-              _infoRow(
-                'الحالة الحالية',
-                appointment.status == 'confirmed'
-                    ? 'مؤكد'
-                    : appointment.status == 'cancelled'
-                        ? 'ملغى'
-                        : 'قيد الانتظار',
-              ),
-
-              if (appointment.status == 'confirmed') ...[
-                const SizedBox(height: 14),
-                _infoRow('التاريخ الحالي', appointment.appointmentDate ?? '-'),
-                const SizedBox(height: 14),
-                _infoRow('الساعة الحالية', appointment.appointmentTime ?? '-'),
-              ],
-
-              const SizedBox(height: 32),
-
-              Text(
-                'تحديد موعد جديد',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.ink,
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: AppDecorations.card(radius: 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _infoRow('الاسم', appointment.userName),
+                    const SizedBox(height: 14),
+                    _infoRow('رقم الهاتف', appointment.userPhone),
+                    const SizedBox(height: 14),
+                    _infoRow(
+                      'الحالة الحالية',
+                      appointment.status == 'confirmed'
+                          ? 'مؤكد'
+                          : appointment.status == 'cancelled'
+                          ? 'ملغى'
+                          : 'قيد الانتظار',
+                    ),
+                    if (appointment.status == 'confirmed') ...[
+                      const SizedBox(height: 14),
+                      _infoRow(
+                        'التاريخ الحالي',
+                        appointment.appointmentDate ?? '-',
+                      ),
+                      const SizedBox(height: 14),
+                      _infoRow(
+                        'الساعة الحالية',
+                        appointment.appointmentTime ?? '-',
+                      ),
+                    ],
+                  ],
                 ),
               ),
+
+              const SizedBox(height: 28),
+
+              Text('تحديد موعد جديد', style: AppTextStyles.heading(size: 15)),
               const SizedBox(height: 14),
 
               _pickerTile(
@@ -173,35 +181,32 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
 
               const SizedBox(height: 28),
 
-              SizedBox(
+              Container(
                 height: 52,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _confirm,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.teal,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppColors.teal.withValues(alpha: 0.5),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                decoration: AppDecorations.tealButton(radius: 14),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: _isLoading ? null : _confirm,
+                    child: Center(
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              'تأكيد الموعد',
+                              style: AppTextStyles.button(size: 15),
+                            ),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.3,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : const Text(
-                          'تأكيد الموعد',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
-                        ),
                 ),
               ),
 
@@ -212,15 +217,18 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 child: OutlinedButton(
                   onPressed: _isLoading ? null : _cancel,
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFE53935),
-                    side: const BorderSide(color: Color(0xFFE53935)),
+                    foregroundColor: AppColors.danger,
+                    side: const BorderSide(color: AppColors.danger),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'إلغاء الموعد',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    style: AppTextStyles.label(
+                      color: AppColors.danger,
+                      size: 15,
+                    ),
                   ),
                 ),
               ),
@@ -234,22 +242,9 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
   Widget _infoRow(String label, String value) {
     return Row(
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            color: AppColors.ink.withValues(alpha: 0.5),
-          ),
-        ),
+        Text(label, style: AppTextStyles.cardSubtitle),
         const Spacer(),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AppColors.ink,
-          ),
-        ),
+        Text(value, style: AppTextStyles.heading(size: 14)),
       ],
     );
   }
@@ -267,17 +262,14 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
-            color: const Color(0xFFF5F8FC),
+            color: AppColors.tealSoft,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
             children: [
               Icon(icon, color: AppColors.teal, size: 20),
               const SizedBox(width: 12),
-              Text(
-                label,
-                style: TextStyle(color: AppColors.ink, fontSize: 14.5),
-              ),
+              Text(label, style: AppTextStyles.body(size: 14.5)),
             ],
           ),
         ),

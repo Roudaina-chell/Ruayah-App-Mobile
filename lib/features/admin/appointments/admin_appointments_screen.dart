@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/empty_state.dart';
+import '../../../core/utils/page_transitions.dart';
 import '../../../models/appointment.dart';
 import '../../../services/appointment_service.dart';
 import 'appointment_detail_screen.dart';
@@ -12,19 +16,12 @@ class AdminAppointmentsScreen extends StatelessWidget {
     final service = AppointmentService();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(
-          'إدارة المواعيد',
-          style: TextStyle(
-            color: AppColors.ink,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
+        iconTheme: const IconThemeData(color: AppColors.ink),
+        title: Text('إدارة المواعيد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -32,31 +29,24 @@ class AdminAppointmentsScreen extends StatelessWidget {
           stream: service.allAppointments(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(color: AppColors.teal),
               );
             }
 
             if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  'حدث خطأ أثناء تحميل المواعيد',
-                  style: TextStyle(color: AppColors.ink.withValues(alpha: 0.5)),
-                ),
+              return const EmptyState(
+                icon: Icons.error_outline_rounded,
+                message: 'حدث خطأ أثناء تحميل المواعيد',
               );
             }
 
             final appointments = snapshot.data ?? [];
 
             if (appointments.isEmpty) {
-              return Center(
-                child: Text(
-                  'لا توجد طلبات مواعيد حاليًا.',
-                  style: TextStyle(
-                    color: AppColors.ink.withValues(alpha: 0.4),
-                    fontSize: 14,
-                  ),
-                ),
+              return const EmptyState(
+                icon: Icons.calendar_month_rounded,
+                message: 'لا توجد طلبات مواعيد حاليًا.',
               );
             }
 
@@ -70,7 +60,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
                   appointment: appointment,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
+                      AppPageRoute(
                         builder: (_) =>
                             AppointmentDetailScreen(appointment: appointment),
                       ),
@@ -90,30 +80,27 @@ class _AdminAppointmentTile extends StatelessWidget {
   final Appointment appointment;
   final VoidCallback onTap;
 
-  const _AdminAppointmentTile({
-    required this.appointment,
-    required this.onTap,
-  });
+  const _AdminAppointmentTile({required this.appointment, required this.onTap});
 
   Map<String, dynamic> get _statusInfo {
     switch (appointment.status) {
       case 'confirmed':
         return {
           'label': 'مؤكد',
-          'color': const Color(0xFF43A047),
-          'bg': const Color(0xFFE8F5E9),
+          'color': AppColors.success,
+          'bg': AppColors.successSoft,
         };
       case 'cancelled':
         return {
           'label': 'ملغى',
-          'color': const Color(0xFFE53935),
-          'bg': const Color(0xFFFFEBEE),
+          'color': AppColors.danger,
+          'bg': AppColors.dangerSoft,
         };
       default:
         return {
           'label': 'قيد الانتظار',
-          'color': const Color(0xFFFB8C00),
-          'bg': const Color(0xFFFFF3E0),
+          'color': AppColors.pending,
+          'bg': AppColors.pendingSoft,
         };
     }
   }
@@ -125,58 +112,50 @@ class _AdminAppointmentTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
+        splashColor: AppColors.gold.withValues(alpha: 0.1),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF7F9FB),
-            borderRadius: BorderRadius.circular(16),
-          ),
+          decoration: AppDecorations.card(radius: 18),
           child: Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      appointment.userName,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.ink,
-                      ),
-                    ),
+                    Text(appointment.userName, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 4),
                     Text(
                       appointment.userPhone,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.ink.withValues(alpha: 0.5),
-                      ),
+                      style: AppTextStyles.cardSubtitle,
                     ),
                   ],
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: status['bg'],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   status['label'],
-                  style: TextStyle(
+                  style: AppTextStyles.label(
                     color: status['color'],
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    size: 12,
+                  ).copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const SizedBox(width: 8),
-              Icon(Icons.arrow_back_ios_new,
-                  size: 14, color: AppColors.ink.withValues(alpha: 0.3)),
+              const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 14,
+                color: AppColors.inkFaint,
+              ),
             ],
           ),
         ),

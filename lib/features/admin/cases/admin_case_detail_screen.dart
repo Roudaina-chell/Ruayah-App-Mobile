@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
 import '../../../models/patient_case.dart';
 import '../../../models/case_entry.dart';
 import '../../../services/case_service.dart';
@@ -80,23 +82,18 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
+        iconTheme: const IconThemeData(color: AppColors.ink),
         title: Column(
           children: [
             Text(
-              widget.patientCase.userName.isNotEmpty
-                  ? widget.patientCase.userName
-                  : 'بدون اسم',
-              style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 15),
+              widget.patientCase.userName.isNotEmpty ? widget.patientCase.userName : 'بدون اسم',
+              style: AppTextStyles.heading(size: 15),
             ),
-            Text(
-              widget.patientCase.userPhone,
-              style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 11),
-            ),
+            Text(widget.patientCase.userPhone, style: AppTextStyles.label(color: AppColors.inkFaint, size: 11)),
           ],
         ),
         centerTitle: true,
@@ -111,10 +108,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text(
-                      'تشخيصك عند الرقية',
-                      style: TextStyle(fontSize: 12, color: AppColors.ink.withValues(alpha: 0.45)),
-                    ),
+                    child: Text('تشخيصك عند الرقية', style: AppTextStyles.label(color: AppColors.inkFaint, size: 12)),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -123,17 +117,18 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF5F8FC),
+                            color: AppColors.goldSoft,
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: TextField(
                             controller: _diagnosisController,
                             textAlign: TextAlign.right,
-                            style: TextStyle(color: AppColors.ink, fontSize: 14),
-                            decoration: const InputDecoration(
+                            style: AppTextStyles.body(color: AppColors.goldDeep, size: 14),
+                            decoration: InputDecoration(
                               isDense: true,
                               border: InputBorder.none,
                               hintText: 'اكتب التشخيص هنا',
+                              hintStyle: TextStyle(color: AppColors.goldDeep.withValues(alpha: 0.5)),
                             ),
                           ),
                         ),
@@ -142,9 +137,9 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                       Container(
                         width: 42,
                         height: 42,
-                        decoration: BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
+                        decoration: const BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
                         child: IconButton(
-                          icon: const Icon(Icons.check, color: Colors.white, size: 18),
+                          icon: const Icon(Icons.check_rounded, color: Colors.white, size: 18),
                           onPressed: _saveDiagnosis,
                         ),
                       ),
@@ -158,10 +153,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  'الأعراض والتوجيهات',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.ink),
-                ),
+                child: Text('الأعراض والتوجيهات', style: AppTextStyles.heading(size: 13.5)),
               ),
             ),
 
@@ -170,7 +162,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                 stream: _caseService.entries(widget.patientCase.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: AppColors.teal));
+                    return const Center(child: CircularProgressIndicator(color: AppColors.teal));
                   }
 
                   final entries = snapshot.data ?? [];
@@ -179,7 +171,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                     return Center(
                       child: Text(
                         'لا توجد أعراض مسجلة بعد.',
-                        style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 13),
+                        style: AppTextStyles.body(color: AppColors.inkFaint, size: 13),
                       ),
                     );
                   }
@@ -201,15 +193,15 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
             Container(
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
-                color: AppColors.white,
-                border: Border(top: BorderSide(color: AppColors.ink.withValues(alpha: 0.06))),
+                color: AppColors.surface,
+                border: Border(top: BorderSide(color: AppColors.teal.withValues(alpha: 0.07))),
               ),
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F8FC),
+                        color: AppColors.parchment,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: TextField(
@@ -217,13 +209,12 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                         textAlign: TextAlign.right,
                         maxLines: 3,
                         minLines: 1,
-                        style: TextStyle(color: AppColors.ink, fontSize: 14),
+                        style: AppTextStyles.body(size: 14),
                         decoration: InputDecoration(
                           hintText: 'اكتب التوجيه...',
-                          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
+                          hintStyle: TextStyle(color: AppColors.inkFaint),
                           border: InputBorder.none,
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         ),
                       ),
                     ),
@@ -232,7 +223,13 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                   Container(
                     width: 44,
                     height: 44,
-                    decoration: BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.goldGradient,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: AppColors.gold.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4)),
+                      ],
+                    ),
                     child: IconButton(
                       icon: _isSaving
                           ? const SizedBox(
@@ -243,7 +240,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : const Icon(Icons.send, color: Colors.white, size: 18),
+                          : const Icon(Icons.send_rounded, color: Colors.white, size: 18),
                       onPressed: _isSaving ? null : _handleSendGuidance,
                     ),
                   ),
@@ -266,38 +263,60 @@ class _EntryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAdmin = entry.authorRole == 'admin';
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: isAdmin ? AppColors.tealSoft : const Color(0xFFF0F2F5),
-        borderRadius: BorderRadius.circular(14),
-        border: isAdmin ? Border.all(color: AppColors.teal.withValues(alpha: 0.2)) : null,
-      ),
-      child: Column(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: isAdmin ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(
-            children: [
-              if (isAdmin) ...[
-                Icon(Icons.medical_services_outlined, size: 14, color: AppColors.teal),
-                const SizedBox(width: 4),
-              ],
-              Text(
-                isAdmin ? 'توجيهك' : 'أعراض المريض',
-                style: TextStyle(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.bold,
-                  color: isAdmin ? AppColors.teal : AppColors.ink.withValues(alpha: 0.5),
+          if (!isAdmin) ...[
+            Container(
+              width: 28,
+              height: 28,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(right: 8),
+              decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
+              child: const Icon(Icons.person_outline_rounded, size: 14, color: AppColors.teal),
+            ),
+          ],
+          Flexible(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 280),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                gradient: isAdmin ? AppColors.heroGradient : null,
+                color: isAdmin ? null : AppColors.surface,
+                border: isAdmin ? null : Border.all(color: AppColors.teal.withValues(alpha: 0.07)),
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(18),
+                  topRight: const Radius.circular(18),
+                  bottomLeft: Radius.circular(isAdmin ? 18 : 4),
+                  bottomRight: Radius.circular(isAdmin ? 4 : 18),
                 ),
+                boxShadow: [
+                  BoxShadow(color: AppColors.tealDeep.withValues(alpha: 0.05), blurRadius: 12, offset: const Offset(0, 5)),
+                ],
               ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            entry.text,
-            textAlign: TextAlign.right,
-            style: TextStyle(color: AppColors.ink, fontSize: 14, height: 1.5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    isAdmin ? 'توجيهك' : 'أعراض المريض',
+                    style: AppTextStyles.label(
+                      color: isAdmin ? Colors.white.withValues(alpha: 0.85) : AppColors.inkFaint,
+                      size: 11,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    entry.text,
+                    textAlign: TextAlign.right,
+                    style: AppTextStyles.body(color: isAdmin ? Colors.white : AppColors.ink, size: 14),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

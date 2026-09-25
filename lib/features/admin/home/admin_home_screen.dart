@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/widgets/geometric_pattern.dart';
 import '../../../models/appointment.dart';
 import '../../../services/appointment_service.dart';
 import '../../../services/auth_service.dart';
@@ -22,7 +24,7 @@ class AdminHomeScreen extends StatelessWidget {
     final appointmentService = AppointmentService();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       drawer: _AdminDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -41,81 +43,95 @@ class AdminHomeScreen extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF5F8FC),
+                          color: AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.teal.withValues(alpha: 0.08),
+                          ),
                         ),
-                        child: Icon(Icons.menu, color: AppColors.ink, size: 20),
+                        child: const Icon(
+                          Icons.menu,
+                          color: AppColors.ink,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                    'لوحة الإدارة',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.ink,
-                    ),
-                  ),
+                  Text('لوحة الإدارة', style: AppTextStyles.heading(size: 15)),
                   const Spacer(),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(13),
+                      border: Border.all(
+                        color: AppColors.teal.withValues(alpha: 0.15),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(11),
+                      child: Image.asset(
+                        'assets/images/app_icon.png',
+                        width: 36,
+                        height: 36,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 22),
 
-              // بطاقة الترحيب الرئيسية — Gradient
-              Container(
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [AppColors.teal, const Color(0xFF1565C0)],
+              // بطاقة الترحيب الرئيسية
+              ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Container(
+                  padding: const EdgeInsets.all(22),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.heroGradient,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.teal.withValues(alpha: 0.28),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.teal.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'مرحبًا بك، محمد الراقي',
-                      style: const TextStyle(
+                  child: Stack(
+                    children: [
+                      const GeometricPatternBackground(
                         color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        opacity: 0.07,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'إليك ملخص نشاط التطبيق اليوم',
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.85),
-                        fontSize: 12.5,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'مرحبًا بك، محمد الراقي',
+                            style: AppTextStyles.displaySmall(
+                              color: Colors.white,
+                              size: 19,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'إليك ملخص نشاط التطبيق اليوم',
+                            style: AppTextStyles.body(
+                              color: Colors.white.withValues(alpha: 0.82),
+                              size: 12.5,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
               const SizedBox(height: 22),
 
-              // Stat cards — صف أفقي قابل للتمرير
+              // Stat cards
               StreamBuilder<QuerySnapshot>(
                 stream: firestore
                     .collection('users')
@@ -151,7 +167,7 @@ class AdminHomeScreen extends StatelessWidget {
                                 children: [
                                   _StatCard(
                                     icon: Icons.people_alt_rounded,
-                                    color: const Color(0xFF43A047),
+                                    color: AppColors.success,
                                     count: usersCount,
                                     label: 'إجمالي المستخدمين',
                                   ),
@@ -164,13 +180,13 @@ class AdminHomeScreen extends StatelessWidget {
                                   ),
                                   _StatCard(
                                     icon: Icons.headphones_rounded,
-                                    color: const Color(0xFF8E24AA),
+                                    color: AppColors.plum,
                                     count: ruqyahsCount,
                                     label: 'الرقيات المسموعة',
                                   ),
                                   _StatCard(
                                     icon: Icons.calendar_month_rounded,
-                                    color: const Color(0xFFFB8C00),
+                                    color: AppColors.pending,
                                     count: pendingCount,
                                     label: 'طلبات الحجز المعلقة',
                                     onTap: onOpenAppointments,
@@ -187,27 +203,19 @@ class AdminHomeScreen extends StatelessWidget {
                 },
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 26),
 
               Row(
                 children: [
-                  Text(
-                    'أحدث الطلبات',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.ink,
-                    ),
-                  ),
+                  Text('أحدث الطلبات', style: AppTextStyles.heading(size: 16)),
                   const Spacer(),
                   GestureDetector(
                     onTap: onOpenAppointments,
                     child: Text(
                       'عرض الكل',
-                      style: TextStyle(
-                        color: AppColors.teal,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                      style: AppTextStyles.label(
+                        color: AppColors.goldDeep,
+                        size: 13,
                       ),
                     ),
                   ),
@@ -222,8 +230,7 @@ class AdminHomeScreen extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Center(
-                        child:
-                            CircularProgressIndicator(color: AppColors.teal),
+                        child: CircularProgressIndicator(color: AppColors.teal),
                       ),
                     );
                   }
@@ -236,9 +243,9 @@ class AdminHomeScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'لا توجد طلبات حتى الآن.',
-                          style: TextStyle(
-                            color: AppColors.ink.withValues(alpha: 0.4),
-                            fontSize: 13,
+                          style: AppTextStyles.body(
+                            color: AppColors.inkFaint,
+                            size: 13,
                           ),
                         ),
                       ),
@@ -247,10 +254,12 @@ class AdminHomeScreen extends StatelessWidget {
 
                   return Column(
                     children: appointments
-                        .map((a) => Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: _RecentRequestTile(appointment: a),
-                            ))
+                        .map(
+                          (a) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: _RecentRequestTile(appointment: a),
+                          ),
+                        )
                         .toList(),
                   );
                 },
@@ -286,23 +295,24 @@ class _StatCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
+        splashColor: color.withValues(alpha: 0.1),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: highlight
-                  ? color.withValues(alpha: 0.4)
-                  : AppColors.ink.withValues(alpha: 0.06),
+                  ? color.withValues(alpha: 0.45)
+                  : AppColors.teal.withValues(alpha: 0.07),
               width: highlight ? 1.4 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.ink.withValues(alpha: 0.04),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: AppColors.tealDeep.withValues(alpha: 0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 5),
               ),
             ],
           ),
@@ -319,23 +329,13 @@ class _StatCard extends StatelessWidget {
                 child: Icon(icon, color: color, size: 20),
               ),
               const Spacer(),
-              Text(
-                '$count',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.ink,
-                ),
-              ),
+              Text('$count', style: AppTextStyles.heading(size: 24)),
               const SizedBox(height: 2),
               Text(
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 11.5,
-                  color: AppColors.ink.withValues(alpha: 0.5),
-                ),
+                style: AppTextStyles.cardSubtitle,
               ),
             ],
           ),
@@ -355,20 +355,20 @@ class _RecentRequestTile extends StatelessWidget {
       case 'confirmed':
         return {
           'label': 'مؤكد',
-          'color': const Color(0xFF43A047),
-          'bg': const Color(0xFFE8F5E9),
+          'color': AppColors.success,
+          'bg': AppColors.successSoft,
         };
       case 'cancelled':
         return {
           'label': 'ملغى',
-          'color': const Color(0xFFE53935),
-          'bg': const Color(0xFFFFEBEE),
+          'color': AppColors.danger,
+          'bg': AppColors.dangerSoft,
         };
       default:
         return {
           'label': 'معلق',
-          'color': const Color(0xFFFB8C00),
-          'bg': const Color(0xFFFFF3E0),
+          'color': AppColors.pending,
+          'bg': AppColors.pendingSoft,
         };
     }
   }
@@ -387,27 +387,23 @@ class _RecentRequestTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.ink.withValues(alpha: 0.06)),
+        border: Border.all(color: AppColors.teal.withValues(alpha: 0.07)),
       ),
       child: Row(
         children: [
           Container(
             width: 42,
             height: 42,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.tealSoft,
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Text(
                 _initial,
-                style: TextStyle(
-                  color: AppColors.teal,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
+                style: AppTextStyles.heading(color: AppColors.teal, size: 15),
               ),
             ),
           ),
@@ -416,22 +412,9 @@ class _RecentRequestTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  appointment.userName,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.ink,
-                  ),
-                ),
+                Text(appointment.userName, style: AppTextStyles.cardTitle),
                 const SizedBox(height: 2),
-                Text(
-                  appointment.userPhone,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.ink.withValues(alpha: 0.45),
-                  ),
-                ),
+                Text(appointment.userPhone, style: AppTextStyles.cardSubtitle),
               ],
             ),
           ),
@@ -439,27 +422,28 @@ class _RecentRequestTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: status['bg'],
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   status['label'],
-                  style: TextStyle(
+                  style: AppTextStyles.label(
                     color: status['color'],
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    size: 11,
+                  ).copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const SizedBox(height: 6),
               Text(
                 _formatDate(appointment.createdAt),
-                style: TextStyle(
-                  fontSize: 10.5,
-                  color: AppColors.ink.withValues(alpha: 0.4),
+                style: AppTextStyles.label(
+                  color: AppColors.inkFaint,
+                  size: 10.5,
                 ),
               ),
             ],
@@ -474,32 +458,53 @@ class _AdminDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: const EdgeInsets.all(20),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'assets/images/app_icon.png',
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover,
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(19),
+                  border: Border.all(
+                    color: AppColors.teal.withValues(alpha: 0.15),
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/images/app_icon.png',
+                    width: 58,
+                    height: 58,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person_outline, color: AppColors.ink),
-              title: Text('الملف الشخصي', style: TextStyle(color: AppColors.ink)),
+              leading: const Icon(
+                Icons.person_outline_rounded,
+                color: AppColors.ink,
+              ),
+              title: Text(
+                'الملف الشخصي',
+                style: AppTextStyles.body(size: 14.5),
+              ),
               onTap: () {},
             ),
             const Spacer(),
             ListTile(
-              leading: const Icon(Icons.logout, color: Color(0xFFE53935)),
-              title: const Text('تسجيل الخروج', style: TextStyle(color: Color(0xFFE53935))),
+              leading: const Icon(
+                Icons.logout_rounded,
+                color: AppColors.danger,
+              ),
+              title: Text(
+                'تسجيل الخروج',
+                style: AppTextStyles.body(color: AppColors.danger, size: 14.5),
+              ),
               onTap: () async {
                 await AuthService().logout();
                 if (context.mounted) {

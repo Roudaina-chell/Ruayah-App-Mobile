@@ -30,7 +30,9 @@ class HomeScreen extends StatelessWidget {
                 bottomRight: Radius.circular(36),
               ),
               child: Container(
-                decoration: const BoxDecoration(gradient: AppColors.heroGradient),
+                decoration: const BoxDecoration(
+                  gradient: AppColors.heroGradient,
+                ),
                 child: Stack(
                   children: [
                     // the app's one signature ornament — quiet, never repeated elsewhere
@@ -123,14 +125,18 @@ class HomeScreen extends StatelessWidget {
                     final pending = appointments
                         .where((a) => a.status == 'pending')
                         .toList();
-                    final hasUnseen = appointments.any((a) =>
-                        !a.seenByClient &&
-                        (a.status == 'confirmed' || a.status == 'cancelled'));
+                    final hasUnseen = appointments.any(
+                      (a) =>
+                          !a.seenByClient &&
+                          (a.status == 'confirmed' || a.status == 'cancelled'),
+                    );
 
                     return _AppointmentsSummaryCard(
                       confirmedCount: confirmed.length,
                       pendingCount: pending.length,
-                      nextConfirmed: confirmed.isNotEmpty ? confirmed.first : null,
+                      nextConfirmed: confirmed.isNotEmpty
+                          ? confirmed.first
+                          : null,
                       hasUnseen: hasUnseen,
                       onTap: onOpenAppointments,
                     );
@@ -241,8 +247,11 @@ class _AppointmentsSummaryCard extends StatelessWidget {
                           color: AppColors.tealSoft,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.calendar_month_rounded,
-                            color: AppColors.teal, size: 22),
+                        child: const Icon(
+                          Icons.calendar_month_rounded,
+                          color: AppColors.teal,
+                          size: 22,
+                        ),
                       ),
                       if (hasUnseen)
                         Positioned(
@@ -254,7 +263,10 @@ class _AppointmentsSummaryCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: AppColors.danger,
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.surface, width: 2),
+                              border: Border.all(
+                                color: AppColors.surface,
+                                width: 2,
+                              ),
                             ),
                           ),
                         ),
@@ -265,7 +277,10 @@ class _AppointmentsSummaryCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('مواعيدي', style: AppTextStyles.heading(size: 15.5)),
+                        Text(
+                          'مواعيدي',
+                          style: AppTextStyles.heading(size: 15.5),
+                        ),
                         const SizedBox(height: 2),
                         Text(
                           confirmedCount == 0 && pendingCount == 0
@@ -276,23 +291,32 @@ class _AppointmentsSummaryCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_back_ios_new_rounded,
-                      size: 14, color: AppColors.inkFaint),
+                  Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 14,
+                    color: AppColors.inkFaint,
+                  ),
                 ],
               ),
               if (nextConfirmed != null) ...[
                 const SizedBox(height: 14),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.goldSoft,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.access_time_rounded,
-                          size: 16, color: AppColors.goldDeep),
+                      const Icon(
+                        Icons.access_time_rounded,
+                        size: 16,
+                        color: AppColors.goldDeep,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(

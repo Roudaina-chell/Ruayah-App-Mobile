@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/empty_state.dart';
+import '../../../core/utils/page_transitions.dart';
 import '../../../models/patient_case.dart';
 import '../../../services/case_service.dart';
 import 'admin_case_detail_screen.dart';
@@ -12,14 +16,11 @@ class AdminCasesScreen extends StatelessWidget {
     final caseService = CaseService();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        title: Text(
-          'متابعة الحالات',
-          style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 16),
-        ),
+        title: Text('متابعة الحالات', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -27,7 +28,7 @@ class AdminCasesScreen extends StatelessWidget {
           stream: caseService.allCases(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(color: AppColors.teal));
+              return const Center(child: CircularProgressIndicator(color: AppColors.teal));
             }
 
             if (snapshot.hasError) {
@@ -37,7 +38,7 @@ class AdminCasesScreen extends StatelessWidget {
                   child: Text(
                     'خطأ: ${snapshot.error}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red, fontSize: 12),
+                    style: AppTextStyles.label(color: AppColors.danger, size: 12),
                   ),
                 ),
               );
@@ -46,11 +47,9 @@ class AdminCasesScreen extends StatelessWidget {
             final cases = snapshot.data ?? [];
 
             if (cases.isEmpty) {
-              return Center(
-                child: Text(
-                  'لا توجد حالات أو رسائل جديدة.',
-                  style: TextStyle(color: AppColors.ink.withValues(alpha: 0.4), fontSize: 14),
-                ),
+              return const EmptyState(
+                icon: Icons.chat_bubble_outline_rounded,
+                message: 'لا توجد حالات أو رسائل جديدة.',
               );
             }
 
@@ -64,7 +63,7 @@ class AdminCasesScreen extends StatelessWidget {
                   patientCase: patientCase,
                   onTap: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
+                      AppPageRoute(
                         builder: (_) => AdminCaseDetailScreen(patientCase: patientCase),
                       ),
                     );
@@ -93,25 +92,20 @@ class _CaseTile extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
+        splashColor: AppColors.gold.withValues(alpha: 0.1),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF7F9FB),
-            borderRadius: BorderRadius.circular(16),
-          ),
+          decoration: AppDecorations.card(radius: 18),
           child: Row(
             children: [
               Container(
                 width: 44,
                 height: 44,
-                decoration: BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
+                decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
                 child: Center(
-                  child: Text(
-                    _initial,
-                    style: TextStyle(color: AppColors.teal, fontWeight: FontWeight.bold),
-                  ),
+                  child: Text(_initial, style: AppTextStyles.heading(color: AppColors.teal, size: 15)),
                 ),
               ),
               const SizedBox(width: 12),
@@ -121,16 +115,14 @@ class _CaseTile extends StatelessWidget {
                   children: [
                     Text(
                       patientCase.userName.isNotEmpty ? patientCase.userName : 'بدون اسم',
-                      style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.ink),
+                      style: AppTextStyles.cardTitle,
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      patientCase.diagnosis.isNotEmpty
-                          ? patientCase.diagnosis
-                          : 'لم يتم تحديد التشخيص',
+                      patientCase.diagnosis.isNotEmpty ? patientCase.diagnosis : 'لم يتم تحديد التشخيص',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12.5, color: AppColors.ink.withValues(alpha: 0.5)),
+                      style: AppTextStyles.cardSubtitle,
                     ),
                   ],
                 ),
@@ -139,7 +131,7 @@ class _CaseTile extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: const BoxDecoration(color: Color(0xFF1976D2), shape: BoxShape.circle),
+                  decoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
                 ),
             ],
           ),

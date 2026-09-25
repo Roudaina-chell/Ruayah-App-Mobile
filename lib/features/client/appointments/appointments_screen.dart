@@ -45,9 +45,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          content: Text('تم إرسال طلب الموعد بنجاح ✅',
-              textAlign: TextAlign.right),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          content: Text(
+            'تم إرسال طلب الموعد بنجاح ✅',
+            textAlign: TextAlign.right,
+          ),
         ),
       );
     } catch (e) {
@@ -55,7 +59,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
         ),
       );
@@ -96,9 +102,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                   // المواعيد اللي تغيرت حالتها وماشي مُطّلع عليها بعد
                   final unseenUpdates = appointments
-                      .where((a) =>
-                          !a.seenByClient &&
-                          (a.status == 'confirmed' || a.status == 'cancelled'))
+                      .where(
+                        (a) =>
+                            !a.seenByClient &&
+                            (a.status == 'confirmed' ||
+                                a.status == 'cancelled'),
+                      )
                       .toList();
 
                   if (appointments.isEmpty) {
@@ -181,8 +190,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.calendar_month_rounded,
-                          color: Colors.white, size: 20),
+                      const Icon(
+                        Icons.calendar_month_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Text('حجز موعد', style: AppTextStyles.button(size: 15.5)),
                     ],
@@ -226,7 +238,10 @@ class _PersistentNotificationBanner extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(color: color.withValues(alpha: 0.15), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
             child: Icon(
               isConfirmed ? Icons.check_rounded : Icons.close_rounded,
               color: color,
@@ -238,13 +253,20 @@ class _PersistentNotificationBanner extends StatelessWidget {
             child: Text(
               message,
               textAlign: TextAlign.right,
-              style: AppTextStyles.label(color: color, size: 13.5).copyWith(height: 1.4),
+              style: AppTextStyles.label(
+                color: color,
+                size: 13.5,
+              ).copyWith(height: 1.4),
             ),
           ),
           const SizedBox(width: 6),
           GestureDetector(
             onTap: onDismiss,
-            child: Icon(Icons.close, color: color.withValues(alpha: 0.6), size: 18),
+            child: Icon(
+              Icons.close,
+              color: color.withValues(alpha: 0.6),
+              size: 18,
+            ),
           ),
         ],
       ),
@@ -283,8 +305,11 @@ class _BookingConfirmSheet extends StatelessWidget {
                 color: AppColors.tealSoft,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.calendar_month_rounded,
-                  color: AppColors.teal, size: 28),
+              child: const Icon(
+                Icons.calendar_month_rounded,
+                color: AppColors.teal,
+                size: 28,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -377,27 +402,38 @@ class _AppointmentCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 11,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: status['bg'],
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   status['label'],
-                  style: AppTextStyles.label(color: status['color'], size: 12)
-                      .copyWith(fontWeight: FontWeight.w800),
+                  style: AppTextStyles.label(
+                    color: status['color'],
+                    size: 12,
+                  ).copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const Spacer(),
-              const Icon(Icons.calendar_today_rounded,
-                  size: 16, color: AppColors.inkFaint),
+              const Icon(
+                Icons.calendar_today_rounded,
+                size: 16,
+                color: AppColors.inkFaint,
+              ),
             ],
           ),
           const SizedBox(height: 12),
 
           if (appointment.status == 'confirmed' &&
               appointment.appointmentDate != null) ...[
-            Text('موعدك المؤكد', style: AppTextStyles.label(color: AppColors.ink, size: 13)),
+            Text(
+              'موعدك المؤكد',
+              style: AppTextStyles.label(color: AppColors.ink, size: 13),
+            ),
             const SizedBox(height: 4),
             Text(
               '${appointment.appointmentDate}   الساعة ${appointment.appointmentTime}',

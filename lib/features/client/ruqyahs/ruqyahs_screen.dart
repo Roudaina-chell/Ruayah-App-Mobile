@@ -21,7 +21,8 @@ class RuqyahsScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-                child: CircularProgressIndicator(color: AppColors.teal));
+              child: CircularProgressIndicator(color: AppColors.teal),
+            );
           }
 
           final ruqyahs = snapshot.data ?? [];
@@ -88,7 +89,9 @@ class _RuqyahTile extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
                 child: Icon(
-                  isYoutube ? Icons.smart_display_rounded : Icons.music_note_rounded,
+                  isYoutube
+                      ? Icons.smart_display_rounded
+                      : Icons.music_note_rounded,
                   color: AppColors.teal,
                   size: 22,
                 ),
@@ -122,8 +125,11 @@ class _RuqyahTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(Icons.play_arrow_rounded,
-                    color: Colors.white, size: 22),
+                child: const Icon(
+                  Icons.play_arrow_rounded,
+                  color: Colors.white,
+                  size: 22,
+                ),
               ),
             ],
           ),

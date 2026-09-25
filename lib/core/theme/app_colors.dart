@@ -17,6 +17,11 @@ class AppColors {
   static const Color goldDeep = Color(0xFF9C7527);
   static const Color goldSoft = Color(0xFFF6ECD6);
 
+  // A second accent, reserved for admin dashboard stat differentiation
+  // only — never used as a CTA color, so gold keeps its meaning.
+  static const Color plum = Color(0xFF8B5468);
+  static const Color plumSoft = Color(0xFFF1E4E8);
+
   // ---- Neutrals ----
   static const Color ink = Color(0xFF16302C);
   static const Color inkMuted = Color(0xFF5D716D);
@@ -46,4 +51,12 @@ class AppColors {
     end: Alignment.bottomRight,
     colors: [gold, goldDeep],
   );
+
+  // ---- Legacy aliases ----
+  // Safety net for any screen outside this redesign that still
+  // references the old names — keeps it compiling, pulled into the
+  // same teal/gold family instead of clashing with it.
+  static const Color primary = teal;
+  static const Color navy = ink;
+  static const Color veryLightBlue = tealSoft;
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../services/auth_service.dart';
-import '../../auth/login_screen.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_decorations.dart';
+import '../../services/auth_service.dart';
+import '../auth/login_screen.dart';
 import '../appointments/admin_appointments_screen.dart';
 import '../programs/admin_programs_screen.dart';
 
@@ -11,22 +13,15 @@ class AdminDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        title: Text(
-          'لوحة إدارة محمد الراقي',
-          style: TextStyle(
-            color: AppColors.ink,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
+        title: Text('لوحة إدارة محمد الراقي', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: AppColors.ink),
+            icon: const Icon(Icons.logout_rounded, color: AppColors.ink),
             onPressed: () async {
               await AuthService().logout();
               if (context.mounted) {
@@ -45,19 +40,12 @@ class AdminDashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'الإجراءات السريعة',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.ink,
-                ),
-              ),
-                           const SizedBox(height: 12),
+              Text('الإجراءات السريعة', style: AppTextStyles.heading(size: 16)),
+              const SizedBox(height: 12),
 
               _ActionTile(
                 icon: Icons.menu_book_outlined,
-                iconColor: const Color(0xFF00897B),
+                iconColor: AppColors.teal,
                 title: 'إدارة البرامج العلاجية',
                 subtitle: 'إضافة، تعديل أو حذف البرامج',
                 onTap: () {
@@ -97,13 +85,11 @@ class _ActionTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
+        splashColor: AppColors.gold.withValues(alpha: 0.1),
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF7F9FB),
-            borderRadius: BorderRadius.circular(18),
-          ),
+          decoration: AppDecorations.card(radius: 18),
           child: Row(
             children: [
               Container(
@@ -120,27 +106,13 @@ class _ActionTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
-                      ),
-                    ),
+                    Text(title, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 3),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        color: AppColors.ink.withValues(alpha: 0.45),
-                      ),
-                    ),
+                    Text(subtitle, style: AppTextStyles.cardSubtitle),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_back_ios_new,
-                  size: 15, color: AppColors.ink.withValues(alpha: 0.25)),
+              const Icon(Icons.arrow_back_ios_new_rounded, size: 15, color: AppColors.inkFaint),
             ],
           ),
         ),

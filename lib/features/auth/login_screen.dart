@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/theme/app_decorations.dart';
 import '../../services/auth_service.dart';
 import '../admin/main_navigation.dart';
 import '../client/main_navigation.dart';
@@ -53,8 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final appUser =
-          await _authService.login(phone: phone, password: password);
+      final appUser = await _authService.login(
+        phone: phone,
+        password: password,
+      );
 
       if (!mounted) return;
 
@@ -80,7 +84,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _showSnack(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message, textAlign: TextAlign.right)),
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        content: Text(message, textAlign: TextAlign.right),
+      ),
     );
   }
 
@@ -91,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       body: SafeArea(
         top: false,
         bottom: true,
@@ -127,14 +135,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'سجل الدخول للمتابعة',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.ink,
-                      ),
+                      style: AppTextStyles.displaySmall(size: 21),
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 26),
 
                     _buildUnderlineField(
                       controller: _phoneController,
@@ -152,48 +156,42 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       onSuffixTap: () {
-                        setState(
-                            () => _obscurePassword = !_obscurePassword);
+                        setState(() => _obscurePassword = !_obscurePassword);
                       },
                     ),
 
-                    const SizedBox(height: 26),
+                    const SizedBox(height: 28),
 
-                    SizedBox(
+                    Container(
                       height: 54,
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _handleLogin,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.teal,
-                          foregroundColor: Colors.white,
-                          disabledBackgroundColor:
-                              AppColors.teal.withValues(alpha: 0.5),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(27),
+                      decoration: AppDecorations.goldButton(radius: 27),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(27),
+                          onTap: _isLoading ? null : _handleLogin,
+                          child: Center(
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    'دخول',
+                                    style: AppTextStyles.button(size: 16),
+                                  ),
                           ),
                         ),
-                        child: _isLoading
-                            ? const SizedBox(
-                                width: 22,
-                                height: 22,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2.5,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
-                                ),
-                              )
-                            : const Text(
-                                'دخول',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
 
                     Center(
                       child: Wrap(
@@ -201,9 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             'ليس لديك حساب؟ ',
-                            style: TextStyle(
-                              color: AppColors.ink.withValues(alpha: 0.55),
-                              fontSize: 13.5,
+                            style: AppTextStyles.body(
+                              color: AppColors.inkMuted,
+                              size: 13.5,
                             ),
                           ),
                           GestureDetector(
@@ -218,11 +216,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                             child: Text(
                               'سجل الآن',
-                              style: TextStyle(
+                              style: AppTextStyles.label(
                                 color: AppColors.teal,
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                size: 13.5,
+                              ).copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -254,10 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.5,
-            color: AppColors.ink.withValues(alpha: 0.45),
-          ),
+          style: AppTextStyles.label(color: AppColors.inkFaint, size: 12.5),
         ),
         const SizedBox(height: 6),
         Row(
@@ -265,11 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
             if (suffixIcon != null)
               GestureDetector(
                 onTap: onSuffixTap,
-                child: Icon(
-                  suffixIcon,
-                  size: 19,
-                  color: AppColors.ink.withValues(alpha: 0.35),
-                ),
+                child: Icon(suffixIcon, size: 19, color: AppColors.inkFaint),
               ),
             Expanded(
               child: TextField(
@@ -277,11 +267,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: AppColors.ink,
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: AppTextStyles.body(
+                  size: 15.5,
+                ).copyWith(fontWeight: FontWeight.w500),
                 decoration: const InputDecoration(
                   isDense: true,
                   border: InputBorder.none,
@@ -294,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        Container(height: 1, color: AppColors.ink.withValues(alpha: 0.15)),
+        Container(height: 1, color: AppColors.hairline),
       ],
     );
   }

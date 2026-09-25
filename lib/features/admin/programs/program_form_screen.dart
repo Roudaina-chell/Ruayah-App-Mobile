@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/app_text_field.dart';
 import '../../../models/program.dart';
 import '../../../services/program_service.dart';
 
@@ -25,9 +28,12 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.program?.title ?? '');
-    _shortDescController =
-        TextEditingController(text: widget.program?.shortDescription ?? '');
-    _contentController = TextEditingController(text: widget.program?.content ?? '');
+    _shortDescController = TextEditingController(
+      text: widget.program?.shortDescription ?? '',
+    );
+    _contentController = TextEditingController(
+      text: widget.program?.content ?? '',
+    );
   }
 
   @override
@@ -45,7 +51,9 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
 
     if (title.isEmpty || shortDesc.isEmpty || content.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('الرجاء ملء جميع الحقول', textAlign: TextAlign.right)),
+        SnackBar(
+          content: Text('الرجاء ملء جميع الحقول', textAlign: TextAlign.right),
+        ),
       );
       return;
     }
@@ -73,7 +81,9 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
+        SnackBar(
+          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
+        ),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -83,18 +93,14 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
+        iconTheme: const IconThemeData(color: AppColors.ink),
         title: Text(
           _isEditing ? 'تعديل البرنامج' : 'إضافة برنامج',
-          style: TextStyle(
-            color: AppColors.ink,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: AppTextStyles.heading(size: 16),
         ),
         centerTitle: true,
       ),
@@ -104,93 +110,59 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildLabel('اسم البرنامج'),
-              const SizedBox(height: 8),
-              _buildTextField(_titleController, 'مثلاً: برنامج العين'),
+              AppTextField(
+                label: 'اسم البرنامج',
+                controller: _titleController,
+                hint: 'مثلاً: برنامج العين',
+              ),
               const SizedBox(height: 18),
 
-              _buildLabel('وصف قصير'),
-              const SizedBox(height: 8),
-              _buildTextField(_shortDescController, 'وصف مختصر يظهر في القائمة'),
+              AppTextField(
+                label: 'وصف قصير',
+                controller: _shortDescController,
+                hint: 'وصف مختصر يظهر في القائمة',
+              ),
               const SizedBox(height: 18),
 
-              _buildLabel('المحتوى'),
-              const SizedBox(height: 8),
-              _buildTextField(_contentController, 'التفاصيل الكاملة للبرنامج', maxLines: 8),
+              AppTextField(
+                label: 'المحتوى',
+                controller: _contentController,
+                hint: 'التفاصيل الكاملة للبرنامج',
+                maxLines: 8,
+              ),
 
               const SizedBox(height: 28),
 
-              SizedBox(
+              Container(
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _handleSave,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.teal,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppColors.teal.withValues(alpha: 0.5),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                decoration: AppDecorations.goldButton(radius: 14),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: _isLoading ? null : _handleSave,
+                    child: Center(
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              _isEditing ? 'حفظ التعديلات' : 'حفظ البرنامج',
+                              style: AppTextStyles.button(size: 15),
+                            ),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.3,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : Text(
-                          _isEditing ? 'حفظ التعديلات' : 'حفظ البرنامج',
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
-                        ),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String text) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: AppColors.ink,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    TextEditingController controller,
-    String hint, {
-    int maxLines = 1,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F8FC),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: TextField(
-        controller: controller,
-        maxLines: maxLines,
-        textAlign: TextAlign.right,
-        style: TextStyle(color: AppColors.ink, fontSize: 14.5),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.all(16),
         ),
       ),
     );

@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/app_text_field.dart';
 import '../../../services/ruqyah_service.dart';
 
 class RuqyahFormScreen extends StatefulWidget {
@@ -65,7 +68,8 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
           youtubeUrl: _youtubeController.text.trim(),
         );
       } else {
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}_$_pickedFileName';
+        final fileName =
+            '${DateTime.now().millisecondsSinceEpoch}_$_pickedFileName';
         final url = await _service.uploadAudioFile(_pickedFile!, fileName);
         await _service.addAudioRuqyah(title: title, audioUrl: url);
       }
@@ -89,15 +93,12 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(
-          'إضافة رقية',
-          style: TextStyle(color: AppColors.ink, fontWeight: FontWeight.bold, fontSize: 16),
-        ),
+        iconTheme: const IconThemeData(color: AppColors.ink),
+        title: Text('إضافة رقية', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -106,13 +107,21 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildLabel('اسم الرقية'),
-              const SizedBox(height: 8),
-              _buildTextField(_titleController, 'مثلاً: رقية العين والحسد'),
+              AppTextField(
+                label: 'اسم الرقية',
+                controller: _titleController,
+                hint: 'مثلاً: رقية العين والحسد',
+              ),
 
               const SizedBox(height: 22),
 
-              _buildLabel('نوع الرقية'),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'نوع الرقية',
+                  style: AppTextStyles.label(color: AppColors.ink, size: 13),
+                ),
+              ),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -139,11 +148,19 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
               const SizedBox(height: 22),
 
               if (_type == 'youtube') ...[
-                _buildLabel('رابط اليوتيوب'),
-                const SizedBox(height: 8),
-                _buildTextField(_youtubeController, 'https://youtube.com/...'),
+                AppTextField(
+                  label: 'رابط اليوتيوب',
+                  controller: _youtubeController,
+                  hint: 'https://youtube.com/...',
+                ),
               ] else ...[
-                _buildLabel('الملف الصوتي'),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'الملف الصوتي',
+                    style: AppTextStyles.label(color: AppColors.ink, size: 13),
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Material(
                   color: Colors.transparent,
@@ -153,21 +170,29 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF5F8FC),
+                        color: AppColors.parchment,
                         borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: _pickedFileName != null
+                              ? AppColors.teal.withValues(alpha: 0.3)
+                              : Colors.transparent,
+                        ),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.upload_file_outlined, color: AppColors.teal),
+                          const Icon(
+                            Icons.upload_file_outlined,
+                            color: AppColors.teal,
+                          ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               _pickedFileName ?? 'اختيار ملف صوتي من الهاتف',
-                              style: TextStyle(
+                              style: AppTextStyles.body(
                                 color: _pickedFileName != null
                                     ? AppColors.ink
-                                    : AppColors.ink.withValues(alpha: 0.4),
-                                fontSize: 13.5,
+                                    : AppColors.inkFaint,
+                                size: 13.5,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -181,57 +206,36 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
 
               const SizedBox(height: 28),
 
-              SizedBox(
+              Container(
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _handleSave,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.teal,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.teal.withValues(alpha: 0.5),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                decoration: AppDecorations.goldButton(radius: 14),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(14),
+                    onTap: _isLoading ? null : _handleSave,
+                    child: Center(
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              'حفظ الرقية',
+                              style: AppTextStyles.button(size: 15),
+                            ),
+                    ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.3,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : const Text('حفظ الرقية',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String text) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Text(text,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.ink)),
-    );
-  }
-
-  Widget _buildTextField(TextEditingController controller, String hint) {
-    return Container(
-      decoration: BoxDecoration(color: const Color(0xFFF5F8FC), borderRadius: BorderRadius.circular(14)),
-      child: TextField(
-        controller: controller,
-        textAlign: TextAlign.right,
-        style: TextStyle(color: AppColors.ink, fontSize: 14.5),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(color: AppColors.ink.withValues(alpha: 0.35)),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.all(16),
         ),
       ),
     );
@@ -261,7 +265,7 @@ class _TypeChip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: selected ? AppColors.teal.withValues(alpha: 0.1) : const Color(0xFFF5F8FC),
+            color: selected ? AppColors.tealSoft : AppColors.parchment,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: selected ? AppColors.teal : Colors.transparent,
@@ -270,14 +274,13 @@ class _TypeChip extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Icon(icon, color: selected ? AppColors.teal : AppColors.ink.withValues(alpha: 0.4)),
+              Icon(icon, color: selected ? AppColors.teal : AppColors.inkFaint),
               const SizedBox(height: 6),
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                  color: selected ? AppColors.teal : AppColors.ink.withValues(alpha: 0.5),
+                style: AppTextStyles.label(
+                  color: selected ? AppColors.teal : AppColors.inkFaint,
+                  size: 12.5,
                 ),
               ),
             ],

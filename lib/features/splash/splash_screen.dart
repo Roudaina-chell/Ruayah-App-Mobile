@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,11 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     // مؤقتًا: صفحة بسيطة، سنستبدلها بـ Authentication في STEP 6
-     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const LoginScreen(),
-      ),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const LoginScreen()));
   }
 
   @override
@@ -35,17 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: [
           // الصورة كخلفية كاملة للشاشة
-          Image.asset(
-            'assets/images/splash_background.png',
-            fit: BoxFit.cover,
-          ),
+          Image.asset('assets/images/splash_background.png', fit: BoxFit.cover),
 
           // Loading في الأسفل
           SafeArea(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 32),
+                padding: const EdgeInsets.only(bottom: 36),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -55,17 +51,16 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.teal,
+                          AppColors.gold,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     Text(
                       'جاري التحميل...',
-                      style: TextStyle(
+                      style: AppTextStyles.label(
                         color: AppColors.ink,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        size: 14,
                       ),
                     ),
                   ],

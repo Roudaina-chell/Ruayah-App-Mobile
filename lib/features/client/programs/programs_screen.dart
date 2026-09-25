@@ -93,8 +93,11 @@ class _ProgramTile extends StatelessWidget {
                   color: AppColors.tealSoft,
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: const Icon(Icons.menu_book_rounded,
-                    color: AppColors.teal, size: 23),
+                child: const Icon(
+                  Icons.menu_book_rounded,
+                  color: AppColors.teal,
+                  size: 23,
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -112,8 +115,11 @@ class _ProgramTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_back_ios_new_rounded,
-                  size: 13, color: AppColors.inkFaint),
+              const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 13,
+                color: AppColors.inkFaint,
+              ),
             ],
           ),
         ),

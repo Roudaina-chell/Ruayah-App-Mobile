@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../core/widgets/confirm_dialog.dart';
+import '../../../core/widgets/empty_state.dart';
+import '../../../core/utils/page_transitions.dart';
 import '../../../models/program.dart';
 import '../../../services/program_service.dart';
 import 'program_form_screen.dart';
@@ -12,27 +17,23 @@ class AdminProgramsScreen extends StatelessWidget {
     final service = ProgramService();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.parchment,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.ink),
+        iconTheme: const IconThemeData(color: AppColors.ink),
         title: Text(
           'إدارة البرامج العلاجية',
-          style: TextStyle(
-            color: AppColors.ink,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: AppTextStyles.heading(size: 16),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: AppColors.teal),
+            icon: const Icon(Icons.add_rounded, color: AppColors.teal),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ProgramFormScreen()),
-              );
+              Navigator.of(
+                context,
+              ).push(AppPageRoute(builder: (_) => const ProgramFormScreen()));
             },
           ),
         ],
@@ -42,7 +43,7 @@ class AdminProgramsScreen extends StatelessWidget {
           stream: service.allPrograms(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(color: AppColors.teal),
               );
             }
@@ -50,15 +51,9 @@ class AdminProgramsScreen extends StatelessWidget {
             final programs = snapshot.data ?? [];
 
             if (programs.isEmpty) {
-              return Center(
-                child: Text(
-                  'لا توجد برامج بعد. اضغط + لإضافة برنامج.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.ink.withValues(alpha: 0.4),
-                    fontSize: 14,
-                  ),
-                ),
+              return const EmptyState(
+                icon: Icons.menu_book_outlined,
+                message: 'لا توجد برامج بعد. اضغط + لإضافة برنامج.',
               );
             }
 
@@ -85,25 +80,14 @@ class _AdminProgramTile extends StatelessWidget {
   const _AdminProgramTile({required this.program, required this.service});
 
   Future<void> _confirmDelete(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('حذف البرنامج'),
-        content: Text('هل أنت متأكد من حذف "${program.title}"؟'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('إلغاء'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+    final confirmed = await showConfirmDialog(
+      context,
+      title: 'حذف البرنامج',
+      message: 'هل أنت متأكد من حذف "${program.title}"؟',
+      confirmLabel: 'حذف',
     );
 
-    if (confirmed == true) {
+    if (confirmed) {
       await service.deleteProgram(program.id);
     }
   }
@@ -112,51 +96,44 @@ class _AdminProgramTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF7F9FB),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: AppDecorations.card(radius: 18),
       child: Row(
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  program.title,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
-                  ),
-                ),
+                Text(program.title, style: AppTextStyles.cardTitle),
                 const SizedBox(height: 3),
                 Text(
                   program.shortDescription,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    color: AppColors.ink.withValues(alpha: 0.45),
-                  ),
+                  style: AppTextStyles.cardSubtitle,
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: Icon(Icons.edit_outlined,
-                color: AppColors.ink.withValues(alpha: 0.6), size: 20),
+            icon: const Icon(
+              Icons.edit_outlined,
+              color: AppColors.inkMuted,
+              size: 20,
+            ),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
+                AppPageRoute(
                   builder: (_) => ProgramFormScreen(program: program),
                 ),
               );
             },
           ),
           IconButton(
-            icon: const Icon(Icons.delete_outline,
-                color: Color(0xFFE53935), size: 20),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              color: AppColors.danger,
+              size: 20,
+            ),
             onPressed: () => _confirmDelete(context),
           ),
         ],
