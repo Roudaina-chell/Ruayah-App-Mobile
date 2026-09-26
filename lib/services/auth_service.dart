@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/app_user.dart';
@@ -82,5 +81,39 @@ class AuthService {
     if (!doc.exists) return null;
 
     return AppUser.fromMap(uid, doc.data()!);
+  }
+
+  /// تحديث المعلومات الشخصية (الاسم، اللقب، الهاتف)
+  Future<void> updateProfile({
+    required String firstName,
+    required String lastName,
+    required String phone,
+  }) async {
+    final uid = _auth.currentUser?.uid;
+    if (uid == null) throw Exception('لا يوجد مستخدم مسجل الدخول');
+
+    await _firestore.collection('users').doc(uid).update({
+      'firstName': firstName.trim(),
+      'lastName': lastName.trim(),
+      'phone': phone.trim(),
+    });
+  }
+
+  /// تغيير كلمة المرور (يتطلب إعادة مصادقة بكلمة المرور الحالية)
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null || user.email == null) {
+      throw Exception('لا يوجد مستخدم مسجل الدخول');
+    }
+
+    final credential = EmailAuthProvider.credential(
+      email: user.email!,
+      password: currentPassword,
+    );
+    await user.reauthenticateWithCredential(credential);
+    await user.updatePassword(newPassword);
   }
 }

@@ -10,6 +10,7 @@ import 'appointments/appointments_screen.dart';
 import 'programs/programs_screen.dart';
 import 'ruqyahs/ruqyahs_screen.dart';
 import 'cases/cases_screen.dart';
+import 'profile/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -23,7 +24,9 @@ class _MainNavigationState extends State<MainNavigation> {
   final AppointmentService _appointmentService = AppointmentService();
 
   late final List<Widget> _pages = [
-    HomeScreen(onOpenAppointments: () => setState(() => _currentIndex = 3)),
+    HomeScreen(
+      onOpenAppointments: () => setState(() => _currentIndex = 3),
+    ),
     const ProgramsScreen(),
     const RuqyahsScreen(),
     const AppointmentsScreen(),
@@ -72,12 +75,11 @@ class _MainNavigationState extends State<MainNavigation> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(
-                    Icons.person_outline_rounded,
-                    color: AppColors.ink,
-                  ),
+                  icon: const Icon(Icons.person_outline_rounded, color: AppColors.ink),
                   onPressed: () {
-                    // سنربطها بصفحة Profile لاحقًا
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                    );
                   },
                 ),
                 IconButton(
@@ -86,16 +88,17 @@ class _MainNavigationState extends State<MainNavigation> {
                 ),
               ],
             ),
-      body: IndexedStack(index: _currentIndex, children: _pages),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: StreamBuilder<List<Appointment>>(
         stream: _appointmentService.myAppointments(),
         builder: (context, snapshot) {
           final appointments = snapshot.data ?? [];
-          final hasUnseenUpdate = appointments.any(
-            (a) =>
-                !a.seenByClient &&
-                (a.status == 'confirmed' || a.status == 'cancelled'),
-          );
+          final hasUnseenUpdate = appointments.any((a) =>
+              !a.seenByClient &&
+              (a.status == 'confirmed' || a.status == 'cancelled'));
 
           return SafeArea(
             child: Padding(
@@ -106,9 +109,7 @@ class _MainNavigationState extends State<MainNavigation> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(26),
-                  border: Border.all(
-                    color: AppColors.teal.withValues(alpha: 0.06),
-                  ),
+                  border: Border.all(color: AppColors.teal.withValues(alpha: 0.06)),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.tealDeep.withValues(alpha: 0.1),
@@ -160,9 +161,7 @@ class _MainNavigationState extends State<MainNavigation> {
                                           color: AppColors.gold,
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                            color: AppColors.surface,
-                                            width: 1.5,
-                                          ),
+                                              color: AppColors.surface, width: 1.5),
                                         ),
                                       ),
                                     ),

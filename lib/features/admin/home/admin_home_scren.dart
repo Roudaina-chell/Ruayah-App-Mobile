@@ -7,6 +7,7 @@ import '../../../models/appointment.dart';
 import '../../../services/appointment_service.dart';
 import '../../../services/auth_service.dart';
 import '../../auth/login_screen.dart';
+import '../profile/admin_profile_screen.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   final VoidCallback onOpenPrograms;
@@ -45,15 +46,9 @@ class AdminHomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.teal.withValues(alpha: 0.08),
-                          ),
+                          border: Border.all(color: AppColors.teal.withValues(alpha: 0.08)),
                         ),
-                        child: const Icon(
-                          Icons.menu,
-                          color: AppColors.ink,
-                          size: 20,
-                        ),
+                        child: const Icon(Icons.menu, color: AppColors.ink, size: 20),
                       ),
                     ),
                   ),
@@ -64,9 +59,7 @@ class AdminHomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(13),
-                      border: Border.all(
-                        color: AppColors.teal.withValues(alpha: 0.15),
-                      ),
+                      border: Border.all(color: AppColors.teal.withValues(alpha: 0.15)),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(11),
@@ -100,27 +93,15 @@ class AdminHomeScreen extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      const GeometricPatternBackground(
-                        color: Colors.white,
-                        opacity: 0.07,
-                      ),
+                      const GeometricPatternBackground(color: Colors.white, opacity: 0.07),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'مرحبًا بك، محمد الراقي',
-                            style: AppTextStyles.displaySmall(
-                              color: Colors.white,
-                              size: 19,
-                            ),
-                          ),
+                          Text('مرحبًا بك، محمد الراقي', style: AppTextStyles.displaySmall(color: Colors.white, size: 19)),
                           const SizedBox(height: 5),
                           Text(
                             'إليك ملخص نشاط التطبيق اليوم',
-                            style: AppTextStyles.body(
-                              color: Colors.white.withValues(alpha: 0.82),
-                              size: 12.5,
-                            ),
+                            style: AppTextStyles.body(color: Colors.white.withValues(alpha: 0.82), size: 12.5),
                           ),
                         ],
                       ),
@@ -147,12 +128,9 @@ class AdminHomeScreen extends StatelessWidget {
                           return StreamBuilder<List<Appointment>>(
                             stream: appointmentService.allAppointments(),
                             builder: (context, apptSnap) {
-                              final usersCount =
-                                  usersSnap.data?.docs.length ?? 0;
-                              final programsCount =
-                                  programsSnap.data?.docs.length ?? 0;
-                              final ruqyahsCount =
-                                  ruqyahsSnap.data?.docs.length ?? 0;
+                              final usersCount = usersSnap.data?.docs.length ?? 0;
+                              final programsCount = programsSnap.data?.docs.length ?? 0;
+                              final ruqyahsCount = ruqyahsSnap.data?.docs.length ?? 0;
                               final pendingCount = (apptSnap.data ?? [])
                                   .where((a) => a.status == 'pending')
                                   .length;
@@ -211,13 +189,7 @@ class AdminHomeScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: onOpenAppointments,
-                    child: Text(
-                      'عرض الكل',
-                      style: AppTextStyles.label(
-                        color: AppColors.goldDeep,
-                        size: 13,
-                      ),
-                    ),
+                    child: Text('عرض الكل', style: AppTextStyles.label(color: AppColors.goldDeep, size: 13)),
                   ),
                 ],
               ),
@@ -229,9 +201,7 @@ class AdminHomeScreen extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Center(
-                        child: CircularProgressIndicator(color: AppColors.teal),
-                      ),
+                      child: Center(child: CircularProgressIndicator(color: AppColors.teal)),
                     );
                   }
 
@@ -243,10 +213,7 @@ class AdminHomeScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'لا توجد طلبات حتى الآن.',
-                          style: AppTextStyles.body(
-                            color: AppColors.inkFaint,
-                            size: 13,
-                          ),
+                          style: AppTextStyles.body(color: AppColors.inkFaint, size: 13),
                         ),
                       ),
                     );
@@ -254,12 +221,10 @@ class AdminHomeScreen extends StatelessWidget {
 
                   return Column(
                     children: appointments
-                        .map(
-                          (a) => Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: _RecentRequestTile(appointment: a),
-                          ),
-                        )
+                        .map((a) => Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: _RecentRequestTile(appointment: a),
+                            ))
                         .toList(),
                   );
                 },
@@ -303,9 +268,7 @@ class _StatCard extends StatelessWidget {
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: highlight
-                  ? color.withValues(alpha: 0.45)
-                  : AppColors.teal.withValues(alpha: 0.07),
+              color: highlight ? color.withValues(alpha: 0.45) : AppColors.teal.withValues(alpha: 0.07),
               width: highlight ? 1.4 : 1,
             ),
             boxShadow: [
@@ -353,23 +316,11 @@ class _RecentRequestTile extends StatelessWidget {
   Map<String, dynamic> get _statusInfo {
     switch (appointment.status) {
       case 'confirmed':
-        return {
-          'label': 'مؤكد',
-          'color': AppColors.success,
-          'bg': AppColors.successSoft,
-        };
+        return {'label': 'مؤكد', 'color': AppColors.success, 'bg': AppColors.successSoft};
       case 'cancelled':
-        return {
-          'label': 'ملغى',
-          'color': AppColors.danger,
-          'bg': AppColors.dangerSoft,
-        };
+        return {'label': 'ملغى', 'color': AppColors.danger, 'bg': AppColors.dangerSoft};
       default:
-        return {
-          'label': 'معلق',
-          'color': AppColors.pending,
-          'bg': AppColors.pendingSoft,
-        };
+        return {'label': 'معلق', 'color': AppColors.pending, 'bg': AppColors.pendingSoft};
     }
   }
 
@@ -377,8 +328,7 @@ class _RecentRequestTile extends StatelessWidget {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 
-  String get _initial =>
-      appointment.userName.isNotEmpty ? appointment.userName[0] : '؟';
+  String get _initial => appointment.userName.isNotEmpty ? appointment.userName[0] : '؟';
 
   @override
   Widget build(BuildContext context) {
@@ -396,15 +346,9 @@ class _RecentRequestTile extends StatelessWidget {
           Container(
             width: 42,
             height: 42,
-            decoration: const BoxDecoration(
-              color: AppColors.tealSoft,
-              shape: BoxShape.circle,
-            ),
+            decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
             child: Center(
-              child: Text(
-                _initial,
-                style: AppTextStyles.heading(color: AppColors.teal, size: 15),
-              ),
+              child: Text(_initial, style: AppTextStyles.heading(color: AppColors.teal, size: 15)),
             ),
           ),
           const SizedBox(width: 12),
@@ -422,30 +366,15 @@ class _RecentRequestTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: status['bg'],
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(color: status['bg'], borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   status['label'],
-                  style: AppTextStyles.label(
-                    color: status['color'],
-                    size: 11,
-                  ).copyWith(fontWeight: FontWeight.w800),
+                  style: AppTextStyles.label(color: status['color'], size: 11).copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const SizedBox(height: 6),
-              Text(
-                _formatDate(appointment.createdAt),
-                style: AppTextStyles.label(
-                  color: AppColors.inkFaint,
-                  size: 10.5,
-                ),
-              ),
+              Text(_formatDate(appointment.createdAt), style: AppTextStyles.label(color: AppColors.inkFaint, size: 10.5)),
             ],
           ),
         ],
@@ -469,9 +398,7 @@ class _AdminDrawer extends StatelessWidget {
                 padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(19),
-                  border: Border.all(
-                    color: AppColors.teal.withValues(alpha: 0.15),
-                  ),
+                  border: Border.all(color: AppColors.teal.withValues(alpha: 0.15)),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -485,26 +412,18 @@ class _AdminDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.person_outline_rounded,
-                color: AppColors.ink,
-              ),
-              title: Text(
-                'الملف الشخصي',
-                style: AppTextStyles.body(size: 14.5),
-              ),
-              onTap: () {},
+              leading: const Icon(Icons.person_outline_rounded, color: AppColors.ink),
+              title: Text('الملف الشخصي', style: AppTextStyles.body(size: 14.5)),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const AdminProfileScreen()),
+                );
+              },
             ),
             const Spacer(),
             ListTile(
-              leading: const Icon(
-                Icons.logout_rounded,
-                color: AppColors.danger,
-              ),
-              title: Text(
-                'تسجيل الخروج',
-                style: AppTextStyles.body(color: AppColors.danger, size: 14.5),
-              ),
+              leading: const Icon(Icons.logout_rounded, color: AppColors.danger),
+              title: Text('تسجيل الخروج', style: AppTextStyles.body(color: AppColors.danger, size: 14.5)),
               onTap: () async {
                 await AuthService().logout();
                 if (context.mounted) {

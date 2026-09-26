@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
+/// A labeled, boxed field for admin data-entry forms (programs,
+/// ruqyahs). Distinct on purpose from the underline style used on
+/// the auth screens — forms feel like forms, auth feels lighter.
 class AppTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final String hint;
   final int maxLines;
+  final bool obscureText;
+  final TextInputType? keyboardType;
 
   const AppTextField({
     super.key,
@@ -14,6 +19,8 @@ class AppTextField extends StatelessWidget {
     required this.controller,
     required this.hint,
     this.maxLines = 1,
+    this.obscureText = false,
+    this.keyboardType,
   });
 
   @override
@@ -27,10 +34,15 @@ class AppTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Container(
-          decoration: BoxDecoration(color: AppColors.parchment, borderRadius: BorderRadius.circular(14)),
+          decoration: BoxDecoration(
+            color: AppColors.parchment,
+            borderRadius: BorderRadius.circular(14),
+          ),
           child: TextField(
             controller: controller,
-            maxLines: maxLines,
+            maxLines: obscureText ? 1 : maxLines,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
             textAlign: TextAlign.right,
             style: AppTextStyles.body(size: 14.5),
             decoration: InputDecoration(
