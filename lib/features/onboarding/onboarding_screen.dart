@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/theme/app_decorations.dart';
+import '../../core/widgets/geometric_pattern.dart';
 import '../auth/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -14,12 +15,6 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _pageController = PageController();
   int _currentPage = 0;
-
-  // Sampled directly from the onboarding artwork's plain beige/cream area
-  // (averaged across several clean regions of the image) so the page
-  // background blends seamlessly with the bottom of the banner image,
-  // with no visible seam or color boundary.
-  static const Color _imageBackdropBeige = Color(0xFFF8F2E6);
 
   @override
   void dispose() {
@@ -46,15 +41,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Responsive image height so the full logo/banner fits, clamped so it
-    // stays reasonable on short phones and large desktop/web screens.
-    final screenHeight = MediaQuery.of(context).size.height;
-    final imageHeight = (screenHeight * 0.48).clamp(300.0, 420.0);
+    final heroHeight = MediaQuery.of(context).size.height * 0.36;
 
     return Scaffold(
-      // Matched exactly to the beige/cream tone in the artwork so the image
-      // and the page background read as one continuous surface.
-      backgroundColor: _imageBackdropBeige,
+      backgroundColor: AppColors.parchment,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -65,15 +55,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onPageChanged: (i) => setState(() => _currentPage = i),
                 children: [
                   _OnboardingPage(
-                    imagePath: 'assets/images/onboarding_1.jpg',
-                    imageHeight: imageHeight,
+                    heroHeight: heroHeight,
+                    heroIcon: Icons.menu_book_rounded,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           'مرحباً بك',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.displaySmall(size: 26),
+                          style: AppTextStyles.displaySmall(size: 27),
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -92,8 +82,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   _OnboardingPage(
-                    imagePath: 'assets/images/onboarding_2.jpg',
-                    imageHeight: imageHeight,
+                    heroHeight: heroHeight,
+                    heroIcon: Icons.auto_awesome_rounded,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -109,7 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           style: AppTextStyles.body(color: AppColors.inkMuted, size: 13)
                               .copyWith(height: 1.6),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 22),
                         Row(
                           children: [
                             Expanded(
@@ -225,13 +215,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingPage extends StatelessWidget {
-  final String imagePath;
-  final double imageHeight;
+  final double heroHeight;
+  final IconData heroIcon;
   final Widget child;
 
   const _OnboardingPage({
-    required this.imagePath,
-    required this.imageHeight,
+    required this.heroHeight,
+    required this.heroIcon,
     required this.child,
   });
 
@@ -242,32 +232,166 @@ class _OnboardingPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Top gap so the image section sits a bit lower instead of
-          // touching the very top edge of the screen.
-          const SizedBox(height: 22),
           ClipRRect(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(32),
               bottomRight: Radius.circular(32),
             ),
-            child: Image.asset(
-              imagePath,
-              height: imageHeight,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              // Anchors the crop to the top of the source image so the logo
-              // and decorative elements at the top are never cut off.
-              alignment: Alignment.topCenter,
+            child: Container(
+              height: heroHeight,
+              decoration: const BoxDecoration(gradient: AppColors.heroGradient),
+              child: Stack(
+                children: [
+                  const GeometricPatternBackground(
+                    color: Colors.white,
+                    opacity: 0.16,
+                  ),
+                  // inset ornamental frame
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(14, 14, 14, 22),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(22),
+                            bottomRight: Radius.circular(22),
+                          ),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.28),
+                            width: 1.2,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // corner star flourishes
+                  const Positioned(top: 22, left: 26, child: _CornerStar()),
+                  const Positioned(top: 22, right: 26, child: _CornerStar()),
+                  // simple lanterns
+                  const Positioned(top: 4, left: 44, child: _MiniLantern()),
+                  const Positioned(top: 4, right: 44, child: _MiniLantern()),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 96,
+                          height: 96,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 96,
+                                height: 96,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white.withValues(alpha: 0.08),
+                                ),
+                              ),
+                              Container(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: AppColors.goldGradient,
+                                  border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.3),
+                                    width: 1.2,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.gold.withValues(alpha: 0.35),
+                                      blurRadius: 18,
+                                      offset: const Offset(0, 8),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(heroIcon, color: Colors.white, size: 32),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text('محمد الراقي', style: AppTextStyles.display(size: 24)),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(width: 26, height: 1, color: AppColors.gold.withValues(alpha: 0.6)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Icon(Icons.star_rounded, size: 12, color: AppColors.gold),
+                            ),
+                            Container(width: 26, height: 1, color: AppColors.gold.withValues(alpha: 0.6)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
-            // Extra top padding for a clean gap between the image and the
-            // text section below it.
-            padding: const EdgeInsets.fromLTRB(24, 30, 24, 4),
+            padding: const EdgeInsets.fromLTRB(24, 26, 24, 4),
             child: child,
           ),
         ],
       ),
+    );
+  }
+}
+
+class _CornerStar extends StatelessWidget {
+  const _CornerStar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(Icons.star_rounded, size: 16, color: AppColors.gold.withValues(alpha: 0.55));
+  }
+}
+
+class _MiniLantern extends StatelessWidget {
+  const _MiniLantern();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(width: 1.2, height: 16, color: Colors.white.withValues(alpha: 0.35)),
+        Container(
+          width: 22,
+          height: 30,
+          decoration: BoxDecoration(
+            color: AppColors.gold.withValues(alpha: 0.9),
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.gold.withValues(alpha: 0.55),
+                blurRadius: 16,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 10,
+              height: 18,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.55),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 1),
+          width: 5,
+          height: 5,
+          decoration: BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
+        ),
+      ],
     );
   }
 }
