@@ -21,19 +21,16 @@ class AdminRuqyahsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
-        title: Text(
-          'إدارة الرقيات المسموعة',
-          style: AppTextStyles.heading(size: 16),
-        ),
+        iconTheme: IconThemeData(color: AppColors.ink),
+        title: Text('إدارة الرقيات المسموعة', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded, color: AppColors.teal),
+            icon: Icon(Icons.add_rounded, color: AppColors.teal),
             onPressed: () {
-              Navigator.of(
-                context,
-              ).push(AppPageRoute(builder: (_) => const RuqyahFormScreen()));
+              Navigator.of(context).push(
+                AppPageRoute(builder: (_) => const RuqyahFormScreen()),
+              );
             },
           ),
         ],
@@ -99,26 +96,19 @@ class _AdminRuqyahTile extends StatelessWidget {
             width: 42,
             height: 42,
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: AppColors.plumSoft,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: AppColors.plumSoft, shape: BoxShape.circle),
             child: Icon(
-              isYoutube
-                  ? Icons.smart_display_rounded
-                  : Icons.music_note_rounded,
+              isYoutube ? Icons.smart_display_rounded : Icons.music_note_rounded,
               color: AppColors.plum,
               size: 20,
             ),
           ),
           const SizedBox(width: 12),
-          Expanded(child: Text(ruqyah.title, style: AppTextStyles.cardTitle)),
+          Expanded(
+            child: Text(ruqyah.title, style: AppTextStyles.cardTitle),
+          ),
           IconButton(
-            icon: const Icon(
-              Icons.delete_outline_rounded,
-              color: AppColors.danger,
-              size: 20,
-            ),
+            icon: Icon(Icons.delete_outline_rounded, color: AppColors.danger, size: 20),
             onPressed: () => _confirmDelete(context),
           ),
         ],

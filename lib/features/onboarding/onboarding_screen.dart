@@ -239,7 +239,7 @@ class _OnboardingPage extends StatelessWidget {
             ),
             child: Container(
               height: heroHeight,
-              decoration: const BoxDecoration(gradient: AppColors.heroGradient),
+              decoration: BoxDecoration(gradient: AppColors.heroGradient),
               child: Stack(
                 children: [
                   const GeometricPatternBackground(
@@ -417,7 +417,7 @@ class _ServiceItem extends StatelessWidget {
             width: 46,
             height: 46,
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.tealSoft,
               shape: BoxShape.circle,
             ),

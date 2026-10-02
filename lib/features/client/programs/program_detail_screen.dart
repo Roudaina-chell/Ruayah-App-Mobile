@@ -30,20 +30,15 @@ class ProgramDetailScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
-                    size: 17,
-                  ),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white, size: 17),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: const BoxDecoration(
-                  gradient: AppColors.heroGradient,
-                ),
+                decoration: BoxDecoration(gradient: AppColors.heroGradient),
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -67,9 +62,7 @@ class ProgramDetailScreen extends StatelessWidget {
                                     height: 108,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.white.withValues(
-                                        alpha: 0.08,
-                                      ),
+                                      color: Colors.white.withValues(alpha: 0.08),
                                     ),
                                   ),
                                   Container(
@@ -79,26 +72,19 @@ class ProgramDetailScreen extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       gradient: AppColors.goldGradient,
                                       border: Border.all(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.3,
-                                        ),
+                                        color: Colors.white.withValues(alpha: 0.3),
                                         width: 1.2,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.gold.withValues(
-                                            alpha: 0.4,
-                                          ),
+                                          color: AppColors.gold.withValues(alpha: 0.4),
                                           blurRadius: 20,
                                           offset: const Offset(0, 8),
                                         ),
                                       ],
                                     ),
-                                    child: const Icon(
-                                      Icons.menu_book_rounded,
-                                      color: Colors.white,
-                                      size: 36,
-                                    ),
+                                    child: const Icon(Icons.menu_book_rounded,
+                                        color: Colors.white, size: 36),
                                   ),
                                 ],
                               ),
@@ -116,7 +102,7 @@ class ProgramDetailScreen extends StatelessWidget {
             child: Transform.translate(
               offset: const Offset(0, -30),
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 ),
@@ -127,10 +113,7 @@ class ProgramDetailScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: AppColors.goldSoft,
                           borderRadius: BorderRadius.circular(20),
@@ -138,11 +121,8 @@ class ProgramDetailScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
-                              Icons.auto_awesome_rounded,
-                              size: 13,
-                              color: AppColors.goldDeep,
-                            ),
+                            Icon(Icons.auto_awesome_rounded,
+                                size: 13, color: AppColors.goldDeep),
                             const SizedBox(width: 5),
                             Text(
                               'برنامج علاجي',
@@ -172,11 +152,8 @@ class ProgramDetailScreen extends StatelessWidget {
 
                     Row(
                       children: [
-                        const Icon(
-                          Icons.format_quote_rounded,
-                          color: AppColors.gold,
-                          size: 22,
-                        ),
+                        Icon(Icons.format_quote_rounded,
+                            color: AppColors.gold, size: 22),
                         const SizedBox(width: 8),
                         Text('محتوى البرنامج', style: AppTextStyles.heading()),
                       ],
@@ -234,11 +211,8 @@ class ProgramDetailScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white,
-                                  size: 14,
-                                ),
+                                const Icon(Icons.arrow_forward_ios_rounded,
+                                    color: Colors.white, size: 14),
                                 const SizedBox(width: 8),
                                 Text('رجوع', style: AppTextStyles.button()),
                               ],

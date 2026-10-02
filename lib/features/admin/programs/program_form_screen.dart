@@ -28,12 +28,9 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.program?.title ?? '');
-    _shortDescController = TextEditingController(
-      text: widget.program?.shortDescription ?? '',
-    );
-    _contentController = TextEditingController(
-      text: widget.program?.content ?? '',
-    );
+    _shortDescController =
+        TextEditingController(text: widget.program?.shortDescription ?? '');
+    _contentController = TextEditingController(text: widget.program?.content ?? '');
   }
 
   @override
@@ -51,9 +48,7 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
 
     if (title.isEmpty || shortDesc.isEmpty || content.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('الرجاء ملء جميع الحقول', textAlign: TextAlign.right),
-        ),
+        SnackBar(content: Text('الرجاء ملء جميع الحقول', textAlign: TextAlign.right)),
       );
       return;
     }
@@ -81,9 +76,7 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
-        ),
+        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -97,11 +90,8 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
-        title: Text(
-          _isEditing ? 'تعديل البرنامج' : 'إضافة برنامج',
-          style: AppTextStyles.heading(size: 16),
-        ),
+        iconTheme: IconThemeData(color: AppColors.ink),
+        title: Text(_isEditing ? 'تعديل البرنامج' : 'إضافة برنامج', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -148,9 +138,7 @@ class _ProgramFormScreenState extends State<ProgramFormScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
                           : Text(

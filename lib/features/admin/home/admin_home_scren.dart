@@ -48,7 +48,7 @@ class AdminHomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: AppColors.teal.withValues(alpha: 0.08)),
                         ),
-                        child: const Icon(Icons.menu, color: AppColors.ink, size: 20),
+                        child: Icon(Icons.menu, color: AppColors.ink, size: 20),
                       ),
                     ),
                   ),
@@ -346,7 +346,7 @@ class _RecentRequestTile extends StatelessWidget {
           Container(
             width: 42,
             height: 42,
-            decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
+            decoration: BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
             child: Center(
               child: Text(_initial, style: AppTextStyles.heading(color: AppColors.teal, size: 15)),
             ),
@@ -412,7 +412,7 @@ class _AdminDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.person_outline_rounded, color: AppColors.ink),
+              leading: Icon(Icons.person_outline_rounded, color: AppColors.ink),
               title: Text('الملف الشخصي', style: AppTextStyles.body(size: 14.5)),
               onTap: () {
                 Navigator.of(context).push(
@@ -422,7 +422,7 @@ class _AdminDrawer extends StatelessWidget {
             ),
             const Spacer(),
             ListTile(
-              leading: const Icon(Icons.logout_rounded, color: AppColors.danger),
+              leading: Icon(Icons.logout_rounded, color: AppColors.danger),
               title: Text('تسجيل الخروج', style: AppTextStyles.body(color: AppColors.danger, size: 14.5)),
               onTap: () async {
                 await AuthService().logout();

@@ -86,7 +86,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Column(
           children: [
             Text(
@@ -137,7 +137,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                       Container(
                         width: 42,
                         height: 42,
-                        decoration: const BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: AppColors.teal, shape: BoxShape.circle),
                         child: IconButton(
                           icon: const Icon(Icons.check_rounded, color: Colors.white, size: 18),
                           onPressed: _saveDiagnosis,
@@ -162,7 +162,7 @@ class _AdminCaseDetailScreenState extends State<AdminCaseDetailScreen> {
                 stream: _caseService.entries(widget.patientCase.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator(color: AppColors.teal));
+                    return Center(child: CircularProgressIndicator(color: AppColors.teal));
                   }
 
                   final entries = snapshot.data ?? [];
@@ -275,8 +275,8 @@ class _EntryCard extends StatelessWidget {
               height: 28,
               alignment: Alignment.center,
               margin: const EdgeInsets.only(right: 8),
-              decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
-              child: const Icon(Icons.person_outline_rounded, size: 14, color: AppColors.teal),
+              decoration: BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
+              child: Icon(Icons.person_outline_rounded, size: 14, color: AppColors.teal),
             ),
           ],
           Flexible(

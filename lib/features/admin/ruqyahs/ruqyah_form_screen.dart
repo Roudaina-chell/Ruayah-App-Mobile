@@ -68,8 +68,7 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
           youtubeUrl: _youtubeController.text.trim(),
         );
       } else {
-        final fileName =
-            '${DateTime.now().millisecondsSinceEpoch}_$_pickedFileName';
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_$_pickedFileName';
         final url = await _service.uploadAudioFile(_pickedFile!, fileName);
         await _service.addAudioRuqyah(title: title, audioUrl: url);
       }
@@ -97,7 +96,7 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('إضافة رقية', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
       ),
@@ -117,10 +116,7 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
 
               Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  'نوع الرقية',
-                  style: AppTextStyles.label(color: AppColors.ink, size: 13),
-                ),
+                child: Text('نوع الرقية', style: AppTextStyles.label(color: AppColors.ink, size: 13)),
               ),
               const SizedBox(height: 10),
               Row(
@@ -156,10 +152,7 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
               ] else ...[
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    'الملف الصوتي',
-                    style: AppTextStyles.label(color: AppColors.ink, size: 13),
-                  ),
+                  child: Text('الملف الصوتي', style: AppTextStyles.label(color: AppColors.ink, size: 13)),
                 ),
                 const SizedBox(height: 8),
                 Material(
@@ -180,18 +173,13 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(
-                            Icons.upload_file_outlined,
-                            color: AppColors.teal,
-                          ),
+                          Icon(Icons.upload_file_outlined, color: AppColors.teal),
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               _pickedFileName ?? 'اختيار ملف صوتي من الهاتف',
                               style: AppTextStyles.body(
-                                color: _pickedFileName != null
-                                    ? AppColors.ink
-                                    : AppColors.inkFaint,
+                                color: _pickedFileName != null ? AppColors.ink : AppColors.inkFaint,
                                 size: 13.5,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -221,15 +209,10 @@ class _RuqyahFormScreenState extends State<RuqyahFormScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : Text(
-                              'حفظ الرقية',
-                              style: AppTextStyles.button(size: 15),
-                            ),
+                          : Text('حفظ الرقية', style: AppTextStyles.button(size: 15)),
                     ),
                   ),
                 ),

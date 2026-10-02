@@ -21,7 +21,7 @@ class AdminDashboardScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout_rounded, color: AppColors.ink),
+            icon: Icon(Icons.logout_rounded, color: AppColors.ink),
             onPressed: () async {
               await AuthService().logout();
               if (context.mounted) {
@@ -112,7 +112,7 @@ class _ActionTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.arrow_back_ios_new_rounded, size: 15, color: AppColors.inkFaint),
+              Icon(Icons.arrow_back_ios_new_rounded, size: 15, color: AppColors.inkFaint),
             ],
           ),
         ),

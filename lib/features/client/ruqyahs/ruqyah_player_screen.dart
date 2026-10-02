@@ -105,7 +105,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -114,10 +114,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
         ),
         child: Stack(
           children: [
-            const GeometricPatternBackground(
-              color: Colors.white,
-              opacity: 0.06,
-            ),
+            const GeometricPatternBackground(color: Colors.white, opacity: 0.06),
             SafeArea(
               child: Column(
                 children: [
@@ -131,11 +128,8 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: Colors.white,
-                              size: 26,
-                            ),
+                            icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                                color: Colors.white, size: 26),
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                         ),
@@ -153,7 +147,9 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       ],
                     ),
                   ),
-                  Expanded(child: _isYoutube ? _buildYoutube() : _buildAudio()),
+                  Expanded(
+                    child: _isYoutube ? _buildYoutube() : _buildAudio(),
+                  ),
                 ],
               ),
             ),
@@ -243,10 +239,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: AppColors.goldGradient,
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 1.2,
-              ),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.2),
               boxShadow: [
                 BoxShadow(
                   color: AppColors.gold.withValues(alpha: 0.35),
@@ -255,11 +248,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                 ),
               ],
             ),
-            child: const Icon(
-              Icons.headphones_rounded,
-              color: Colors.white,
-              size: 58,
-            ),
+            child: const Icon(Icons.headphones_rounded, color: Colors.white, size: 58),
           ),
         ),
         const SizedBox(height: 30),
@@ -291,12 +280,8 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       trackHeight: 3.5,
-                      thumbShape: const RoundSliderThumbShape(
-                        enabledThumbRadius: 7,
-                      ),
-                      overlayShape: const RoundSliderOverlayShape(
-                        overlayRadius: 14,
-                      ),
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
                       thumbColor: AppColors.gold,
                       activeTrackColor: AppColors.gold,
                       inactiveTrackColor: Colors.white.withValues(alpha: 0.22),
@@ -307,16 +292,11 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       max: _duration.inSeconds.toDouble() > 0
                           ? _duration.inSeconds.toDouble()
                           : 1,
-                      value: _position.inSeconds.toDouble().clamp(
-                        0,
-                        _duration.inSeconds.toDouble() > 0
-                            ? _duration.inSeconds.toDouble()
-                            : 1,
-                      ),
+                      value: _position.inSeconds
+                          .toDouble()
+                          .clamp(0, _duration.inSeconds.toDouble() > 0 ? _duration.inSeconds.toDouble() : 1),
                       onChanged: (value) async {
-                        await _audioPlayer.seek(
-                          Duration(seconds: value.toInt()),
-                        );
+                        await _audioPlayer.seek(Duration(seconds: value.toInt()));
                       },
                     ),
                   ),
@@ -325,20 +305,12 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          _formatDuration(_position),
-                          style: AppTextStyles.label(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            size: 12,
-                          ),
-                        ),
-                        Text(
-                          _formatDuration(_duration),
-                          style: AppTextStyles.label(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            size: 12,
-                          ),
-                        ),
+                        Text(_formatDuration(_position),
+                            style: AppTextStyles.label(
+                                color: Colors.white.withValues(alpha: 0.7), size: 12)),
+                        Text(_formatDuration(_duration),
+                            style: AppTextStyles.label(
+                                color: Colors.white.withValues(alpha: 0.7), size: 12)),
                       ],
                     ),
                   ),
@@ -347,11 +319,8 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(
-                          Icons.replay_10_rounded,
-                          color: Colors.white.withValues(alpha: 0.8),
-                          size: 28,
-                        ),
+                        icon: Icon(Icons.replay_10_rounded,
+                            color: Colors.white.withValues(alpha: 0.8), size: 28),
                         onPressed: () => _seekBy(-10),
                       ),
                       const SizedBox(width: 22),
@@ -371,9 +340,7 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                         ),
                         child: IconButton(
                           icon: Icon(
-                            _isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
+                            _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                             color: AppColors.tealDeep,
                             size: 36,
                           ),
@@ -382,11 +349,8 @@ class _RuqyahPlayerScreenState extends State<RuqyahPlayerScreen>
                       ),
                       const SizedBox(width: 22),
                       IconButton(
-                        icon: Icon(
-                          Icons.forward_10_rounded,
-                          color: Colors.white.withValues(alpha: 0.8),
-                          size: 28,
-                        ),
+                        icon: Icon(Icons.forward_10_rounded,
+                            color: Colors.white.withValues(alpha: 0.8), size: 28),
                         onPressed: () => _seekBy(10),
                       ),
                     ],

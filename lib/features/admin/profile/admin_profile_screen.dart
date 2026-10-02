@@ -136,13 +136,13 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('الملف الشخصي', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
       body: SafeArea(
         child: _loadingProfile
-            ? const Center(child: CircularProgressIndicator(color: AppColors.teal))
+            ? Center(child: CircularProgressIndicator(color: AppColors.teal))
             : SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(
@@ -168,6 +168,34 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 28),
+
+                    ValueListenableBuilder<bool>(
+                      valueListenable: AppColors.darkModeNotifier,
+                      builder: (context, isDark, _) {
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: AppDecorations.card(radius: 18),
+                          child: Row(
+                            children: [
+                              Icon(
+                                isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                                color: AppColors.teal,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text('الوضع الليلي', style: AppTextStyles.heading(size: 14.5)),
+                              ),
+                              Switch(
+                                value: isDark,
+                                activeColor: AppColors.teal,
+                                onChanged: (v) => AppColors.darkModeNotifier.value = v,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
 
                     Align(
                       alignment: Alignment.centerRight,

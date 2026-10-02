@@ -55,10 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final appUser = await _authService.login(
-        phone: phone,
-        password: password,
-      );
+      final appUser =
+          await _authService.login(phone: phone, password: password);
 
       if (!mounted) return;
 
@@ -156,7 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       onSuffixTap: () {
-                        setState(() => _obscurePassword = !_obscurePassword);
+                        setState(
+                            () => _obscurePassword = !_obscurePassword);
                       },
                     ),
 
@@ -177,15 +176,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 22,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
-                                      ),
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   )
-                                : Text(
-                                    'دخول',
-                                    style: AppTextStyles.button(size: 16),
-                                  ),
+                                : Text('دخول', style: AppTextStyles.button(size: 16)),
                           ),
                         ),
                       ),
@@ -199,10 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             'ليس لديك حساب؟ ',
-                            style: AppTextStyles.body(
-                              color: AppColors.inkMuted,
-                              size: 13.5,
-                            ),
+                            style: AppTextStyles.body(color: AppColors.inkMuted, size: 13.5),
                           ),
                           GestureDetector(
                             onTap: _isLoading
@@ -216,10 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                             child: Text(
                               'سجل الآن',
-                              style: AppTextStyles.label(
-                                color: AppColors.teal,
-                                size: 13.5,
-                              ).copyWith(fontWeight: FontWeight.w800),
+                              style: AppTextStyles.label(color: AppColors.teal, size: 13.5)
+                                  .copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -249,10 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.label(color: AppColors.inkFaint, size: 12.5),
-        ),
+        Text(label, style: AppTextStyles.label(color: AppColors.inkFaint, size: 12.5)),
         const SizedBox(height: 6),
         Row(
           children: [
@@ -267,9 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 textAlign: TextAlign.right,
-                style: AppTextStyles.body(
-                  size: 15.5,
-                ).copyWith(fontWeight: FontWeight.w500),
+                style: AppTextStyles.body(size: 15.5).copyWith(fontWeight: FontWeight.w500),
                 decoration: const InputDecoration(
                   isDense: true,
                   border: InputBorder.none,

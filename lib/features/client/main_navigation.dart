@@ -75,7 +75,7 @@ class _MainNavigationState extends State<MainNavigation> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.person_outline_rounded, color: AppColors.ink),
+                  icon: Icon(Icons.person_outline_rounded, color: AppColors.ink),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const ProfileScreen()),
@@ -83,7 +83,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.logout_rounded, color: AppColors.ink),
+                  icon: Icon(Icons.logout_rounded, color: AppColors.ink),
                   onPressed: _logout,
                 ),
               ],

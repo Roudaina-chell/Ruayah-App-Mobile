@@ -21,9 +21,11 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
 
-    // بعد الـ Splash: نتوجه إلى شاشات الـ Onboarding
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+    // مؤقتًا: صفحة بسيطة، سنستبدلها بـ Authentication في STEP 6
+     Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => const OnboardingScreen(),
+      ),
     );
   }
 
@@ -34,7 +36,10 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: [
           // الصورة كخلفية كاملة للشاشة
-          Image.asset('assets/images/splash_background.png', fit: BoxFit.cover),
+          Image.asset(
+            'assets/images/splash_background.png',
+            fit: BoxFit.cover,
+          ),
 
           // Loading في الأسفل
           SafeArea(
@@ -45,24 +50,16 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 22,
                       height: 22,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.gold,
-                        ),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      'جاري التحميل...',
-                      style: AppTextStyles.label(
-                        color: AppColors.ink,
-                        size: 14,
-                      ),
-                    ),
+                    Text('جاري التحميل...', style: AppTextStyles.label(color: AppColors.ink, size: 14)),
                   ],
                 ),
               ),

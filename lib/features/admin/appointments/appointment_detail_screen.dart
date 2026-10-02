@@ -57,10 +57,8 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     if (_selectedDate == null || _selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'الرجاء اختيار التاريخ والساعة',
-            textAlign: TextAlign.right,
-          ),
+          content: Text('الرجاء اختيار التاريخ والساعة',
+              textAlign: TextAlign.right),
         ),
       );
       return;
@@ -78,9 +76,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
-        ),
+        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -96,9 +92,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
-        ),
+        SnackBar(content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right)),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -114,7 +108,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('تفاصيل الموعد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
@@ -139,20 +133,14 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                       appointment.status == 'confirmed'
                           ? 'مؤكد'
                           : appointment.status == 'cancelled'
-                          ? 'ملغى'
-                          : 'قيد الانتظار',
+                              ? 'ملغى'
+                              : 'قيد الانتظار',
                     ),
                     if (appointment.status == 'confirmed') ...[
                       const SizedBox(height: 14),
-                      _infoRow(
-                        'التاريخ الحالي',
-                        appointment.appointmentDate ?? '-',
-                      ),
+                      _infoRow('التاريخ الحالي', appointment.appointmentDate ?? '-'),
                       const SizedBox(height: 14),
-                      _infoRow(
-                        'الساعة الحالية',
-                        appointment.appointmentTime ?? '-',
-                      ),
+                      _infoRow('الساعة الحالية', appointment.appointmentTime ?? '-'),
                     ],
                   ],
                 ),
@@ -165,17 +153,13 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
 
               _pickerTile(
                 icon: Icons.calendar_today_outlined,
-                label: _selectedDate == null
-                    ? 'اختر التاريخ'
-                    : _formatDate(_selectedDate!),
+                label: _selectedDate == null ? 'اختر التاريخ' : _formatDate(_selectedDate!),
                 onTap: _pickDate,
               ),
               const SizedBox(height: 12),
               _pickerTile(
                 icon: Icons.access_time_outlined,
-                label: _selectedTime == null
-                    ? 'اختر الساعة'
-                    : _formatTime(_selectedTime!),
+                label: _selectedTime == null ? 'اختر الساعة' : _formatTime(_selectedTime!),
                 onTap: _pickTime,
               ),
 
@@ -196,15 +180,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : Text(
-                              'تأكيد الموعد',
-                              style: AppTextStyles.button(size: 15),
-                            ),
+                          : Text('تأكيد الموعد', style: AppTextStyles.button(size: 15)),
                     ),
                   ),
                 ),
@@ -218,18 +197,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   onPressed: _isLoading ? null : _cancel,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.danger,
-                    side: const BorderSide(color: AppColors.danger),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
+                    side: BorderSide(color: AppColors.danger),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
-                  child: Text(
-                    'إلغاء الموعد',
-                    style: AppTextStyles.label(
-                      color: AppColors.danger,
-                      size: 15,
-                    ),
-                  ),
+                  child: Text('إلغاء الموعد', style: AppTextStyles.label(color: AppColors.danger, size: 15)),
                 ),
               ),
             ],

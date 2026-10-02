@@ -22,7 +22,7 @@ class EmptyState extends StatelessWidget {
               width: 76,
               height: 76,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.tealSoft,
                 shape: BoxShape.circle,
               ),

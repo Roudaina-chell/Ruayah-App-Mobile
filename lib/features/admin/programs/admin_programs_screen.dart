@@ -21,19 +21,16 @@ class AdminProgramsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
-        title: Text(
-          'إدارة البرامج العلاجية',
-          style: AppTextStyles.heading(size: 16),
-        ),
+        iconTheme: IconThemeData(color: AppColors.ink),
+        title: Text('إدارة البرامج العلاجية', style: AppTextStyles.heading(size: 16)),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_rounded, color: AppColors.teal),
+            icon: Icon(Icons.add_rounded, color: AppColors.teal),
             onPressed: () {
-              Navigator.of(
-                context,
-              ).push(AppPageRoute(builder: (_) => const ProgramFormScreen()));
+              Navigator.of(context).push(
+                AppPageRoute(builder: (_) => const ProgramFormScreen()),
+              );
             },
           ),
         ],
@@ -43,9 +40,7 @@ class AdminProgramsScreen extends StatelessWidget {
           stream: service.allPrograms(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColors.teal),
-              );
+              return Center(child: CircularProgressIndicator(color: AppColors.teal));
             }
 
             final programs = snapshot.data ?? [];
@@ -115,25 +110,15 @@ class _AdminProgramTile extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(
-              Icons.edit_outlined,
-              color: AppColors.inkMuted,
-              size: 20,
-            ),
+            icon: Icon(Icons.edit_outlined, color: AppColors.inkMuted, size: 20),
             onPressed: () {
               Navigator.of(context).push(
-                AppPageRoute(
-                  builder: (_) => ProgramFormScreen(program: program),
-                ),
+                AppPageRoute(builder: (_) => ProgramFormScreen(program: program)),
               );
             },
           ),
           IconButton(
-            icon: const Icon(
-              Icons.delete_outline_rounded,
-              color: AppColors.danger,
-              size: 20,
-            ),
+            icon: Icon(Icons.delete_outline_rounded, color: AppColors.danger, size: 20),
             onPressed: () => _confirmDelete(context),
           ),
         ],

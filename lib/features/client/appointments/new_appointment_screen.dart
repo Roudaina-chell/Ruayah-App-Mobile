@@ -41,13 +41,8 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          content: Text(
-            'تم إرسال طلب الموعد بنجاح ✅',
-            textAlign: TextAlign.right,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          content: Text('تم إرسال طلب الموعد بنجاح ✅', textAlign: TextAlign.right),
         ),
       );
       Navigator.of(context).pop();
@@ -56,9 +51,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           content: Text('حدث خطأ، حاول مرة أخرى', textAlign: TextAlign.right),
         ),
       );
@@ -74,7 +67,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('طلب حجز موعد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
@@ -92,11 +85,8 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.info_outline_rounded,
-                      color: AppColors.teal,
-                      size: 20,
-                    ),
+                    Icon(Icons.info_outline_rounded,
+                        color: AppColors.teal, size: 20),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -121,9 +111,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   style: AppTextStyles.body(size: 14.5),
                   decoration: InputDecoration(
                     hintText: 'اكتب ملاحظتك هنا...',
-                    hintStyle: TextStyle(
-                      color: AppColors.inkFaint.withValues(alpha: 0.8),
-                    ),
+                    hintStyle: TextStyle(color: AppColors.inkFaint.withValues(alpha: 0.8)),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.all(18),
                   ),
@@ -148,15 +136,11 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                               height: 22,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
-                                ),
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
-                          : Text(
-                              'إرسال الطلب',
-                              style: AppTextStyles.button(size: 16),
-                            ),
+                          : Text('إرسال الطلب', style: AppTextStyles.button(size: 16)),
                     ),
                   ),
                 ),

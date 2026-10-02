@@ -20,7 +20,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.parchment,
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('إدارة المواعيد', style: AppTextStyles.heading(size: 17)),
         centerTitle: true,
       ),
@@ -29,9 +29,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
           stream: service.allAppointments(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: AppColors.teal),
-              );
+              return Center(child: CircularProgressIndicator(color: AppColors.teal));
             }
 
             if (snapshot.hasError) {
@@ -61,8 +59,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       AppPageRoute(
-                        builder: (_) =>
-                            AppointmentDetailScreen(appointment: appointment),
+                        builder: (_) => AppointmentDetailScreen(appointment: appointment),
                       ),
                     );
                   },
@@ -80,28 +77,19 @@ class _AdminAppointmentTile extends StatelessWidget {
   final Appointment appointment;
   final VoidCallback onTap;
 
-  const _AdminAppointmentTile({required this.appointment, required this.onTap});
+  const _AdminAppointmentTile({
+    required this.appointment,
+    required this.onTap,
+  });
 
   Map<String, dynamic> get _statusInfo {
     switch (appointment.status) {
       case 'confirmed':
-        return {
-          'label': 'مؤكد',
-          'color': AppColors.success,
-          'bg': AppColors.successSoft,
-        };
+        return {'label': 'مؤكد', 'color': AppColors.success, 'bg': AppColors.successSoft};
       case 'cancelled':
-        return {
-          'label': 'ملغى',
-          'color': AppColors.danger,
-          'bg': AppColors.dangerSoft,
-        };
+        return {'label': 'ملغى', 'color': AppColors.danger, 'bg': AppColors.dangerSoft};
       default:
-        return {
-          'label': 'قيد الانتظار',
-          'color': AppColors.pending,
-          'bg': AppColors.pendingSoft,
-        };
+        return {'label': 'قيد الانتظار', 'color': AppColors.pending, 'bg': AppColors.pendingSoft};
     }
   }
 
@@ -126,36 +114,20 @@ class _AdminAppointmentTile extends StatelessWidget {
                   children: [
                     Text(appointment.userName, style: AppTextStyles.cardTitle),
                     const SizedBox(height: 4),
-                    Text(
-                      appointment.userPhone,
-                      style: AppTextStyles.cardSubtitle,
-                    ),
+                    Text(appointment.userPhone, style: AppTextStyles.cardSubtitle),
                   ],
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: status['bg'],
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(color: status['bg'], borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   status['label'],
-                  style: AppTextStyles.label(
-                    color: status['color'],
-                    size: 12,
-                  ).copyWith(fontWeight: FontWeight.w800),
+                  style: AppTextStyles.label(color: status['color'], size: 12).copyWith(fontWeight: FontWeight.w800),
                 ),
               ),
               const SizedBox(width: 8),
-              const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 14,
-                color: AppColors.inkFaint,
-              ),
+              Icon(Icons.arrow_back_ios_new_rounded, size: 14, color: AppColors.inkFaint),
             ],
           ),
         ),

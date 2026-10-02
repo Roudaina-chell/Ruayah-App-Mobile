@@ -20,7 +20,7 @@ class ProgramsScreen extends StatelessWidget {
         stream: service.allPrograms(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(color: AppColors.teal),
             );
           }
@@ -89,15 +89,12 @@ class _ProgramTile extends StatelessWidget {
                 width: 50,
                 height: 50,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.tealSoft,
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: const Icon(
-                  Icons.menu_book_rounded,
-                  color: AppColors.teal,
-                  size: 23,
-                ),
+                child: Icon(Icons.menu_book_rounded,
+                    color: AppColors.teal, size: 23),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -115,11 +112,8 @@ class _ProgramTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 13,
-                color: AppColors.inkFaint,
-              ),
+              Icon(Icons.arrow_back_ios_new_rounded,
+                  size: 13, color: AppColors.inkFaint),
             ],
           ),
         ),

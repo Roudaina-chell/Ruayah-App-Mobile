@@ -28,7 +28,7 @@ class AdminCasesScreen extends StatelessWidget {
           stream: caseService.allCases(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(color: AppColors.teal));
+              return Center(child: CircularProgressIndicator(color: AppColors.teal));
             }
 
             if (snapshot.hasError) {
@@ -103,7 +103,7 @@ class _CaseTile extends StatelessWidget {
               Container(
                 width: 44,
                 height: 44,
-                decoration: const BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
+                decoration: BoxDecoration(color: AppColors.tealSoft, shape: BoxShape.circle),
                 child: Center(
                   child: Text(_initial, style: AppTextStyles.heading(color: AppColors.teal, size: 15)),
                 ),
@@ -131,7 +131,7 @@ class _CaseTile extends StatelessWidget {
                 Container(
                   width: 10,
                   height: 10,
-                  decoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
                 ),
             ],
           ),

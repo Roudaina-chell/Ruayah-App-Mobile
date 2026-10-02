@@ -51,10 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final phone = _phoneController.text.trim();
     final password = _passwordController.text.trim();
 
-    if (firstName.isEmpty ||
-        lastName.isEmpty ||
-        phone.isEmpty ||
-        password.isEmpty) {
+    if (firstName.isEmpty || lastName.isEmpty || phone.isEmpty || password.isEmpty) {
       _showSnack('الرجاء ملء جميع الحقول');
       return;
     }
@@ -142,11 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: Colors.white.withValues(alpha: 0.85),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
-                            Icons.arrow_forward,
-                            color: AppColors.ink,
-                            size: 20,
-                          ),
+                          child: Icon(Icons.arrow_forward, color: AppColors.ink, size: 20),
                         ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
@@ -198,7 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       onSuffixTap: () {
-                        setState(() => _obscurePassword = !_obscurePassword);
+                        setState(
+                            () => _obscurePassword = !_obscurePassword);
                       },
                     ),
 
@@ -219,15 +213,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     height: 22,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
-                                      ),
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   )
-                                : Text(
-                                    'تسجيل',
-                                    style: AppTextStyles.button(size: 16),
-                                  ),
+                                : Text('تسجيل', style: AppTextStyles.button(size: 16)),
                           ),
                         ),
                       ),
@@ -238,10 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Text(
                       'بإنشاء حسابك، فأنت توافق على سياسة الخصوصية والشروط والأحكام',
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.label(
-                        color: AppColors.inkFaint,
-                        size: 11.5,
-                      ).copyWith(height: 1.5),
+                      style: AppTextStyles.label(color: AppColors.inkFaint, size: 11.5).copyWith(height: 1.5),
                     ),
 
                     const SizedBox(height: 18),
@@ -252,21 +238,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           Text(
                             'لديك حساب؟ ',
-                            style: AppTextStyles.body(
-                              color: AppColors.inkMuted,
-                              size: 13.5,
-                            ),
+                            style: AppTextStyles.body(color: AppColors.inkMuted, size: 13.5),
                           ),
                           GestureDetector(
-                            onTap: _isLoading
-                                ? null
-                                : () => Navigator.of(context).pop(),
+                            onTap: _isLoading ? null : () => Navigator.of(context).pop(),
                             child: Text(
                               'تسجيل الدخول',
-                              style: AppTextStyles.label(
-                                color: AppColors.teal,
-                                size: 13.5,
-                              ).copyWith(fontWeight: FontWeight.w800),
+                              style: AppTextStyles.label(color: AppColors.teal, size: 13.5)
+                                  .copyWith(fontWeight: FontWeight.w800),
                             ),
                           ),
                         ],
@@ -296,10 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.label(color: AppColors.inkFaint, size: 12.5),
-        ),
+        Text(label, style: AppTextStyles.label(color: AppColors.inkFaint, size: 12.5)),
         const SizedBox(height: 6),
         Row(
           children: [
@@ -314,9 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: keyboardType,
                 obscureText: obscureText,
                 textAlign: TextAlign.right,
-                style: AppTextStyles.body(
-                  size: 15.5,
-                ).copyWith(fontWeight: FontWeight.w500),
+                style: AppTextStyles.body(size: 15.5).copyWith(fontWeight: FontWeight.w500),
                 decoration: const InputDecoration(
                   isDense: true,
                   border: InputBorder.none,
