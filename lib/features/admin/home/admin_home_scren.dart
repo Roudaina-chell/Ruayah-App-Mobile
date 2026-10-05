@@ -141,7 +141,7 @@ class AdminHomeScreen extends StatelessWidget {
                                 physics: const NeverScrollableScrollPhysics(),
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
-                                childAspectRatio: 1.35,
+                                childAspectRatio: 1.05,
                                 children: [
                                   _StatCard(
                                     icon: Icons.people_alt_rounded,
@@ -263,7 +263,7 @@ class _StatCard extends StatelessWidget {
         splashColor: color.withValues(alpha: 0.1),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
@@ -281,24 +281,34 @@ class _StatCard extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: 34,
+                height: 34,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(13),
+                  borderRadius: BorderRadius.circular(11),
                 ),
-                child: Icon(icon, color: color, size: 20),
+                child: Icon(icon, color: color, size: 17),
               ),
-              const Spacer(),
-              Text('$count', style: AppTextStyles.heading(size: 24)),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.cardSubtitle,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$count',
+                    style: AppTextStyles.heading(size: 21),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.cardSubtitle.copyWith(fontSize: 11.5),
+                  ),
+                ],
               ),
             ],
           ),
