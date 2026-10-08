@@ -78,6 +78,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           style: AppTextStyles.body(color: AppColors.inkMuted, size: 13.5)
                               .copyWith(height: 1.6),
                         ),
+                        const SizedBox(height: 22),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldSoft,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: AppColors.gold.withValues(alpha: 0.25)),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.format_quote_rounded, color: AppColors.gold, size: 20),
+                              const SizedBox(height: 8),
+                              Text(
+                                'وَنُنَزِّلُ مِنَ الْقُرْآنِ مَا هُوَ شِفَاءٌ وَرَحْمَةٌ لِّلْمُؤْمِنِينَ',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.displaySmall(color: AppColors.goldDeep, size: 17)
+                                    .copyWith(height: 1.7),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '(الإسراء: 82)',
+                                style: AppTextStyles.label(
+                                  color: AppColors.goldDeep.withValues(alpha: 0.7),
+                                  size: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
