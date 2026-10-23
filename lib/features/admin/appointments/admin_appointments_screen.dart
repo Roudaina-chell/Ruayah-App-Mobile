@@ -51,7 +51,7 @@ class AdminAppointmentsScreen extends StatelessWidget {
             return ListView.separated(
               padding: const EdgeInsets.all(20),
               itemCount: appointments.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final appointment = appointments[index];
                 return _AdminAppointmentTile(

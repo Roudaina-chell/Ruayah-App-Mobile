@@ -55,7 +55,7 @@ class AdminProgramsScreen extends StatelessWidget {
             return ListView.separated(
               padding: const EdgeInsets.all(20),
               itemCount: programs.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final program = programs[index];
                 return _AdminProgramTile(program: program, service: service);

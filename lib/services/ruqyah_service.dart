@@ -4,8 +4,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../models/ruqyah.dart';
 
 class RuqyahService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore;
+  final FirebaseStorage? _storageOverride;
+
+  RuqyahService({FirebaseFirestore? firestore, FirebaseStorage? storage})
+      : _firestore = firestore ?? FirebaseFirestore.instance,
+        _storageOverride = storage;
+
+  // Storage paresseux : n'est créé que si on uploade un fichier
+  FirebaseStorage get _storage => _storageOverride ?? FirebaseStorage.instance;
 
   Stream<List<Ruqyah>> allRuqyahs() {
     return _firestore

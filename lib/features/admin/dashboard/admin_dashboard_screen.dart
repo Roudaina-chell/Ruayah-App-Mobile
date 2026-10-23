@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_decorations.dart';
-import '../../services/auth_service.dart';
-import '../auth/login_screen.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_decorations.dart';
+import '../../../services/auth_service.dart';
+import '../../auth/login_screen.dart';
 import '../appointments/admin_appointments_screen.dart';
 import '../programs/admin_programs_screen.dart';
 
@@ -42,7 +42,6 @@ class AdminDashboardScreen extends StatelessWidget {
             children: [
               Text('الإجراءات السريعة', style: AppTextStyles.heading(size: 16)),
               const SizedBox(height: 12),
-
               _ActionTile(
                 icon: Icons.menu_book_outlined,
                 iconColor: AppColors.teal,
@@ -52,6 +51,20 @@ class AdminDashboardScreen extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => const AdminProgramsScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              _ActionTile(
+                icon: Icons.event_outlined,
+                iconColor: AppColors.gold,
+                title: 'إدارة المواعيد',
+                subtitle: 'عرض وتأكيد طلبات المواعيد',
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const AdminAppointmentsScreen(),
                     ),
                   );
                 },

@@ -4,8 +4,12 @@ import '../models/patient_case.dart';
 import '../models/case_entry.dart';
 
 class CaseService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
+
+  CaseService({FirebaseFirestore? firestore, FirebaseAuth? auth})
+      : _firestore = firestore ?? FirebaseFirestore.instance,
+        _auth = auth ?? FirebaseAuth.instance;
 
   /// حالة العميل الحالي — Stream
   Stream<PatientCase?> myCase() {
@@ -94,7 +98,7 @@ class CaseService {
     }, SetOptions(merge: true));
   }
 
-    /// كل الحالات (للأدمن) — Stream
+  /// كل الحالات (للأدمن) — Stream
   Stream<List<PatientCase>> allCases() {
     return _firestore
         .collection('cases')

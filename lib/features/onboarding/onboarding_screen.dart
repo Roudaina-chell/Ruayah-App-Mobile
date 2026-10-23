@@ -46,7 +46,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: AppColors.parchment,
       body: SafeArea(
-        bottom: false,
         child: Column(
           children: [
             Expanded(
@@ -165,6 +164,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 18),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                          decoration: BoxDecoration(
+                            color: AppColors.goldSoft,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: AppColors.gold.withValues(alpha: 0.25)),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'وَإِذَا مَرِضْتُ فَهُوَ يَشْفِينِ',
+                                textAlign: TextAlign.center,
+                                style: AppTextStyles.displaySmall(color: AppColors.goldDeep, size: 18)
+                                    .copyWith(height: 1.7),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '(الشعراء: 80)',
+                                style: AppTextStyles.label(
+                                  color: AppColors.goldDeep.withValues(alpha: 0.7),
+                                  size: 11,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

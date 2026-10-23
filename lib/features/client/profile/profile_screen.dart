@@ -187,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               Switch(
                                 value: isDark,
-                                activeColor: AppColors.teal,
+                                activeThumbColor: AppColors.teal,
                                 onChanged: (v) => AppColors.darkModeNotifier.value = v,
                               ),
                             ],
